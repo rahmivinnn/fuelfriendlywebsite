@@ -169,7 +169,7 @@ const NearbyStations = () => {
       // Generate a small random price change (±0.05)
       const priceChange = (Math.random() * 0.1 - 0.05).toFixed(2);
       const oldPrice = updatedStations[randomStationIndex].priceRegular;
-      const newPrice = (parseFloat(oldPrice) + parseFloat(priceChange)).toFixed(2);
+      const newPrice = (parseFloat(oldPrice.toString()) + parseFloat(priceChange)).toFixed(2);
       
       // Update the price
       updatedStations[randomStationIndex] = {
