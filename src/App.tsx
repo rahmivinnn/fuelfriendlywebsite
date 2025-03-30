@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NearbyStations from "./pages/NearbyStations";
 import StationDashboard from "./pages/StationDashboard";
 import ProductsManagement from "./pages/ProductsManagement";
+import StationManagement from "./pages/StationManagement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/nearby-stations" element={<NearbyStations />} />
           <Route path="/station-dashboard" element={<StationDashboard />} />
           <Route path="/station-dashboard/products" element={<ProductsManagement />} />
+          <Route path="/station-dashboard/station" element={<StationManagement />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
