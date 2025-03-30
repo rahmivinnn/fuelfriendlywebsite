@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 type SidebarItem = {
   icon: React.ElementType;
@@ -40,6 +40,7 @@ interface DashboardLayoutProps {
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) => {
   const { toast } = useToast();
   const location = useLocation();
+  const navigate = useNavigate();
   const [notificationCount, setNotificationCount] = useState<number>(4);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   
@@ -80,6 +81,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
 
   const handleSidebarItemClick = (item: SidebarItem) => {
     if (!item.path.includes('/station-dashboard/')) return;
+    
+    // Navigate to the path
+    navigate(item.path);
     
     // For any item without a proper page yet, show a toast
     if (!['/station-dashboard', '/station-dashboard/orders', '/station-dashboard/products', '/station-dashboard/station'].includes(item.path)) {
@@ -140,10 +144,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <Link 
-                  to={item.path}
-                  className={`flex items-center p-3 rounded-lg transition-colors hover:bg-gray-100 ${isActive ? 'bg-green-50 text-green-500' : 'text-gray-600'}`}
+                <div 
                   onClick={() => handleSidebarItemClick(item)}
+                  className={`flex items-center p-3 rounded-lg transition-colors hover:bg-gray-100 cursor-pointer ${isActive ? 'bg-green-50 text-green-500' : 'text-gray-600'}`}
                 >
                   <item.icon size={20} className={isActive ? 'text-green-500' : 'text-gray-500'} />
                   <AnimatePresence>
@@ -168,7 +171,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
                       <Activity size={14} className="text-green-500" />
                     </motion.div>
                   )}
-                </Link>
+                </div>
               </motion.div>
             );
           })}
