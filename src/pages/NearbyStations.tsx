@@ -28,7 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-// Station data with consistently using the uploaded gas station image
+// Station data with consistently using the gas station image
 const stations = [
   {
     id: 1,
@@ -46,7 +46,8 @@ const stations = [
     waitTime: "< 5 min",
     lastUpdated: "5 min ago",
     favorites: 132,
-    image: "/lovable-uploads/b4014a02-24b2-4b5d-ba9c-7e458412d9d4.png"
+    phoneNumber: "123-456-7890",
+    image: "/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
   },
   {
     id: 2,
@@ -64,7 +65,8 @@ const stations = [
     waitTime: "5-10 min",
     lastUpdated: "12 min ago",
     favorites: 98,
-    image: "/lovable-uploads/b4014a02-24b2-4b5d-ba9c-7e458412d9d4.png"
+    phoneNumber: "234-567-8901",
+    image: "/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
   },
   {
     id: 3,
@@ -82,7 +84,8 @@ const stations = [
     waitTime: "10-15 min",
     lastUpdated: "8 min ago",
     favorites: 115,
-    image: "/lovable-uploads/b4014a02-24b2-4b5d-ba9c-7e458412d9d4.png"
+    phoneNumber: "345-678-9012",
+    image: "/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
   },
   {
     id: 4,
@@ -100,7 +103,8 @@ const stations = [
     waitTime: "< 5 min",
     lastUpdated: "15 min ago",
     favorites: 87,
-    image: "/lovable-uploads/b4014a02-24b2-4b5d-ba9c-7e458412d9d4.png"
+    phoneNumber: "456-789-0123",
+    image: "/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
   },
   {
     id: 5,
@@ -118,7 +122,8 @@ const stations = [
     waitTime: "5-10 min",
     lastUpdated: "20 min ago",
     favorites: 72,
-    image: "/lovable-uploads/b4014a02-24b2-4b5d-ba9c-7e458412d9d4.png"
+    phoneNumber: "567-890-1234",
+    image: "/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
   },
   {
     id: 6,
@@ -136,7 +141,8 @@ const stations = [
     waitTime: "< 5 min",
     lastUpdated: "18 min ago",
     favorites: 81,
-    image: "/lovable-uploads/b4014a02-24b2-4b5d-ba9c-7e458412d9d4.png"
+    phoneNumber: "678-901-2345",
+    image: "/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
   }
 ];
 
@@ -146,6 +152,8 @@ const NearbyStations = () => {
   const [loading, setLoading] = useState(true);
   const [sortOption, setSortOption] = useState("distance");
   const [filteredStations, setFilteredStations] = useState(stations);
+  const [selectedStation, setSelectedStation] = useState(null);
+  const [showStationDetails, setShowStationDetails] = useState(false);
 
   // Simulating loading
   useEffect(() => {
@@ -221,10 +229,36 @@ const NearbyStations = () => {
     }
   }, [searchInput]);
 
+  const handleCallStation = (station) => {
+    toast({
+      title: "Calling Station",
+      description: `Calling ${station.name} at ${station.phoneNumber}`,
+      duration: 3000,
+    });
+  };
+
+  const handleViewDetails = (station) => {
+    setSelectedStation(station);
+    setShowStationDetails(true);
+    toast({
+      title: "Station Details",
+      description: `Viewing details for ${station.name}`,
+      duration: 3000,
+    });
+  };
+
+  const handleGetDirections = (station) => {
+    toast({
+      title: "Getting Directions",
+      description: `Directions to ${station.name} at ${station.address}`,
+      duration: 3000,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-green-600 to-green-700 py-12 px-6">
+      {/* Header - Changed background to white */}
+      <div className="bg-white py-12 px-6 border-b border-gray-200">
         <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -233,7 +267,7 @@ const NearbyStations = () => {
           >
             <div className="flex justify-between items-center mb-8">
               <div>
-                <Link to="/" className="text-white text-lg font-bold flex items-center">
+                <Link to="/" className="text-black text-lg font-bold flex items-center">
                   <img 
                     src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" 
                     alt="FuelFriendly" 
@@ -242,39 +276,39 @@ const NearbyStations = () => {
                 </Link>
               </div>
               
-              <div className="flex space-x-4 text-white">
-                <Link to="/" className="hover:text-green-200 transition-colors">
+              <div className="flex space-x-4 text-black">
+                <Link to="/" className="hover:text-green-600 transition-colors">
                   Home
                 </Link>
-                <Link to="/" className="hover:text-green-200 transition-colors">
+                <Link to="/" className="hover:text-green-600 transition-colors">
                   How It Works
                 </Link>
-                <Link to="/" className="hover:text-green-200 transition-colors">
+                <Link to="/" className="hover:text-green-600 transition-colors">
                   User & Fuel Friendly App
                 </Link>
-                <Link to="/nearby-stations" className="font-bold underline">
+                <Link to="/nearby-stations" className="font-bold underline text-green-600">
                   Nearby Fuel Stations
                 </Link>
-                <Link to="/" className="hover:text-green-200 transition-colors">
+                <Link to="/" className="hover:text-green-600 transition-colors">
                   Contact Us
                 </Link>
               </div>
               
               <div>
-                <Button asChild className="bg-white text-green-600 hover:bg-green-50">
+                <Button asChild className="bg-green-600 text-white hover:bg-green-700">
                   <Link to="/station-dashboard">Register Station</Link>
                 </Button>
               </div>
             </div>
             
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-black mb-4">
               Find Nearby Fuel Stations
             </h1>
-            <p className="text-green-100 text-lg mb-6">
+            <p className="text-gray-600 text-lg mb-6">
               Discover the best gas stations near Memphis with real-time prices, wait times, and amenities
             </p>
             
-            <div className="bg-white p-2 rounded-full shadow-lg flex items-center">
+            <div className="bg-white p-2 rounded-full shadow-lg flex items-center border border-gray-200">
               <div className="flex-1 flex items-center pl-4">
                 <MapPin className="text-green-500 mr-2" size={20} />
                 <Input 
@@ -430,7 +464,16 @@ const NearbyStations = () => {
                   </div>
                 </div>
                 
-                <Button className="w-full bg-green-500 hover:bg-green-600">
+                <Button 
+                  className="w-full bg-green-500 hover:bg-green-600"
+                  onClick={() => {
+                    toast({
+                      title: "Filters Applied",
+                      description: "Your filters have been applied to the results",
+                      duration: 3000,
+                    });
+                  }}
+                >
                   <Filter className="mr-2" size={16} />
                   Apply Filters
                 </Button>
@@ -560,15 +603,29 @@ const NearbyStations = () => {
                               </div>
                               
                               <div className="flex gap-2">
-                                <Button variant="outline" size="sm" className="text-green-600">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  className="text-green-600"
+                                  onClick={() => handleCallStation(station)}
+                                >
                                   <Phone size={14} className="mr-1" />
                                   Call
                                 </Button>
-                                <Button variant="outline" size="sm" className="text-green-600">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm" 
+                                  className="text-green-600"
+                                  onClick={() => handleGetDirections(station)}
+                                >
                                   <Navigation size={14} className="mr-1" />
                                   Directions
                                 </Button>
-                                <Button size="sm" className="bg-green-500 hover:bg-green-600">
+                                <Button 
+                                  size="sm" 
+                                  className="bg-green-500 hover:bg-green-600"
+                                  onClick={() => handleViewDetails(station)}
+                                >
                                   View Details
                                 </Button>
                               </div>
@@ -596,6 +653,177 @@ const NearbyStations = () => {
           </div>
         </div>
       </div>
+      
+      {/* Station Details Modal */}
+      {showStationDetails && selectedStation && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+          >
+            <div className="relative h-64">
+              <img 
+                src={selectedStation.image} 
+                alt={selectedStation.name}
+                className="w-full h-full object-cover"
+              />
+              <button 
+                className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md"
+                onClick={() => setShowStationDetails(false)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+                <h2 className="text-white text-2xl font-bold">{selectedStation.name}</h2>
+                <p className="text-white flex items-center">
+                  <MapPin size={16} className="mr-1" />
+                  {selectedStation.address}
+                </p>
+              </div>
+            </div>
+            
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <h3 className="text-lg font-bold mb-2">Station Information</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-start">
+                      <MapPin className="text-green-500 mt-1 mr-2" size={18} />
+                      <div>
+                        <div className="font-medium">Address</div>
+                        <div className="text-gray-600">{selectedStation.address}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <Phone className="text-green-500 mt-1 mr-2" size={18} />
+                      <div>
+                        <div className="font-medium">Phone</div>
+                        <div className="text-gray-600">{selectedStation.phoneNumber}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <Clock className="text-green-500 mt-1 mr-2" size={18} />
+                      <div>
+                        <div className="font-medium">Hours</div>
+                        <div className="text-gray-600">{selectedStation.openTime}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <Star className="text-green-500 mt-1 mr-2" size={18} />
+                      <div>
+                        <div className="font-medium">Rating</div>
+                        <div className="text-gray-600">{selectedStation.rating} / 5</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-bold mb-2">Current Fuel Prices</h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span>Regular Unleaded</span>
+                      <span className="font-bold">${selectedStation.priceRegular.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Premium Unleaded</span>
+                      <span className="font-bold">${selectedStation.pricePremium.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Diesel</span>
+                      <span className="font-bold">${selectedStation.priceDiesel.toFixed(2)}</span>
+                    </div>
+                    <div className="text-sm text-gray-500 italic mt-2">
+                      Prices last updated {selectedStation.lastUpdated}
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-lg font-bold mt-6 mb-2">Amenities</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedStation.amenities.map(amenity => (
+                      <div key={amenity} className="bg-gray-100 px-3 py-1 rounded-full text-sm">
+                        {amenity}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="border-t border-gray-200 pt-6">
+                <h3 className="text-lg font-bold mb-4">Current Status</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className={`p-4 rounded-lg ${
+                    selectedStation.congestion === 'Low' 
+                      ? 'bg-green-50 border border-green-100' 
+                      : selectedStation.congestion === 'Medium'
+                      ? 'bg-yellow-50 border border-yellow-100'
+                      : 'bg-red-50 border border-red-100'
+                  }`}>
+                    <div className="text-sm text-gray-500">Congestion</div>
+                    <div className={`font-bold ${
+                      selectedStation.congestion === 'Low' 
+                        ? 'text-green-600' 
+                        : selectedStation.congestion === 'Medium'
+                        ? 'text-yellow-600'
+                        : 'text-red-600'
+                    }`}>
+                      {selectedStation.congestion}
+                    </div>
+                  </div>
+                  
+                  <div className={`p-4 rounded-lg ${
+                    selectedStation.waitTime === '< 5 min' 
+                      ? 'bg-green-50 border border-green-100' 
+                      : selectedStation.waitTime === '5-10 min'
+                      ? 'bg-yellow-50 border border-yellow-100'
+                      : 'bg-red-50 border border-red-100'
+                  }`}>
+                    <div className="text-sm text-gray-500">Wait Time</div>
+                    <div className={`font-bold ${
+                      selectedStation.waitTime === '< 5 min' 
+                        ? 'text-green-600' 
+                        : selectedStation.waitTime === '5-10 min'
+                        ? 'text-yellow-600'
+                        : 'text-red-600'
+                    }`}>
+                      {selectedStation.waitTime}
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 rounded-lg bg-blue-50 border border-blue-100">
+                    <div className="text-sm text-gray-500">Distance</div>
+                    <div className="font-bold text-blue-600">
+                      {selectedStation.distance}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex gap-4 mt-6">
+                <Button 
+                  className="flex-1 bg-green-500 hover:bg-green-600"
+                  onClick={() => handleGetDirections(selectedStation)}
+                >
+                  <Navigation className="mr-2" size={18} />
+                  Get Directions
+                </Button>
+                <Button 
+                  className="flex-1" 
+                  variant="outline"
+                  onClick={() => handleCallStation(selectedStation)}
+                >
+                  <Phone className="mr-2" size={18} />
+                  Call Station
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
       
       {/* Footer */}
       <footer className="bg-gray-800 text-white pt-12 pb-6 mt-12">
