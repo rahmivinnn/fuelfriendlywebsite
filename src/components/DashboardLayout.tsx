@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Grid, ShoppingBag, Package, Building2, 
   PieChart, Bell as BellIcon, HelpCircle, Settings,
-  LogOut, MapPin, LayoutDashboard, Activity
+  LogOut, MapPin, LayoutDashboard, Activity, FileText,
+  MessageCircle, Users
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
@@ -23,6 +24,9 @@ const sidebarItems: SidebarItem[] = [
   { icon: Package, label: 'Products Management', path: '/station-dashboard/products', realtime: true },
   { icon: Building2, label: 'Station Management', path: '/station-dashboard/station', realtime: true },
   { icon: PieChart, label: 'Earnings & Transactions', path: '/station-dashboard/earnings', realtime: true },
+  { icon: Users, label: 'Customers', path: '/station-dashboard/customers', realtime: true },
+  { icon: FileText, label: 'Reports', path: '/station-dashboard/reports', realtime: true },
+  { icon: MessageCircle, label: 'Messages', path: '/station-dashboard/messages' },
   { icon: BellIcon, label: 'Notifications', path: '/station-dashboard/notifications' },
   { icon: HelpCircle, label: 'Help & Support', path: '/station-dashboard/support' },
   { icon: Settings, label: 'Settings', path: '/station-dashboard/settings' },
@@ -37,6 +41,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
   const { toast } = useToast();
   const location = useLocation();
   const [notificationCount, setNotificationCount] = useState<number>(4);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   
   // Simulate real-time notifications
   React.useEffect(() => {
@@ -64,23 +69,64 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
     return () => clearInterval(interval);
   }, [toast]);
 
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+    toast({
+      title: isSidebarCollapsed ? "Sidebar Expanded" : "Sidebar Collapsed",
+      description: isSidebarCollapsed ? "Showing full sidebar view" : "Showing minimal sidebar for more space",
+      duration: 2000,
+    });
+  };
+
+  const handleSidebarItemClick = (item: SidebarItem) => {
+    if (!item.path.includes('/station-dashboard/')) return;
+    
+    // For any item without a proper page yet, show a toast
+    if (!['/station-dashboard', '/station-dashboard/orders', '/station-dashboard/products', '/station-dashboard/station'].includes(item.path)) {
+      toast({
+        title: `${item.label} Selected`,
+        description: `The ${item.label.toLowerCase()} page is being loaded`,
+        duration: 2000,
+      });
+    }
+  };
+
   return (
     <div className="h-screen flex bg-gray-50">
       {/* Sidebar */}
       <motion.div 
         initial={{ x: -300 }}
-        animate={{ x: 0 }}
+        animate={{ x: 0, width: isSidebarCollapsed ? 80 : 256 }}
         transition={{ type: "spring", stiffness: 100 }}
-        className="bg-white w-64 border-r border-gray-200 flex flex-col"
+        className="bg-white border-r border-gray-200 flex flex-col"
       >
-        <div className="p-4 border-b border-gray-200">
-          <Link to="/" className="flex items-center">
-            <img 
-              src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" 
-              alt="FuelFriendly Logo" 
-              className="h-8"
-            />
-          </Link>
+        <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+          <AnimatePresence>
+            {!isSidebarCollapsed && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <Link to="/" className="flex items-center">
+                  <img 
+                    src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" 
+                    alt="FuelFriendly Logo" 
+                    className="h-8"
+                  />
+                </Link>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={toggleSidebar}
+            className="hover:bg-gray-100"
+          >
+            <Grid size={20} className="text-gray-500" />
+          </Button>
         </div>
         
         <div className="flex-1 p-4 space-y-2 overflow-y-auto">
@@ -97,9 +143,21 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
                 <Link 
                   to={item.path}
                   className={`flex items-center p-3 rounded-lg transition-colors hover:bg-gray-100 ${isActive ? 'bg-green-50 text-green-500' : 'text-gray-600'}`}
+                  onClick={() => handleSidebarItemClick(item)}
                 >
                   <item.icon size={20} className={isActive ? 'text-green-500' : 'text-gray-500'} />
-                  <span className="ml-3 font-medium text-sm">{item.label}</span>
+                  <AnimatePresence>
+                    {!isSidebarCollapsed && (
+                      <motion.span 
+                        initial={{ opacity: 0, width: 0 }}
+                        animate={{ opacity: 1, width: 'auto' }}
+                        exit={{ opacity: 0, width: 0 }}
+                        className="ml-3 font-medium text-sm whitespace-nowrap"
+                      >
+                        {item.label}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
                   {item.realtime && (
                     <motion.div 
                       className="ml-auto"
@@ -119,7 +177,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
         <div className="p-4 border-t border-gray-200">
           <Button 
             variant="ghost" 
-            className="w-full justify-start text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+            className={`${isSidebarCollapsed ? 'justify-center' : 'w-full justify-start'} text-gray-600 hover:text-gray-900 hover:bg-gray-100`}
             onClick={() => {
               toast({
                 title: "Logged Out",
@@ -128,8 +186,18 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
               });
             }}
           >
-            <LogOut size={20} className="mr-2" />
-            Logout Account
+            <LogOut size={20} className={isSidebarCollapsed ? '' : 'mr-2'} />
+            <AnimatePresence>
+              {!isSidebarCollapsed && (
+                <motion.span
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: 'auto' }}
+                  exit={{ opacity: 0, width: 0 }}
+                >
+                  Logout Account
+                </motion.span>
+              )}
+            </AnimatePresence>
           </Button>
         </div>
       </motion.div>
@@ -138,13 +206,23 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Nav */}
         <header className="bg-white border-b border-gray-200 py-4 px-6 flex items-center justify-between">
-          <motion.h1 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-2xl font-bold"
-          >
-            {title}
-          </motion.h1>
+          <div className="flex items-center">
+            <motion.h1 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-2xl font-bold"
+            >
+              {title}
+            </motion.h1>
+            <motion.div 
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="ml-3 px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full flex items-center"
+            >
+              <div className="h-2 w-2 bg-green-500 rounded-full mr-1 animate-pulse"></div>
+              Live Data
+            </motion.div>
+          </div>
           
           <div className="flex items-center space-x-4">
             <div className="relative">
