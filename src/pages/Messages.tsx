@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { 
   Search, Users, Phone, Video, Plus, Send,
   Paperclip, Image, Smile, MoreVertical,
-  Star, Clock, Archive, ChevronDown, Check
+  Star, Clock, Archive, ChevronDown, Check, Trash2
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
@@ -139,7 +139,7 @@ const messageHistory = [
     text: 'When will the fuel prices change?',
     timestamp: 'Today 10:30 AM',
     status: 'delivered'
-  },
+  }
 ];
 
 const Messages = () => {
