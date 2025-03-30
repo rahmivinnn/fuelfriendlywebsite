@@ -64,9 +64,9 @@ const HeroSection = () => {
                 }}
               >
                 <img
-                  src="/lovable-uploads/aeb19cdc-0a68-4220-b059-c82442722879.png"
+                  src="/lovable-uploads/1b68669e-3150-4469-876b-dd7329820b6a.png"
                   alt="FuelFriendly App Preview"
-                  className="object-cover w-full h-full rounded-[32px] shadow-lg"
+                  className="object-contain w-full h-full"
                 />
               </motion.div>
             </div>

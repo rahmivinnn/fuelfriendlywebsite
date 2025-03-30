@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const NavBar = () => {
   return (
@@ -10,7 +11,7 @@ const NavBar = () => {
         <div className="flex items-center">
           <Link to="/" className="flex items-center gap-2">
             <img 
-              src="/lovable-uploads/66ecc96c-e744-41ff-bf0f-850f4b71e4b6.png" 
+              src="/lovable-uploads/8be72e99-aa4f-47aa-b8b0-74abe3514527.png" 
               alt="FuelFriendly Logo" 
               className="h-8 md:h-10"
             />
@@ -36,12 +37,16 @@ const NavBar = () => {
         </nav>
         
         <div className="flex items-center space-x-3">
-          <Button variant="ghost" className="hidden md:inline-flex">
-            Sign In
-          </Button>
-          <Button className="bg-primary hover:bg-primary/90">
-            Get Started
-          </Button>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button variant="ghost" className="hidden md:inline-flex">
+              Sign In
+            </Button>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button className="bg-primary hover:bg-primary/90">
+              Get Started
+            </Button>
+          </motion.div>
         </div>
       </div>
     </header>

@@ -12,6 +12,7 @@ import TestimonialsSection from '@/components/TestimonialsSection';
 import CtaSection from '@/components/CtaSection';
 import Footer from '@/components/Footer';
 import { useToast } from "@/components/ui/use-toast";
+import { motion } from 'framer-motion';
 
 const Index = () => {
   const { toast } = useToast();
@@ -28,7 +29,12 @@ const Index = () => {
   }, [toast]);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <motion.div 
+      className="flex min-h-screen flex-col"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <NavBar />
       <main>
         <HeroSection />
@@ -42,7 +48,7 @@ const Index = () => {
         <CtaSection />
       </main>
       <Footer />
-    </div>
+    </motion.div>
   );
 };
 

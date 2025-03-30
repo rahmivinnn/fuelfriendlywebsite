@@ -15,12 +15,13 @@ const BusinessSection = () => {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <div className="relative w-full max-w-[500px] rounded-lg overflow-hidden shadow-lg">
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-blue-500/10 rounded-lg blur-lg"></div>
-              <img
-                src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=800"
+            <div className="relative w-full max-w-[600px] rounded-lg overflow-hidden shadow-xl">
+              <motion.img
+                src="/lovable-uploads/d5900669-7679-4334-ac5e-2f28c1bbc76a.png"
                 alt="Business Analytics Dashboard"
-                className="object-cover w-full relative rounded-lg shadow-md transform transition-transform hover:scale-105 duration-500"
+                className="object-cover w-full relative rounded-lg shadow-md"
+                whileHover={{ scale: 1.03 }}
+                transition={{ duration: 0.3 }}
               />
             </div>
           </motion.div>

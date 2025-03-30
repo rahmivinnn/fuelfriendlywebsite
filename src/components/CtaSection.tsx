@@ -57,6 +57,20 @@ const CtaSection = () => {
               delay: 1
             }}
           />
+          <motion.div 
+            className="absolute w-32 h-32 rounded-full bg-white/5"
+            style={{ top: '40%', right: '15%' }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.1, 0.2, 0.1],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 2
+            }}
+          />
         </div>
       </div>
     </section>
