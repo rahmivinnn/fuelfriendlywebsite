@@ -56,7 +56,7 @@ const contacts = [
     id: 4, 
     name: 'Emma Wilson', 
     status: 'away', 
-    lastMessage: 'I'll stop by tomorrow morning',
+    lastMessage: "I'll stop by tomorrow morning",
     lastMessageTime: 'Yesterday',
     avatar: '/lovable-uploads/86c52672-6ac1-4afa-b99f-d1f6c2a23319.png',
     unread: 0
@@ -120,7 +120,7 @@ const messageHistory = [
     id: 4, 
     senderId: 0, 
     receiverId: 1,
-    text: 'We usually update our prices every Monday morning, but it depends on the market conditions. The prices have been stable lately, which is why they haven't changed.',
+    text: "We usually update our prices every Monday morning, but it depends on the market conditions. The prices have been stable lately, which is why they haven't changed.",
     timestamp: 'Today 10:25 AM',
     status: 'read'
   },
