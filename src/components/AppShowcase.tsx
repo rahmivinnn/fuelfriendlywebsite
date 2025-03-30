@@ -32,31 +32,22 @@ const AppShowcase = () => {
             </div>
           </motion.div>
           <motion.div 
-            className="flex justify-center lg:justify-end mt-8 lg:mt-0"
+            className="flex justify-center lg:justify-end"
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <div className="grid grid-cols-2 gap-4">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-300/20 to-primary/20 rounded-3xl blur-xl opacity-30"></div>
               <motion.div 
-                className="relative w-[160px] h-[320px] md:w-[180px] md:h-[360px] rounded-3xl overflow-hidden shadow-lg rotate-2"
-                whileHover={{ y: -10, rotate: 0, transition: { duration: 0.2 } }}
+                className="relative"
+                whileHover={{ y: -10, transition: { duration: 0.3 } }}
               >
                 <img
-                  src="/lovable-uploads/0b1492f3-7eb1-46e2-9bf5-c2ec23ca508f.png"
-                  alt="FuelFriendly App Screen 1"
-                  className="object-cover w-full h-full"
-                />
-              </motion.div>
-              <motion.div 
-                className="relative w-[160px] h-[320px] md:w-[180px] md:h-[360px] rounded-3xl overflow-hidden shadow-lg -rotate-2 mt-4"
-                whileHover={{ y: -10, rotate: 0, transition: { duration: 0.2 } }}
-              >
-                <img
-                  src="/lovable-uploads/0b1492f3-7eb1-46e2-9bf5-c2ec23ca508f.png"
-                  alt="FuelFriendly App Screen 2"
-                  className="object-cover w-full h-full"
+                  src="/lovable-uploads/6d32f5db-8078-4b2d-b0ea-8dbdcfde3eff.png"
+                  alt="FuelFriendly App Interface"
+                  className="object-contain w-full h-full rounded-xl shadow-xl"
                 />
               </motion.div>
             </div>

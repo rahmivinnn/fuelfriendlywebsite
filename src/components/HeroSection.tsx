@@ -64,9 +64,9 @@ const HeroSection = () => {
                 }}
               >
                 <img
-                  src="/lovable-uploads/1b68669e-3150-4469-876b-dd7329820b6a.png"
-                  alt="FuelFriendly App Preview"
-                  className="object-contain w-full h-full"
+                  src="/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
+                  alt="FuelFriendly App Preview with Map"
+                  className="object-contain w-full h-full rounded-2xl shadow-xl"
                 />
               </motion.div>
             </div>
@@ -75,25 +75,25 @@ const HeroSection = () => {
       </div>
       <div className="container px-4 md:px-6 mt-12">
         <motion.div 
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-8 justify-center items-center"
+          className="grid grid-cols-3 gap-12 md:gap-24 justify-center items-center mt-8"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
           <motion.div 
-            className="flex flex-col items-center space-y-2 border rounded-lg p-4 hover:shadow-md transition-all duration-300"
+            className="flex flex-col items-center space-y-2 border rounded-lg p-4 hover:shadow-lg transition-all duration-300"
             whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
           >
             <h3 className="text-lg font-medium">Shell</h3>
           </motion.div>
           <motion.div 
-            className="flex flex-col items-center space-y-2 border rounded-lg p-4 hover:shadow-md transition-all duration-300"
+            className="flex flex-col items-center space-y-2 border rounded-lg p-4 hover:shadow-lg transition-all duration-300"
             whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
           >
             <h3 className="text-lg font-medium">Pertamina</h3>
           </motion.div>
           <motion.div 
-            className="flex flex-col items-center space-y-2 border rounded-lg p-4 hover:shadow-md transition-all duration-300"
+            className="flex flex-col items-center space-y-2 border rounded-lg p-4 hover:shadow-lg transition-all duration-300"
             whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
           >
             <h3 className="text-lg font-medium">BP</h3>

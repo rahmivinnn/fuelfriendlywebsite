@@ -51,51 +51,38 @@ const MapSection = () => {
         </div>
         
         <motion.div 
-          className="mt-12 relative w-full h-[400px] rounded-lg overflow-hidden border border-gray-200"
+          className="mt-12 relative w-full h-[500px] rounded-lg overflow-hidden border border-gray-200"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           viewport={{ once: true }}
         >
           <div className="absolute inset-0 bg-gray-100 bg-opacity-50 flex items-center justify-center">
-            <div className="w-full h-full bg-white opacity-90">
-              <svg 
-                width="100%" 
-                height="100%" 
-                viewBox="0 0 800 400" 
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect width="800" height="400" fill="#ffffff" />
-              </svg>
+            <div className="w-full h-full relative">
+              <img 
+                src="/lovable-uploads/e962c9af-b6e3-4257-a75e-a6cf7e9a96f4.png" 
+                alt="Global service map" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-white opacity-0"></div>
             </div>
+            
+            {/* Interactive dots overlay */}
             <motion.div 
-              className="absolute inset-0 flex items-center justify-center"
+              className="absolute inset-0 pointer-events-none"
               variants={container}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
             >
-              {/* World map made of dots */}
-              <div className="w-full h-full flex items-center justify-center p-8">
-                <div className="grid grid-cols-60 w-full max-w-5xl gap-1">
-                  {Array(900).fill(0).map((_, index) => (
-                    <motion.div 
-                      key={index} 
-                      className={`w-2 h-2 rounded-full ${index % 12 === 0 ? 'bg-blue-500' : index % 17 === 0 ? 'bg-yellow-400' : 'bg-gray-300'}`}
-                      variants={dotVariants}
-                      whileHover="hover"
-                    />
-                  ))}
-                </div>
-              </div>
-              {/* Active location dots */}
+              {/* Active location markers */}
               <motion.div 
                 className="absolute left-1/4 top-1/3"
                 initial={{ scale: 1 }}
                 animate={{ scale: [1, 1.5, 1], opacity: [0.7, 1, 0.7] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <div className="w-3 h-3 bg-primary rounded-full"></div>
+                <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
               </motion.div>
               <motion.div 
                 className="absolute right-1/3 bottom-1/4"
@@ -103,7 +90,15 @@ const MapSection = () => {
                 animate={{ scale: [1, 1.5, 1], opacity: [0.7, 1, 0.7] }}
                 transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
               >
-                <div className="w-3 h-3 bg-primary rounded-full"></div>
+                <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
+              </motion.div>
+              <motion.div 
+                className="absolute left-1/2 top-1/2"
+                initial={{ scale: 1 }}
+                animate={{ scale: [1, 1.5, 1], opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+              >
+                <div className="w-4 h-4 bg-yellow-400 rounded-full"></div>
               </motion.div>
             </motion.div>
           </div>

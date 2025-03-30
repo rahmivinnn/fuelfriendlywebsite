@@ -17,7 +17,7 @@ const BusinessSection = () => {
           >
             <div className="relative w-full max-w-[600px] rounded-lg overflow-hidden shadow-xl">
               <motion.img
-                src="/lovable-uploads/d5900669-7679-4334-ac5e-2f28c1bbc76a.png"
+                src="/lovable-uploads/e35685e0-0ac9-43c5-be6c-0efbf749e4be.png"
                 alt="Business Analytics Dashboard"
                 className="object-cover w-full relative rounded-lg shadow-md"
                 whileHover={{ scale: 1.03 }}
