@@ -32,14 +32,18 @@ const NavBar = () => {
       <div className="container flex items-center justify-between h-16 mx-auto px-4 md:px-6">
         <div className="flex items-center">
           <Link to="/" className="flex items-center gap-2">
-            <motion.span 
-              className="font-bold text-2xl md:text-3xl text-primary tracking-tight"
+            <motion.div 
+              className="flex items-center"
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3 }}
             >
-              FUELFRIENDLY
-            </motion.span>
+              <img 
+                src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" 
+                alt="FuelFriendly Logo" 
+                className="h-10 md:h-12"
+              />
+            </motion.div>
           </Link>
         </div>
         
@@ -50,20 +54,20 @@ const NavBar = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
-            <Link to="/" className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
+            <Link to="/" className="text-sm font-medium text-gray-700 hover:text-green-500 transition-colors">
               Home
             </Link>
-            <Link to="/" className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
+            <Link to="/" className="text-sm font-medium text-gray-700 hover:text-green-500 transition-colors">
               How It Works
             </Link>
-            <Link to="/" className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
-              Features
+            <Link to="/" className="text-sm font-medium text-gray-700 hover:text-green-500 transition-colors">
+              User & Fuel Friend App
             </Link>
-            <Link to="/" className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
-              Pricing
+            <Link to="/nearby-stations" className="text-sm font-medium text-gray-700 hover:text-green-500 transition-colors">
+              Nearby Fuel Stations
             </Link>
-            <Link to="/" className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
-              Contact
+            <Link to="/" className="text-sm font-medium text-gray-700 hover:text-green-500 transition-colors">
+              Contact Us
             </Link>
           </motion.div>
         </nav>
@@ -76,20 +80,11 @@ const NavBar = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3, delay: 0.2 }}
           >
-            <Button variant="ghost" className="hidden md:inline-flex">
-              Sign In
-            </Button>
-          </motion.div>
-          <motion.div 
-            whileHover={{ scale: 1.05 }} 
-            whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay: 0.3 }}
-          >
-            <Button className="bg-primary hover:bg-primary/90">
-              Get Started
-            </Button>
+            <Link to="/station-dashboard">
+              <Button className="bg-green-500 hover:bg-green-600 text-white">
+                Register Station
+              </Button>
+            </Link>
           </motion.div>
           
           {/* Mobile menu button */}
@@ -117,25 +112,27 @@ const NavBar = () => {
             transition={{ duration: 0.3 }}
           >
             <div className="px-4 py-3 space-y-1 bg-white border-t">
-              <Link to="/" className="block py-2 text-base font-medium text-gray-700 hover:text-primary">
+              <Link to="/" className="block py-2 text-base font-medium text-gray-700 hover:text-green-500">
                 Home
               </Link>
-              <Link to="/" className="block py-2 text-base font-medium text-gray-700 hover:text-primary">
+              <Link to="/" className="block py-2 text-base font-medium text-gray-700 hover:text-green-500">
                 How It Works
               </Link>
-              <Link to="/" className="block py-2 text-base font-medium text-gray-700 hover:text-primary">
-                Features
+              <Link to="/" className="block py-2 text-base font-medium text-gray-700 hover:text-green-500">
+                User & Fuel Friend App
               </Link>
-              <Link to="/" className="block py-2 text-base font-medium text-gray-700 hover:text-primary">
-                Pricing
+              <Link to="/nearby-stations" className="block py-2 text-base font-medium text-gray-700 hover:text-green-500">
+                Nearby Fuel Stations
               </Link>
-              <Link to="/" className="block py-2 text-base font-medium text-gray-700 hover:text-primary">
-                Contact
+              <Link to="/" className="block py-2 text-base font-medium text-gray-700 hover:text-green-500">
+                Contact Us
               </Link>
               <div className="pt-2 pb-3">
-                <Button className="w-full bg-primary hover:bg-primary/90">
-                  Get Started
-                </Button>
+                <Link to="/station-dashboard">
+                  <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
+                    Register Station
+                  </Button>
+                </Link>
               </div>
             </div>
           </motion.div>

@@ -13,6 +13,7 @@ import CtaSection from '@/components/CtaSection';
 import Footer from '@/components/Footer';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   const { toast } = useToast();
@@ -66,7 +67,7 @@ const Index = () => {
         <div className="flex-1 flex items-center justify-center">
           <div className="space-y-4 text-center">
             <motion.div 
-              className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full mx-auto"
+              className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full mx-auto"
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
             />
@@ -83,6 +84,30 @@ const Index = () => {
           <MapSection />
           <PricingSection />
           <TestimonialsSection />
+          <div className="py-12 flex justify-center">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link to="/nearby-stations">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <button className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-md font-medium shadow-lg transition-all duration-300">
+                    Find Nearby Stations
+                  </button>
+                </motion.div>
+              </Link>
+              <Link to="/station-dashboard">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <button className="bg-white border-2 border-green-500 text-green-500 hover:bg-green-50 px-8 py-3 rounded-md font-medium shadow-lg transition-all duration-300">
+                    Register Your Station
+                  </button>
+                </motion.div>
+              </Link>
+            </div>
+          </div>
           <CtaSection />
         </main>
       )}
