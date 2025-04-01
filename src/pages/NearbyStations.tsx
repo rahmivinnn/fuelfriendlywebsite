@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, MapPin, Star, ChevronDown, Filter, Navigation, Clock, Phone, Car, Shell, TrendingUp, AlertTriangle } from 'lucide-react';
@@ -47,7 +46,7 @@ const stations = [
     lastUpdated: "5 min ago",
     favorites: 132,
     phoneNumber: "123-456-7890",
-    image: "/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
+    image: "/lovable-uploads/58115195-2a08-4330-8ffd-e365aeca25fe.png"
   },
   {
     id: 2,
@@ -66,7 +65,7 @@ const stations = [
     lastUpdated: "12 min ago",
     favorites: 98,
     phoneNumber: "234-567-8901",
-    image: "/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
+    image: "/lovable-uploads/58115195-2a08-4330-8ffd-e365aeca25fe.png"
   },
   {
     id: 3,
@@ -85,7 +84,7 @@ const stations = [
     lastUpdated: "8 min ago",
     favorites: 115,
     phoneNumber: "345-678-9012",
-    image: "/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
+    image: "/lovable-uploads/58115195-2a08-4330-8ffd-e365aeca25fe.png"
   },
   {
     id: 4,
@@ -104,7 +103,7 @@ const stations = [
     lastUpdated: "15 min ago",
     favorites: 87,
     phoneNumber: "456-789-0123",
-    image: "/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
+    image: "/lovable-uploads/58115195-2a08-4330-8ffd-e365aeca25fe.png"
   },
   {
     id: 5,
@@ -123,7 +122,7 @@ const stations = [
     lastUpdated: "20 min ago",
     favorites: 72,
     phoneNumber: "567-890-1234",
-    image: "/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
+    image: "/lovable-uploads/58115195-2a08-4330-8ffd-e365aeca25fe.png"
   },
   {
     id: 6,
@@ -142,7 +141,7 @@ const stations = [
     lastUpdated: "18 min ago",
     favorites: 81,
     phoneNumber: "678-901-2345",
-    image: "/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
+    image: "/lovable-uploads/58115195-2a08-4330-8ffd-e365aeca25fe.png"
   }
 ];
 
@@ -255,6 +254,14 @@ const NearbyStations = () => {
     });
   };
 
+  const handleApplyFilters = () => {
+    toast({
+      title: "Filters Applied",
+      description: "Your filters have been applied to the results",
+      duration: 3000,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header - Changed background to white */}
@@ -330,7 +337,7 @@ const NearbyStations = () => {
       {/* Main Content */}
       <div className="container mx-auto max-w-7xl px-6 py-8">
         <div className="flex flex-col md:flex-row gap-6">
-          {/* Filters */}
+          
           <div className="md:w-1/4">
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 sticky top-6">
               <h2 className="text-xl font-bold mb-4">Filters</h2>
@@ -466,13 +473,7 @@ const NearbyStations = () => {
                 
                 <Button 
                   className="w-full bg-green-500 hover:bg-green-600"
-                  onClick={() => {
-                    toast({
-                      title: "Filters Applied",
-                      description: "Your filters have been applied to the results",
-                      duration: 3000,
-                    });
-                  }}
+                  onClick={handleApplyFilters}
                 >
                   <Filter className="mr-2" size={16} />
                   Apply Filters
@@ -592,7 +593,7 @@ const NearbyStations = () => {
                                   <div className="flex items-center text-xs bg-gray-100 px-2 py-1 rounded">
                                     +{station.amenities.length - 2} more
                                   </div>
-                                )}
+                                ))}
                               </div>
                             </CardContent>
                             
@@ -781,126 +782,3 @@ const NearbyStations = () => {
                       : selectedStation.waitTime === '5-10 min'
                       ? 'bg-yellow-50 border border-yellow-100'
                       : 'bg-red-50 border border-red-100'
-                  }`}>
-                    <div className="text-sm text-gray-500">Wait Time</div>
-                    <div className={`font-bold ${
-                      selectedStation.waitTime === '< 5 min' 
-                        ? 'text-green-600' 
-                        : selectedStation.waitTime === '5-10 min'
-                        ? 'text-yellow-600'
-                        : 'text-red-600'
-                    }`}>
-                      {selectedStation.waitTime}
-                    </div>
-                  </div>
-                  
-                  <div className="p-4 rounded-lg bg-blue-50 border border-blue-100">
-                    <div className="text-sm text-gray-500">Distance</div>
-                    <div className="font-bold text-blue-600">
-                      {selectedStation.distance}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex gap-4 mt-6">
-                <Button 
-                  className="flex-1 bg-green-500 hover:bg-green-600"
-                  onClick={() => handleGetDirections(selectedStation)}
-                >
-                  <Navigation className="mr-2" size={18} />
-                  Get Directions
-                </Button>
-                <Button 
-                  className="flex-1" 
-                  variant="outline"
-                  onClick={() => handleCallStation(selectedStation)}
-                >
-                  <Phone className="mr-2" size={18} />
-                  Call Station
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      )}
-      
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white pt-12 pb-6 mt-12">
-        <div className="container mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <img 
-                src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" 
-                alt="FuelFriendly" 
-                className="h-10 mb-4" 
-              />
-              <p className="text-gray-400 text-sm">
-                The smart solution for finding the best fuel stations near you with real-time data and pricing.
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-lg mb-4">Quick Links</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Home</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">About Us</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Features</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-lg mb-4">For Stations</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Register Your Station</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Station Dashboard</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Pricing Plans</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Success Stories</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Support</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-lg mb-4">Contact Us</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li className="flex items-start">
-                  <div className="mt-1 mr-2">📍</div>
-                  <div>123 Fuel Street, Memphis, TN 12345, USA</div>
-                </li>
-                <li className="flex items-center">
-                  <div className="mr-2">📞</div>
-                  <div>+1 (123) 456-7890</div>
-                </li>
-                <li className="flex items-center">
-                  <div className="mr-2">✉️</div>
-                  <div>info@fuelfriendly.com</div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center">
-            <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              © 2024 FuelFriendly. All rights reserved.
-            </div>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                Privacy Policy
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                Terms of Service
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                Cookies Policy
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-};
-
-export default NearbyStations;
