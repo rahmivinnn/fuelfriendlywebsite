@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, MapPin, Star, ChevronDown, Filter, Navigation, Clock, Phone, Car, Shell, TrendingUp, AlertTriangle } from 'lucide-react';
@@ -593,7 +594,7 @@ const NearbyStations = () => {
                                   <div className="flex items-center text-xs bg-gray-100 px-2 py-1 rounded">
                                     +{station.amenities.length - 2} more
                                   </div>
-                                ))}
+                                )}
                               </div>
                             </CardContent>
                             
@@ -782,3 +783,60 @@ const NearbyStations = () => {
                       : selectedStation.waitTime === '5-10 min'
                       ? 'bg-yellow-50 border border-yellow-100'
                       : 'bg-red-50 border border-red-100'
+                  }`}>
+                    <div className="text-sm text-gray-500">Wait Time</div>
+                    <div className={`font-bold ${
+                      selectedStation.waitTime === '< 5 min' 
+                        ? 'text-green-600' 
+                        : selectedStation.waitTime === '5-10 min'
+                        ? 'text-yellow-600'
+                        : 'text-red-600'
+                    }`}>
+                      {selectedStation.waitTime}
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 rounded-lg bg-blue-50 border border-blue-100">
+                    <div className="text-sm text-gray-500">Traffic Forecast</div>
+                    <div className="font-bold text-blue-600">
+                      {selectedStation.congestion === 'Low' 
+                        ? 'Steady' 
+                        : selectedStation.congestion === 'Medium'
+                        ? 'Increasing'
+                        : 'Peak Hours'}
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-8 flex justify-end space-x-4">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleCallStation(selectedStation)}
+                  >
+                    <Phone className="mr-2" size={16} />
+                    Call Station
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleGetDirections(selectedStation)}
+                  >
+                    <Navigation className="mr-2" size={16} />
+                    Get Directions
+                  </Button>
+                  <Button 
+                    className="bg-green-500 hover:bg-green-600"
+                    onClick={() => setShowStationDetails(false)}
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default NearbyStations;
