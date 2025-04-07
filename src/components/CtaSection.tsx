@@ -8,7 +8,7 @@ const CtaSection = () => {
   const navigate = useNavigate();
 
   const handleRegisterClick = () => {
-    // Navigate immediately without delay
+    // Navigate immediately without any delay
     navigate('/station-registration');
   };
 
@@ -18,7 +18,7 @@ const CtaSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.3 }} // Speed up animation for responsiveness
           viewport={{ once: true }}
           className="relative z-10"
         >
@@ -26,9 +26,10 @@ const CtaSection = () => {
             Register your station today for a better future in fuel business!
           </h2>
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.03 }} // Make hover effect more subtle
+            whileTap={{ scale: 0.98 }} // Add tap animation for better feedback
             className="inline-block"
+            transition={{ duration: 0.1 }} // Speed up hover/tap feedback
           >
             <Button 
               className="bg-white text-primary hover:bg-gray-100 mt-6 px-8 py-6 text-lg font-medium"
