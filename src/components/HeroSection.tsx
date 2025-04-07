@@ -1,29 +1,11 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogDescription,
-  DialogFooter
-} from '@/components/ui/dialog';
+import { Link } from 'react-router-dom';
 import { Check } from 'lucide-react';
 
 const HeroSection = () => {
-  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
-  const [paymentSuccess, setPaymentSuccess] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('credit');
-
-  const handlePaymentSubmit = () => {
-    // Simulate payment processing
-    setTimeout(() => {
-      setPaymentSuccess(true);
-    }, 1500);
-  };
-
   return (
     <section className="py-12 md:py-24 overflow-hidden">
       <div className="container px-4 md:px-6">
@@ -47,8 +29,8 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 text-base" onClick={() => setShowPaymentDialog(true)}>
-                  Register Station
+                <Button className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 text-base" asChild>
+                  <Link to="/station-registration">Register Station</Link>
                 </Button>
               </motion.div>
               <motion.div 
@@ -120,99 +102,6 @@ const HeroSection = () => {
           </motion.div>
         </motion.div>
       </div>
-
-      {/* Payment Dialog */}
-      <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Register Your Station</DialogTitle>
-            <DialogDescription>
-              Complete your registration by adding a payment method.
-            </DialogDescription>
-          </DialogHeader>
-          
-          {!paymentSuccess ? (
-            <div className="grid gap-4 py-4">
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium">Select Payment Method</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  <div 
-                    className={`flex items-center justify-center p-3 border rounded-md cursor-pointer ${paymentMethod === 'credit' ? 'bg-green-50 border-green-500' : 'hover:bg-gray-50'}`}
-                    onClick={() => setPaymentMethod('credit')}
-                  >
-                    <span>Credit Card</span>
-                  </div>
-                  <div 
-                    className={`flex items-center justify-center p-3 border rounded-md cursor-pointer ${paymentMethod === 'debit' ? 'bg-green-50 border-green-500' : 'hover:bg-gray-50'}`}
-                    onClick={() => setPaymentMethod('debit')}
-                  >
-                    <span>Debit Card</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="grid gap-2">
-                <label htmlFor="cardNumber" className="text-sm">Card Number</label>
-                <input 
-                  id="cardNumber" 
-                  type="text" 
-                  placeholder="1234 5678 9012 3456" 
-                  className="w-full p-2 border rounded-md"
-                />
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                  <label htmlFor="expiry" className="text-sm">Expiry Date</label>
-                  <input 
-                    id="expiry" 
-                    type="text" 
-                    placeholder="MM/YY" 
-                    className="w-full p-2 border rounded-md"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <label htmlFor="cvc" className="text-sm">CVC</label>
-                  <input 
-                    id="cvc" 
-                    type="text" 
-                    placeholder="123" 
-                    className="w-full p-2 border rounded-md"
-                  />
-                </div>
-              </div>
-              
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setShowPaymentDialog(false)}>
-                  Cancel
-                </Button>
-                <Button className="bg-green-500 hover:bg-green-600" onClick={handlePaymentSubmit}>
-                  Pay Now
-                </Button>
-              </DialogFooter>
-            </div>
-          ) : (
-            <div className="py-6 flex flex-col items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-4">
-                <Check className="h-6 w-6 text-green-600" />
-              </div>
-              <h3 className="text-lg font-medium text-center">Payment Successful!</h3>
-              <p className="text-center text-gray-500 mt-2">
-                Your station has been registered successfully. You can now manage your station from the dashboard.
-              </p>
-              <Button 
-                className="mt-6 bg-green-500 hover:bg-green-600" 
-                onClick={() => {
-                  setShowPaymentDialog(false);
-                  setPaymentSuccess(false);
-                }}
-              >
-                Go to Dashboard
-              </Button>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </section>
   );
 };

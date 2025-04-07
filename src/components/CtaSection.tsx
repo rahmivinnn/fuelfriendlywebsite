@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const CtaSection = () => {
   return (
@@ -22,8 +23,8 @@ const CtaSection = () => {
             whileTap={{ scale: 0.95 }}
             className="inline-block"
           >
-            <Button className="bg-white text-primary hover:bg-gray-100 mt-6 px-8 py-6 text-lg font-medium">
-              Register Station
+            <Button className="bg-white text-primary hover:bg-gray-100 mt-6 px-8 py-6 text-lg font-medium" asChild>
+              <Link to="/station-registration">Register Station</Link>
             </Button>
           </motion.div>
         </motion.div>
