@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Search, MapPin, Star, ChevronDown, Filter, Navigation, Clock, Phone, Car, Shell, TrendingUp, AlertTriangle } from 'lucide-react';
@@ -1077,52 +1076,43 @@ const NearbyStations = () => {
         </div>
       )}
       
-      {/* Contact Us Dialog */}
+      {/* Call Station Dialog */}
       <Dialog open={showContactDialog} onOpenChange={setShowContactDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Contact FuelFriendly</DialogTitle>
+            <DialogTitle>Call Station</DialogTitle>
             <DialogDescription>
-              Have questions or feedback? We'd love to hear from you!
+              Contact information for the selected station
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <h4 className="font-medium">Customer Support</h4>
-              <p className="text-sm text-gray-500">
-                Email: support@fuelfriendly.com<br />
-                Phone: 1-800-FUEL-123<br />
-                Hours: 24/7 Support
-              </p>
-            </div>
-            <div className="space-y-2">
-              <h4 className="font-medium">Business Inquiries</h4>
-              <p className="text-sm text-gray-500">
-                Email: hellofuel@com<br />
-                Phone: 1-888-FUEL-BIZ<br />
-                Hours: Monday - Friday, 9am - 5pm EST
-              </p>
-            </div>
-            <div className="space-y-2">
-              <h4 className="font-medium">Station Registration</h4>
-              <p className="text-sm text-gray-500">
-                For fuel station owners looking to register their stations on our platform.
-              </p>
-              <Button 
-                asChild
-                className="w-full bg-green-500 hover:bg-green-600 mt-2"
-              >
-                <Link to="/station-registration">Register Your Station</Link>
-              </Button>
-            </div>
+            {selectedStation && (
+              <div className="space-y-2">
+                <h4 className="font-medium">{selectedStation.name}</h4>
+                <p className="text-sm text-gray-500 flex items-center">
+                  <Phone size={16} className="mr-2" />
+                  {selectedStation.phoneNumber}
+                </p>
+              </div>
+            )}
           </div>
-          <DialogFooter className="sm:justify-center">
-            <Button 
-              variant="outline"
-              onClick={() => setShowContactDialog(false)}
-            >
-              Close
-            </Button>
+          <DialogFooter className="sm:justify-end">
+            {selectedStation && (
+              <Button 
+                className="bg-green-500 hover:bg-green-600"
+                onClick={() => {
+                  toast({
+                    title: "Calling Station",
+                    description: `Calling ${selectedStation.name} at ${selectedStation.phoneNumber}`,
+                    duration: 3000,
+                  });
+                  setShowContactDialog(false);
+                }}
+              >
+                <Phone className="mr-2" size={16} />
+                Call
+              </Button>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -1162,7 +1152,7 @@ const NearbyStations = () => {
             <h4 className="font-medium mb-2">Scan QR Code</h4>
             <div className="bg-gray-800 inline-block p-2 rounded-lg">
               <div className="bg-white p-4 rounded">
-                <div className="w-36 h-36 mx-auto bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMzAgMzMwIj48cGF0aCBkPSJNMCAwaDMzMHYzMzBIMHoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMzAgMzBoMzB2MzBIMzB6TTYwIDMwaDMwdjMwSDYwek05MCAzMGgzMHYzMEg5MHpNMTIwIDMwaDMwdjMwaC0zMHpNMTUwIDMwaDMwdjMwaC0zMHpNMTgwIDMwaDMwdjMwaC0zMHpNMjEwIDMwaDMwdjMwaC0zMHpNMjcwIDMwaDMwdjMwaC0zMHpNMzAgNjBoMzB2MzBIMzB6TTIxMCA2MGgzMHYzMGgtMzB6TTI3MCA2MGgzMHYzMGgtMzB6TTMwIDkwaDMwdjMwSDMwek05MCA5MGgzMHYzMEg5MHpNMTIwIDkwaDMwdjMwaC0zMHpNMTUwIDkwaDMwdjMwaC0zMHpNMjEwIDkwaDMwdjMwaC0zMHpNMjcwIDkwaDMwdjMwaC0zMHpNMzAgMTIwaDMwdjMwSDMwek02MCAxMjBoMzB2MzBINjB6TTkwIDEyMGgzMHYzMEg5MHpNMTIwIDEyMGgzMHYzMGgtMzB6TTE1MCAxMjBoMzB2MzBoLTMwek0xODAgMTIwaDMwdjMwaC0zMHpNMjEwIDEyMGgzMHYzMGgtMzB6TTI0MCAxMjBoMzB2MzBoLTMwek0yNzAgMTIwaDMwdjMwaC0zMHpNMzAgMTUwaDMwdjMwSDMwek0yNzAgMTUwaDMwdjMwaC0zMHpNMzAgMTgwaDMwdjMwSDMwek05MCAxODBoMzB2MzBIOTB6TTEyMCAxODBoMzB2MzBoLTMwek0xNTAgMTgwaDMwdjMwaC0zMHpNMTgwIDE4MGgzMHYzMGgtMzB6TTI3MCAxODBoMzB2MzBoLTMwek0zMCAyMTBoMzB2MzBIMzB6TTYwIDIxMGgzMHYzMEg2MHpNOTAgMjEwaDMwdjMwSDkwek0xMjAgMjEwaDMwdjMwaC0zMHpNMTUwIDIxMGgzMHYzMGgtMzB6TTE4MCAyMTBoMzB2MzBoLTMwek0yMTAgMjEwaDMwdjMwaC0zMHpNMjQwIDIxMGgzMHYzMGgtMzB6TTI3MCAyMTBoMzB2MzBoLTMwek0zMCAyNDBoMzB2MzBIMzB6TTYwIDI0MGgzMHYzMEg2MHpNOTAgMjQwaDMwdjMwSDkwek0xMjAgMjQwaDMwdjMwaC0zMHpNMTUwIDI0MGgzMHYzMGgtMzB6TTE4MCAyNDBoMzB2MzBoLTMwek0yMTAgMjQwaDMwdjMwaC0zMHpNMjQwIDI0MGgzMHYzMGgtMzB6TTI3MCAyNDBoMzB2MzBoLTMwek0zMCAyNzBoMzB2MzBIMzB6TTYwIDI3MGgzMHYzMEg2MHpNOTAgMjcwaDMwdjMwSDkwek0xMjAgMjcwaDMwdjMwaC0zMHpNMTUwIDI3MGgzMHYzMGgtMzB6TTE4MCAyNzBoMzB2MzBoLTMwek0yMTAgMjcwaDMwdjMwaC0zMHpNMjQwIDI3MGgzMHYzMGgtMzB6TTI3MCAyNzBoMzB2MzBoLTMweiIvPjwvc3ZnPg==')] bg-center bg-contain"></div>
+                <div className="w-36 h-36 mx-auto bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMzAgMzMwIj48cGF0aCBkPSJNMCAwaDMzMHYzMzBIMHoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMzAgMzBoMzB2MzBIMzB6TTYwIDMwaDMwdjMwSDYwek05MCAzMGgzMHYzMEg5MHpNMTIwIDMwaDMwdjMwaC0zMHpNMTUwIDMwaDMwdjMwaC0zMHpNMjEwIDMwaDMwdjMwaC0zMHpNMjcwIDMwaDMwdjMwaC0zMHpNMzAgNjBoMzB2MzBIMzB6TTYwIDIxMGgzMHYzMEg5MHpNMTIwIDEyMGgzMHYzMGgtMzB6TTIxMCA2MGgzMHYzMGgtMzB6TTI3MCA2MGgzMHYzMGgtMzB6TTMwIDkwaDMwdjM0SDMwek05MCA5MGgzMHYzMEg5MHpNMTIwIDEyMGgzMHYzMGgtMzB6TTE1MCAxMjBoMzB2MzBoLTMwek0xODAgMTIwaDMwdjMwaC0zMHpNMjEwIDEyMGgzMHYzMGgtMzB6TTI3MCAxODBoMzB2MzBoLTMwek0zMCAyMTBoMzB2MzBIMzB6TTYwIDIxMGgzMHYzMEg2MHpNOTAgMjEwaDMwdjMwSDkwek0xMjAgMjEwaDMwdjMwaC0zMHpNMTUwIDIxMGgzMHYzMGgtMzB6TTE4MCAyMTBoMzB2MzBoLTMwek0yMTAgMjEwaDMwdjMwaC0zMHpNMjQwIDIxMGgzMHYzMGgtMzB6TTI3MCAyMTBoMzB2MzBoLTMwek0zMCAyNDBoMzB2MzBIMzB6TTYwIDI0MGgzMHYzMEg2MHpNOTAgMjQwaDMwdjMwSDkwek0xMjAgMjQwaDMwdjMwaC0zMHpNMTUwIDI0MGgzMHYzMGgtMzB6TTE4MCAyNDBoMzB2MzBoLTMwek0yMTAgMjQwaDMwdjMwaC0zMHpNMjQwIDI0MGgzMHYzMGgtMzB6TTI3MCAyNDBoMzB2MzBoLTMweiIvPjwvc3ZnPg==')] bg-center bg-contain"></div>
               </div>
             </div>
           </div>
