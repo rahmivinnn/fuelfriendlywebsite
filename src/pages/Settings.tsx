@@ -5,11 +5,13 @@ import {
   Settings as SettingsIcon, User, Bell, Lock, 
   CreditCard, Monitor, Globe, Shield, Save,
   CheckCircle, PlusCircle, Trash2, Eye, EyeOff,
-  ToggleLeft, ToggleRight
+  ToggleLeft, ToggleRight, Home
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { DefaultAvatar } from '@/components/ui/avatar';
+import { useNavigate } from 'react-router-dom';
 import {
   Tabs,
   TabsContent,
@@ -45,6 +47,7 @@ import DashboardLayout from '@/components/DashboardLayout';
 
 const Settings = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('profile');
   const [showPassword, setShowPassword] = useState(false);
@@ -52,6 +55,7 @@ const Settings = () => {
   const [pushNotifications, setPushNotifications] = useState(true);
   const [smsNotifications, setSmsNotifications] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   
   // Form states
   const [profileForm, setProfileForm] = useState({
@@ -96,6 +100,7 @@ const Settings = () => {
     // Simulate saving
     setTimeout(() => {
       setSaveLoading(false);
+      setShowSuccessDialog(true);
       
       toast({
         title: "Profile Updated",
@@ -147,6 +152,17 @@ const Settings = () => {
     } else if (form === 'password') {
       setPasswordForm(prev => ({ ...prev, [field]: value }));
     }
+  };
+  
+  const handleNavigateToDashboard = () => {
+    setShowSuccessDialog(false);
+    navigate('/station-dashboard');
+    
+    toast({
+      title: "Welcome to Dashboard",
+      description: `Welcome, ${profileForm.name}! Your dashboard is ready.`,
+      duration: 3000,
+    });
   };
   
   const handleToggleDefault = (id) => {
@@ -306,26 +322,52 @@ const Settings = () => {
           <div className="md:w-3/4">
             <Card>
               <CardHeader>
-                <CardTitle>
-                  {activeTab === 'profile' && 'Profile Information'}
-                  {activeTab === 'security' && 'Security Settings'}
-                  {activeTab === 'notifications' && 'Notification Preferences'}
-                  {activeTab === 'payment' && 'Payment Methods'}
-                  {activeTab === 'appearance' && 'Display Settings'}
-                </CardTitle>
-                <CardDescription>
-                  {activeTab === 'profile' && 'Update your account profile information'}
-                  {activeTab === 'security' && 'Manage your account security settings'}
-                  {activeTab === 'notifications' && 'Control how you receive notifications'}
-                  {activeTab === 'payment' && 'Add or update your payment methods'}
-                  {activeTab === 'appearance' && 'Customize your dashboard appearance'}
-                </CardDescription>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <CardTitle>
+                      {activeTab === 'profile' && 'Profile Information'}
+                      {activeTab === 'security' && 'Security Settings'}
+                      {activeTab === 'notifications' && 'Notification Preferences'}
+                      {activeTab === 'payment' && 'Payment Methods'}
+                      {activeTab === 'appearance' && 'Display Settings'}
+                    </CardTitle>
+                    <CardDescription>
+                      {activeTab === 'profile' && 'Update your account profile information'}
+                      {activeTab === 'security' && 'Manage your account security settings'}
+                      {activeTab === 'notifications' && 'Control how you receive notifications'}
+                      {activeTab === 'payment' && 'Add or update your payment methods'}
+                      {activeTab === 'appearance' && 'Customize your dashboard appearance'}
+                    </CardDescription>
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="flex items-center gap-1"
+                    onClick={() => navigate('/station-dashboard')}
+                  >
+                    <Home size={16} />
+                    <span>Dashboard</span>
+                  </Button>
+                </div>
               </CardHeader>
               
               <CardContent>
                 {/* Profile Tab */}
                 {activeTab === 'profile' && (
                   <form onSubmit={handleProfileSubmit}>
+                    <div className="flex justify-center mb-6">
+                      <div className="text-center">
+                        <div className="inline-block relative">
+                          <DefaultAvatar className="w-24 h-24 border-4 border-white shadow-md" />
+                          <div className="absolute bottom-0 right-0">
+                            <Button size="icon" variant="outline" className="h-8 w-8 rounded-full bg-white shadow-sm">
+                              <PlusCircle className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <p className="mt-2 text-sm text-gray-500">Click to change profile picture</p>
+                      </div>
+                    </div>
+                    
                     <div className="space-y-4">
                       <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                         <div className="w-full">
@@ -1021,6 +1063,29 @@ const Settings = () => {
           </div>
         </div>
       </motion.div>
+      
+      {/* Success Dialog */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              <CheckCircle className="text-green-500 mr-2" />
+              Profile Updated Successfully
+            </DialogTitle>
+            <DialogDescription>
+              Your profile information has been updated. Would you like to go to your dashboard?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex gap-2 sm:justify-center mt-4">
+            <Button variant="outline" onClick={() => setShowSuccessDialog(false)}>
+              Stay on Settings
+            </Button>
+            <Button className="bg-green-500 hover:bg-green-600" onClick={handleNavigateToDashboard}>
+              Go to Dashboard
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 

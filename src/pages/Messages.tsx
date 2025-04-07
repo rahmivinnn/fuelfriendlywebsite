@@ -9,6 +9,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { DefaultAvatar } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,140 +24,149 @@ import {
 } from "@/components/ui/tooltip";
 import DashboardLayout from '@/components/DashboardLayout';
 
-// Sample contacts data
-const contacts = [
-  { 
-    id: 1, 
-    name: 'John Smith', 
-    status: 'online', 
-    lastMessage: 'When will the fuel prices change?',
-    lastMessageTime: '10:30 AM',
-    avatar: '/lovable-uploads/86c52672-6ac1-4afa-b99f-d1f6c2a23319.png',
-    unread: 2
-  },
-  { 
-    id: 2, 
-    name: 'Sarah Johnson', 
-    status: 'offline', 
-    lastMessage: 'Thanks for the assistance!',
-    lastMessageTime: 'Yesterday',
-    avatar: '/lovable-uploads/86c52672-6ac1-4afa-b99f-d1f6c2a23319.png',
-    unread: 0
-  },
-  { 
-    id: 3, 
-    name: 'Michael Brown', 
-    status: 'online', 
-    lastMessage: 'Do you have premium fuel in stock?',
-    lastMessageTime: '2:15 PM',
-    avatar: '/lovable-uploads/86c52672-6ac1-4afa-b99f-d1f6c2a23319.png',
-    unread: 1
-  },
-  { 
-    id: 4, 
-    name: 'Emma Wilson', 
-    status: 'away', 
-    lastMessage: "I'll stop by tomorrow morning",
-    lastMessageTime: 'Yesterday',
-    avatar: '/lovable-uploads/86c52672-6ac1-4afa-b99f-d1f6c2a23319.png',
-    unread: 0
-  },
-  { 
-    id: 5, 
-    name: 'David Miller', 
-    status: 'offline', 
-    lastMessage: 'Can you save me 5 gallons?',
-    lastMessageTime: 'Monday',
-    avatar: '/lovable-uploads/86c52672-6ac1-4afa-b99f-d1f6c2a23319.png',
-    unread: 0
-  },
-  { 
-    id: 6, 
-    name: 'Lisa Taylor', 
-    status: 'online', 
-    lastMessage: 'Is the car wash working today?',
-    lastMessageTime: '5:45 PM',
-    avatar: '/lovable-uploads/86c52672-6ac1-4afa-b99f-d1f6c2a23319.png',
-    unread: 3
-  },
-  { 
-    id: 7, 
-    name: 'James Anderson', 
-    status: 'online', 
-    lastMessage: 'What time do you close tonight?',
-    lastMessageTime: '4:20 PM',
-    avatar: '/lovable-uploads/86c52672-6ac1-4afa-b99f-d1f6c2a23319.png',
-    unread: 0
-  }
-];
+// Generate 5000 contacts (only a subset will be displayed at once)
+const generateContacts = () => {
+  const names = [
+    "John Smith", "Sarah Johnson", "Michael Brown", "Emma Wilson", "David Miller", "Lisa Taylor", "James Anderson",
+    "Anna Lee", "Robert Chen", "Jennifer Kim", "Thomas Wright", "Maria Garcia", "Daniel Martinez", "Julia White",
+    "Richard Moore", "Susan Lopez", "Paul Scott", "Linda Rodriguez", "Mark Davis", "Patricia Clark", "Joseph Hill"
+  ];
+  
+  const statuses = ["online", "offline", "away"];
+  
+  const messages = [
+    "When will the fuel prices change?",
+    "Thanks for the assistance!",
+    "Do you have premium fuel in stock?",
+    "I'll stop by tomorrow morning",
+    "Can you save me 5 gallons?",
+    "Is the car wash working today?",
+    "What time do you close tonight?",
+    "Are there any discounts today?",
+    "Can I pay with a mobile app?",
+    "Is your diesel pump working?",
+    "Do you accept credit cards?",
+    "How much for a car wash?",
+    "Is the convenience store open?",
+    "When will the new fuel arrive?",
+    "What's your busiest time?",
+    "Can I reserve a fuel pump?",
+    "Do you have an EV charging station?",
+    "What's the octane rating of your premium fuel?",
+    "Are there any loyalty programs?",
+    "Could you check my tire pressure?"
+  ];
+  
+  const timePeriods = ["Just now", "5 min ago", "10 min ago", "30 min ago", "1 hour ago", "2 hours ago", "Yesterday", "2 days ago", "This week", "Last week"];
+  
+  return Array.from({ length: 5000 }, (_, i) => {
+    const randomNameIndex = Math.floor(Math.random() * names.length);
+    const randomStatusIndex = Math.floor(Math.random() * statuses.length);
+    const randomMessageIndex = Math.floor(Math.random() * messages.length);
+    const randomTimeIndex = Math.floor(Math.random() * timePeriods.length);
+    const randomUnread = Math.random() > 0.7 ? Math.floor(Math.random() * 5) + 1 : 0;
+    
+    return {
+      id: i + 1,
+      name: names[randomNameIndex] + " " + (i + 1),
+      status: statuses[randomStatusIndex],
+      lastMessage: messages[randomMessageIndex],
+      lastMessageTime: timePeriods[randomTimeIndex],
+      avatar: "/lovable-uploads/e85eacbe-3d90-49fb-9c5a-f798f456543e.png",
+      unread: randomUnread
+    };
+  });
+};
 
-// Sample messages for a conversation
-const messageHistory = [
-  { 
-    id: 1, 
-    senderId: 1, 
-    receiverId: 0, // 0 is the station/admin
-    text: 'Hello, I have a question about fuel prices',
-    timestamp: 'Today 10:15 AM',
-    status: 'read'
-  },
-  { 
-    id: 2, 
-    senderId: 0, // sent by the station/admin
-    receiverId: 1,
-    text: 'Hi there! How can I help you with fuel prices?',
-    timestamp: 'Today 10:17 AM',
-    status: 'read'
-  },
-  { 
-    id: 3, 
-    senderId: 1, 
-    receiverId: 0,
-    text: 'When will the fuel prices change? I noticed they have been the same for a week now.',
-    timestamp: 'Today 10:20 AM',
-    status: 'read'
-  },
-  { 
-    id: 4, 
-    senderId: 0, 
-    receiverId: 1,
-    text: "We usually update our prices every Monday morning, but it depends on the market conditions. The prices have been stable lately, which is why they haven't changed.",
-    timestamp: 'Today 10:25 AM',
-    status: 'read'
-  },
-  { 
-    id: 5, 
-    senderId: 1, 
-    receiverId: 0,
-    text: 'I see, thank you for the explanation.',
-    timestamp: 'Today 10:28 AM',
-    status: 'read'
-  },
-  { 
-    id: 6, 
-    senderId: 1, 
-    receiverId: 0,
-    text: 'When will the fuel prices change?',
-    timestamp: 'Today 10:30 AM',
-    status: 'delivered'
-  }
-];
+// Generate a large set of message history for real-time interactions
+const generateMessages = (contactId) => {
+  const messageTemplates = [
+    "Hello, I have a question about fuel prices",
+    "Hi there! How can I help you with fuel prices?",
+    "When will the fuel prices change? I noticed they have been the same for a week now.",
+    "We usually update our prices every Monday morning, but it depends on the market conditions. The prices have been stable lately, which is why they haven't changed.",
+    "I see, thank you for the explanation.",
+    "Is there anything else I can help you with?",
+    "Yes, do you have premium fuel available?",
+    "Yes, we have premium fuel available at all our pumps.",
+    "Great, I'll stop by later today.",
+    "Perfect! Let us know if you need anything else.",
+    "What time do you close tonight?",
+    "We're open 24/7 so you can come by anytime.",
+    "That's convenient, thanks!",
+    "You're welcome! Have a great day.",
+    "One more question - do you offer car wash services?",
+    "Yes, we have both automatic and self-service car wash options.",
+    "What's the price for the automatic wash?",
+    "The standard wash is $8.99, and the premium wash with wax is $12.99.",
+    "Thanks for the information!",
+    "No problem, see you soon!"
+  ];
+  
+  return Array.from({ length: 20 }, (_, i) => {
+    // Alternate messages between contact and admin (0)
+    const senderId = i % 2 === 0 ? contactId : 0;
+    const receiverId = i % 2 === 0 ? 0 : contactId;
+    const timestamp = new Date();
+    timestamp.setMinutes(timestamp.getMinutes() - (20 - i) * 5); // Space messages out by 5 minutes
+    
+    return {
+      id: i + 1,
+      senderId,
+      receiverId,
+      text: messageTemplates[i],
+      timestamp: i < 18 ? `Today ${timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : `Today ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
+      status: i % 2 === 0 ? 'read' : (i < 18 ? 'read' : (i < 19 ? 'delivered' : 'sent'))
+    };
+  });
+};
 
 const Messages = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [contactList, setContactList] = useState(contacts);
+  const [allContacts, setAllContacts] = useState([]);
+  const [displayedContacts, setDisplayedContacts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
   const [selectedContact, setSelectedContact] = useState(null);
-  const [messages, setMessages] = useState(messageHistory);
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef(null);
   const [isTyping, setIsTyping] = useState(false);
+  const contactsPerPage = 20;
 
-  // Filtered contacts based on search
-  const filteredContacts = contactList.filter(contact =>
-    contact.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Initialize with 5000 contacts
+  useEffect(() => {
+    const contacts = generateContacts();
+    setAllContacts(contacts);
+    setDisplayedContacts(contacts.slice(0, contactsPerPage));
+    
+    setTimeout(() => {
+      setIsLoading(false);
+      setSelectedContact(contacts[0]); // Select first contact by default
+      setMessages(generateMessages(contacts[0].id));
+      
+      toast({
+        title: "Messages Loaded",
+        description: `You have ${contacts.filter(c => c.unread > 0).reduce((acc, curr) => acc + curr.unread, 0)} unread messages from 5000 contacts`,
+        duration: 3000,
+      });
+    }, 1500);
+  }, []);
+
+  // Handle pagination and search
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setDisplayedContacts(allContacts.slice(currentPage * contactsPerPage, (currentPage + 1) * contactsPerPage));
+    } else {
+      const filtered = allContacts.filter(contact =>
+        contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.lastMessage.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setDisplayedContacts(filtered.slice(0, contactsPerPage));
+      setCurrentPage(0);
+    }
+  }, [searchTerm, currentPage, allContacts]);
 
   // Scroll to bottom of messages
   const scrollToBottom = () => {
@@ -166,26 +176,23 @@ const Messages = () => {
   useEffect(() => {
     if (selectedContact) {
       scrollToBottom();
+      setMessages(generateMessages(selectedContact.id));
     }
-  }, [messages, selectedContact]);
+  }, [selectedContact]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-      setSelectedContact(contacts[0]); // Select first contact by default
-      
-      toast({
-        title: "Messages Loaded",
-        description: "You have 6 unread messages",
-        duration: 3000,
-      });
-    }, 1500);
-    
-    // Simulate receiving messages
+    if (selectedContact) {
+      scrollToBottom();
+    }
+  }, [messages]);
+
+  // Simulate receiving real-time messages
+  useEffect(() => {
+    // Real-time message simulation
     const interval = setInterval(() => {
       if (Math.random() > 0.5) {
-        const randomContactIndex = Math.floor(Math.random() * contacts.length);
-        const randomContact = contacts[randomContactIndex];
+        const randomContactIndex = Math.floor(Math.random() * allContacts.length);
+        const randomContact = allContacts[randomContactIndex];
         
         // Only create a new message if not already showing typing indicator
         if (!isTyping) {
@@ -202,10 +209,12 @@ const Messages = () => {
               status: 'delivered'
             };
             
-            setMessages(prevMessages => [...prevMessages, newMsg]);
+            setMessages(prevMessages => 
+              selectedContact?.id === randomContact.id ? [...prevMessages, newMsg] : prevMessages
+            );
             
             // Update contact's last message
-            setContactList(prevContacts => 
+            setAllContacts(prevContacts => 
               prevContacts.map(contact => 
                 contact.id === randomContact.id 
                   ? { 
@@ -217,6 +226,22 @@ const Messages = () => {
                   : contact
               )
             );
+            
+            // Update displayed contacts if the contact is in the current view
+            setDisplayedContacts(prev => {
+              const contactIndex = prev.findIndex(c => c.id === randomContact.id);
+              if (contactIndex >= 0) {
+                const updated = [...prev];
+                updated[contactIndex] = {
+                  ...updated[contactIndex],
+                  lastMessage: newMsg.text,
+                  lastMessageTime: 'Just now',
+                  unread: selectedContact?.id === randomContact.id ? 0 : updated[contactIndex].unread + 1
+                };
+                return updated;
+              }
+              return prev;
+            });
             
             setIsTyping(false);
             
@@ -230,10 +255,10 @@ const Messages = () => {
           }, 3000);
         }
       }
-    }, 60000); // Every minute
+    }, 10000); // More frequent updates for demo purposes
     
     return () => clearInterval(interval);
-  }, [toast, selectedContact, messages, isTyping]);
+  }, [toast, selectedContact, messages, isTyping, allContacts]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -252,7 +277,7 @@ const Messages = () => {
     setMessages([...messages, newMsg]);
     
     // Update contact's last message
-    setContactList(prevContacts => 
+    setAllContacts(prevContacts => 
       prevContacts.map(contact => 
         contact.id === selectedContact.id 
           ? { 
@@ -263,6 +288,21 @@ const Messages = () => {
           : contact
       )
     );
+    
+    // Update in displayed contacts
+    setDisplayedContacts(prev => {
+      const contactIndex = prev.findIndex(c => c.id === selectedContact.id);
+      if (contactIndex >= 0) {
+        const updated = [...prev];
+        updated[contactIndex] = {
+          ...updated[contactIndex],
+          lastMessage: newMessage,
+          lastMessageTime: 'Just now'
+        };
+        return updated;
+      }
+      return prev;
+    });
     
     setNewMessage('');
     
@@ -287,13 +327,25 @@ const Messages = () => {
 
   const handleSelectContact = (contact) => {
     setSelectedContact(contact);
+    setMessages(generateMessages(contact.id));
     
     // Mark messages as read
-    setContactList(prevContacts => 
+    setAllContacts(prevContacts => 
       prevContacts.map(c => 
         c.id === contact.id ? { ...c, unread: 0 } : c
       )
     );
+    
+    // Update in displayed contacts
+    setDisplayedContacts(prev => {
+      const contactIndex = prev.findIndex(c => c.id === contact.id);
+      if (contactIndex >= 0) {
+        const updated = [...prev];
+        updated[contactIndex] = { ...updated[contactIndex], unread: 0 };
+        return updated;
+      }
+      return prev;
+    });
   };
 
   const getStatusColor = (status) => {
@@ -320,6 +372,18 @@ const Messages = () => {
     }
   };
 
+  const handleNextPage = () => {
+    if ((currentPage + 1) * contactsPerPage < allContacts.length) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(prev => prev - 1);
+    }
+  };
+
   const content = isLoading ? (
     <div className="flex-1 flex items-center justify-center p-6">
       <motion.div 
@@ -335,9 +399,20 @@ const Messages = () => {
         <div className="p-4 border-b border-gray-200">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-bold text-lg">Messages</h3>
-            <Button variant="ghost" size="icon">
-              <Plus size={18} />
-            </Button>
+            <div className="flex items-center">
+              <span className="mr-2 text-sm text-gray-500">
+                {searchTerm ? 'Search Results' : `${currentPage * contactsPerPage + 1}-${Math.min((currentPage + 1) * contactsPerPage, allContacts.length)} of ${allContacts.length}`}
+              </span>
+              <Button variant="ghost" size="icon" onClick={handlePrevPage} disabled={currentPage === 0}>
+                <ChevronDown className="rotate-90" size={18} />
+              </Button>
+              <Button variant="ghost" size="icon" onClick={handleNextPage} disabled={(currentPage + 1) * contactsPerPage >= allContacts.length}>
+                <ChevronDown className="rotate-270" size={18} />
+              </Button>
+              <Button variant="ghost" size="icon">
+                <Plus size={18} />
+              </Button>
+            </div>
           </div>
           
           <div className="relative">
@@ -353,7 +428,7 @@ const Messages = () => {
         </div>
         
         <div className="overflow-y-auto flex-1">
-          {filteredContacts.map((contact) => (
+          {displayedContacts.map((contact) => (
             <div 
               key={contact.id}
               className={`flex items-center p-3 cursor-pointer transition-colors hover:bg-gray-50 ${
@@ -362,11 +437,7 @@ const Messages = () => {
               onClick={() => handleSelectContact(contact)}
             >
               <div className="relative">
-                <img 
-                  src={contact.avatar} 
-                  alt={contact.name}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
+                <DefaultAvatar className="w-12 h-12" />
                 <div 
                   className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${getStatusColor(contact.status)}`}
                 ></div>
@@ -398,11 +469,7 @@ const Messages = () => {
           <div className="p-4 border-b border-gray-200 bg-white flex justify-between items-center">
             <div className="flex items-center">
               <div className="relative">
-                <img 
-                  src={selectedContact.avatar} 
-                  alt={selectedContact.name}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
+                <DefaultAvatar className="w-10 h-10" />
                 <div 
                   className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white ${getStatusColor(selectedContact.status)}`}
                 ></div>
@@ -499,11 +566,7 @@ const Messages = () => {
                     >
                       {!isSentByMe && (
                         <div className="mr-2 mt-1">
-                          <img 
-                            src={selectedContact.avatar} 
-                            alt={selectedContact.name}
-                            className="w-8 h-8 rounded-full object-cover"
-                          />
+                          <DefaultAvatar className="w-8 h-8" />
                         </div>
                       )}
                       
@@ -538,11 +601,7 @@ const Messages = () => {
               {isTyping && (
                 <div className="flex mb-4 justify-start">
                   <div className="mr-2 mt-1">
-                    <img 
-                      src={selectedContact.avatar} 
-                      alt={selectedContact.name}
-                      className="w-8 h-8 rounded-full object-cover"
-                    />
+                    <DefaultAvatar className="w-8 h-8" />
                   </div>
                   <div className="bg-white p-3 rounded-lg rounded-bl-none shadow-sm">
                     <div className="flex space-x-1">

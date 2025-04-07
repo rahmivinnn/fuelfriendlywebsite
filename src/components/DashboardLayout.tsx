@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
+import { DefaultAvatar } from '@/components/ui/avatar';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 type SidebarItem = {
@@ -251,11 +252,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
             </div>
             
             <div className="flex items-center">
-              <img 
-                src="/lovable-uploads/86c52672-6ac1-4afa-b99f-d1f6c2a23319.png" 
-                alt="User" 
-                className="w-8 h-8 rounded-full object-cover"
-              />
+              <DefaultAvatar className="w-8 h-8" />
             </div>
           </div>
         </header>
