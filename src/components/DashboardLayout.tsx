@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Grid, ShoppingBag, Package, Building2, 
@@ -44,7 +44,16 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
   const navigate = useNavigate();
   const [notificationCount, setNotificationCount] = useState<number>(4);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [userName, setUserName] = useState('Station Owner');
   
+  // Get user name from localStorage if available
+  useEffect(() => {
+    const storedName = localStorage.getItem('stationOwnerName');
+    if (storedName) {
+      setUserName(storedName);
+    }
+  }, []);
+
   // Simulate real-time notifications
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -94,6 +103,17 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
         duration: 2000,
       });
     }
+  };
+
+  const handleLogout = () => {
+    toast({
+      title: "Logged Out",
+      description: "You have been logged out successfully",
+      duration: 3000,
+    });
+    // Clear localStorage and redirect to homepage
+    localStorage.removeItem('stationOwnerName');
+    navigate('/');
   };
 
   return (
@@ -182,13 +202,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
           <Button 
             variant="ghost" 
             className={`${isSidebarCollapsed ? 'justify-center' : 'w-full justify-start'} text-gray-600 hover:text-gray-900 hover:bg-gray-100`}
-            onClick={() => {
-              toast({
-                title: "Logged Out",
-                description: "You have been logged out successfully",
-                duration: 3000,
-              });
-            }}
+            onClick={handleLogout}
           >
             <LogOut size={20} className={isSidebarCollapsed ? '' : 'mr-2'} />
             <AnimatePresence>
@@ -251,8 +265,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
               </Button>
             </div>
             
-            <div className="flex items-center">
+            <div className="flex items-center space-x-2">
               <DefaultAvatar className="w-8 h-8" />
+              <span className="font-medium text-sm hidden md:block">{userName}</span>
             </div>
           </div>
         </header>

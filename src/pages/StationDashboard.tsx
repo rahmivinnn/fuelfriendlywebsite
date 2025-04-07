@@ -45,8 +45,15 @@ const StationDashboard = () => {
   const [salesTimeframe, setSalesTimeframe] = useState('Last 6 months');
   const [salesCategory, setSalesCategory] = useState('Week');
   const [refreshing, setRefreshing] = useState(false);
+  const [userName, setUserName] = useState('Station Owner');
 
   useEffect(() => {
+    // Get user name from localStorage if available
+    const storedName = localStorage.getItem('stationOwnerName');
+    if (storedName) {
+      setUserName(storedName);
+    }
+
     const loadDashboard = setTimeout(() => {
       setIsLoading(false);
       
@@ -55,7 +62,7 @@ const StationDashboard = () => {
         description: "Your station dashboard is ready",
         duration: 3000,
       });
-    }, 1500);
+    }, 500); // Reduced from 1500 to 500 for faster loading
     
     return () => {
       clearTimeout(loadDashboard);
@@ -73,7 +80,7 @@ const StationDashboard = () => {
         description: "All data has been updated with the latest information",
         duration: 3000,
       });
-    }, 1000);
+    }, 500); // Reduced from 1000 to 500 for faster refresh
   };
 
   const content = isLoading ? (
@@ -89,11 +96,11 @@ const StationDashboard = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.3 }} // Faster animation
       >
         <div className="mb-8 flex justify-between items-center">
           <div>
-            <h2 className="text-2xl font-bold mb-1">Welcome Back Shah</h2>
+            <h2 className="text-2xl font-bold mb-1">Welcome Back {userName}</h2>
             <p className="text-gray-500">Here is what happening with your station</p>
           </div>
           

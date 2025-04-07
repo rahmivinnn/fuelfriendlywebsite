@@ -50,7 +50,7 @@ const Index = () => {
       }, 45000); // Show a random update every 45 seconds
       
       return () => clearInterval(interval);
-    }, 1500);
+    }, 1000); // Reduced from 1500 to 1000
     
     return () => clearTimeout(loadData);
   }, [toast]);
@@ -60,7 +60,7 @@ const Index = () => {
       className="flex min-h-screen flex-col"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.3 }} // Faster animation
     >
       <NavBar />
       {isLoading ? (
@@ -77,14 +77,18 @@ const Index = () => {
       ) : (
         <main>
           <HeroSection />
-          <HowItWorks />
+          <div id="how-it-works">
+            <HowItWorks />
+          </div>
           <Features />
-          <AppShowcase />
+          <div id="app">
+            <AppShowcase />
+          </div>
           <BusinessSection />
           <MapSection />
           <PricingSection />
           <TestimonialsSection />
-          <div className="py-12 flex justify-center">
+          <div id="contact" className="py-12 flex justify-center">
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/nearby-stations">
                 <motion.div
@@ -96,7 +100,7 @@ const Index = () => {
                   </button>
                 </motion.div>
               </Link>
-              <Link to="/station-dashboard">
+              <Link to="/station-registration">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}

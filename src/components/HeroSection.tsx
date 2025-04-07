@@ -1,11 +1,43 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { Check } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Check, X, Apple, ArrowRight } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 
 const HeroSection = () => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [showAppStoreModal, setShowAppStoreModal] = useState(false);
+
+  const handleRegisterClick = () => {
+    // Navigate immediately without delay
+    navigate('/station-registration');
+  };
+
+  const handleAppDownloadClick = () => {
+    setShowAppStoreModal(true);
+  };
+
+  const handleDownloadApp = (platform: 'ios' | 'android') => {
+    toast({
+      title: `Downloading ${platform === 'ios' ? 'iOS' : 'Android'} App`,
+      description: `You're being redirected to the ${platform === 'ios' ? 'App Store' : 'Google Play Store'}`,
+      duration: 3000,
+    });
+    
+    // Simulate app store redirect
+    setTimeout(() => {
+      setShowAppStoreModal(false);
+      toast({
+        title: "Download Started",
+        description: "Thank you for downloading the FuelFriendly app!",
+        duration: 3000,
+      });
+    }, 1000);
+  };
+
   return (
     <section className="py-12 md:py-24 overflow-hidden">
       <div className="container px-4 md:px-6">
@@ -29,16 +61,23 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 text-base" asChild>
-                  <Link to="/station-registration">Register Station</Link>
+                <Button 
+                  className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 text-base w-full sm:w-auto" 
+                  onClick={handleRegisterClick}
+                >
+                  Register Station
                 </Button>
               </motion.div>
               <motion.div 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button variant="outline" className="border-gray-200">
-                  Download App for iOS
+                <Button 
+                  variant="outline" 
+                  className="border-gray-200 w-full sm:w-auto"
+                  onClick={handleAppDownloadClick}
+                >
+                  Download App
                 </Button>
               </motion.div>
             </div>
@@ -102,6 +141,64 @@ const HeroSection = () => {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* App Store Modal */}
+      {showAppStoreModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-xl p-6 max-w-md w-full mx-4"
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold">Download FuelFriendly App</h3>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setShowAppStoreModal(false)}
+              >
+                <X size={20} />
+              </Button>
+            </div>
+            
+            <p className="text-gray-600 mb-6">
+              Choose your platform to download the FuelFriendly app and start enjoying convenient fuel services.
+            </p>
+            
+            <div className="space-y-3">
+              <Button 
+                className="w-full justify-between bg-black hover:bg-gray-800 text-white py-6"
+                onClick={() => handleDownloadApp('ios')}
+              >
+                <div className="flex items-center">
+                  <Apple size={24} className="mr-3" />
+                  <div className="text-left">
+                    <div className="text-xs">Download on the</div>
+                    <div className="text-lg font-semibold">App Store</div>
+                  </div>
+                </div>
+                <ArrowRight size={20} />
+              </Button>
+              
+              <Button 
+                className="w-full justify-between bg-green-600 hover:bg-green-700 text-white py-6"
+                onClick={() => handleDownloadApp('android')}
+              >
+                <div className="flex items-center">
+                  <svg className="w-6 h-6 mr-3" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.0775-9.4396"/>
+                  </svg>
+                  <div className="text-left">
+                    <div className="text-xs">Download on</div>
+                    <div className="text-lg font-semibold">Google Play</div>
+                  </div>
+                </div>
+                <ArrowRight size={20} />
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </section>
   );
 };

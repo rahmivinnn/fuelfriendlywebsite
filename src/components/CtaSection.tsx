@@ -2,9 +2,16 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const CtaSection = () => {
+  const navigate = useNavigate();
+
+  const handleRegisterClick = () => {
+    // Navigate immediately without delay
+    navigate('/station-registration');
+  };
+
   return (
     <section className="py-12 md:py-16 bg-primary text-white overflow-hidden">
       <div className="container px-4 md:px-6 text-center relative">
@@ -23,8 +30,11 @@ const CtaSection = () => {
             whileTap={{ scale: 0.95 }}
             className="inline-block"
           >
-            <Button className="bg-white text-primary hover:bg-gray-100 mt-6 px-8 py-6 text-lg font-medium" asChild>
-              <Link to="/station-registration">Register Station</Link>
+            <Button 
+              className="bg-white text-primary hover:bg-gray-100 mt-6 px-8 py-6 text-lg font-medium"
+              onClick={handleRegisterClick}
+            >
+              Register Station
             </Button>
           </motion.div>
         </motion.div>
