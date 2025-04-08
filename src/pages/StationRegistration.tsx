@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -40,7 +39,16 @@ const StationRegistration = () => {
     businessHours: '',
     ownerName: '',
     businessLicense: '',
-    taxId: ''
+    taxId: '',
+    paymentMethods: []
+  });
+  
+  const [paymentMethod, setPaymentMethod] = useState({
+    type: '',
+    cardNumber: '',
+    expiry: '',
+    cvv: '',
+    holderName: ''
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,22 +60,76 @@ const StationRegistration = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handlePaymentMethodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setPaymentMethod(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handlePaymentTypeChange = (value: string) => {
+    setPaymentMethod(prev => ({ ...prev, type: value }));
+  };
+
+  const addPaymentMethod = () => {
+    // Basic validation
+    if (!paymentMethod.type || !paymentMethod.cardNumber || !paymentMethod.expiry || !paymentMethod.holderName) {
+      toast({
+        title: "Incomplete Information",
+        description: "Please fill in all required payment method fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Add payment method to formData
+    const newPaymentMethod = { ...paymentMethod, id: Date.now().toString() };
+    setFormData(prev => ({
+      ...prev,
+      paymentMethods: [...prev.paymentMethods, newPaymentMethod]
+    }));
+
+    // Reset payment form
+    setPaymentMethod({
+      type: '',
+      cardNumber: '',
+      expiry: '',
+      cvv: '',
+      holderName: ''
+    });
+
+    toast({
+      title: "Payment Method Added",
+      description: "Your payment method has been added successfully.",
+    });
+  };
+
+  const removePaymentMethod = (id: string) => {
+    setFormData(prev => ({
+      ...prev,
+      paymentMethods: prev.paymentMethods.filter(method => method.id !== id)
+    }));
+
+    toast({
+      title: "Payment Method Removed",
+      description: "Your payment method has been removed.",
+    });
+  };
+
   const nextStep = () => {
-    if (step < 4) {
+    if (step < 5) {
       setStep(prev => prev + 1);
       toast({
         title: "Progress Saved",
         description: "Your information has been saved. Please continue with the registration.",
       });
     } else {
-      // Final step - complete registration
+      // Immediate redirection - no delays or waiting
+      navigate('/station-dashboard');
+      
+      // Show toast after navigation has started
       toast({
         title: "Registration Complete!",
-        description: "Your station has been registered successfully. Redirecting to dashboard...",
+        description: "Your station has been registered successfully.",
       });
-      setTimeout(() => {
-        navigate('/station-dashboard');
-      }, 1500);
     }
   };
 
@@ -356,7 +418,134 @@ const StationRegistration = () => {
       </CardFooter>
     </Card>,
 
-    // Step 5: Review & Submit
+    // Step 5: Payment Methods
+    <Card className="max-w-md mx-auto">
+      <CardHeader>
+        <CardTitle>Payment Methods</CardTitle>
+        <CardDescription>Add payment methods for your station</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Display existing payment methods */}
+        {formData.paymentMethods.length > 0 && (
+          <div className="space-y-4">
+            <h3 className="text-sm font-medium">Your Payment Methods</h3>
+            {formData.paymentMethods.map((method) => (
+              <div key={method.id} className="p-3 bg-gray-50 rounded-lg flex justify-between items-center">
+                <div>
+                  <p className="font-medium">{method.type}</p>
+                  <p className="text-sm text-gray-500">
+                    {method.cardNumber.substring(0, 4)} •••• •••• {method.cardNumber.slice(-4)} | {method.holderName}
+                  </p>
+                </div>
+                <Button 
+                  variant="destructive" 
+                  size="sm"
+                  onClick={() => removePaymentMethod(method.id)}
+                >
+                  Remove
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Add new payment method form */}
+        <div className="border p-4 rounded-lg space-y-4">
+          <h3 className="text-sm font-medium">Add New Payment Method</h3>
+          
+          <div className="space-y-2">
+            <Label htmlFor="paymentType">Payment Type</Label>
+            <Select
+              value={paymentMethod.type}
+              onValueChange={(value) => handlePaymentTypeChange(value)}
+            >
+              <SelectTrigger id="paymentType">
+                <SelectValue placeholder="Select Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Visa">Visa</SelectItem>
+                <SelectItem value="Mastercard">Mastercard</SelectItem>
+                <SelectItem value="American Express">American Express</SelectItem>
+                <SelectItem value="Discover">Discover</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="cardNumber">Card Number</Label>
+            <Input
+              id="cardNumber"
+              name="cardNumber"
+              placeholder="XXXX XXXX XXXX XXXX"
+              value={paymentMethod.cardNumber}
+              onChange={handlePaymentMethodChange}
+              maxLength={16}
+            />
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="expiry">Expiry Date</Label>
+              <Input
+                id="expiry"
+                name="expiry"
+                placeholder="MM/YY"
+                value={paymentMethod.expiry}
+                onChange={handlePaymentMethodChange}
+                maxLength={5}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="cvv">CVV</Label>
+              <Input
+                id="cvv"
+                name="cvv"
+                placeholder="XXX"
+                type="password"
+                value={paymentMethod.cvv}
+                onChange={handlePaymentMethodChange}
+                maxLength={4}
+              />
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="holderName">Card Holder Name</Label>
+            <Input
+              id="holderName"
+              name="holderName"
+              placeholder="Full Name on Card"
+              value={paymentMethod.holderName}
+              onChange={handlePaymentMethodChange}
+            />
+          </div>
+          
+          <Button 
+            type="button"
+            className="w-full bg-green-500 hover:bg-green-600 mt-2"
+            onClick={addPaymentMethod}
+          >
+            Add Payment Method
+          </Button>
+        </div>
+      </CardContent>
+      <CardFooter className="flex justify-between">
+        <Button 
+          variant="outline" 
+          onClick={prevStep}
+        >
+          Back
+        </Button>
+        <Button 
+          className="bg-green-500 hover:bg-green-600"
+          onClick={nextStep}
+        >
+          Continue
+        </Button>
+      </CardFooter>
+    </Card>,
+
+    // Step 6: Review & Submit
     <Card className="max-w-md mx-auto">
       <CardHeader>
         <CardTitle>Complete Registration</CardTitle>
@@ -368,7 +557,8 @@ const StationRegistration = () => {
           <p className="text-sm text-green-700 mb-1"><strong>Station:</strong> {formData.stationName || "Not provided"}</p>
           <p className="text-sm text-green-700 mb-1"><strong>Address:</strong> {formData.address || "Not provided"}, {formData.city || ""}, {formData.state || ""} {formData.zipCode || ""}</p>
           <p className="text-sm text-green-700 mb-1"><strong>Contact:</strong> {formData.phoneNumber || "Not provided"}</p>
-          <p className="text-sm text-green-700"><strong>Owner:</strong> {formData.ownerName || "Not provided"}</p>
+          <p className="text-sm text-green-700 mb-1"><strong>Owner:</strong> {formData.ownerName || "Not provided"}</p>
+          <p className="text-sm text-green-700"><strong>Payment Methods:</strong> {formData.paymentMethods.length} added</p>
         </div>
         
         <div className="text-sm text-gray-500">
@@ -404,7 +594,7 @@ const StationRegistration = () => {
             />
             <h1 className="text-2xl font-bold">Station Registration</h1>
             <div className="flex justify-center mt-4">
-              {Array.from({ length: 5 }).map((_, index) => (
+              {Array.from({ length: 6 }).map((_, index) => (
                 <div key={index} className="flex items-center">
                   <div 
                     className={`w-8 h-8 rounded-full flex items-center justify-center ${
@@ -413,7 +603,7 @@ const StationRegistration = () => {
                   >
                     {index < step ? "✓" : index + 1}
                   </div>
-                  {index < 4 && (
+                  {index < 5 && (
                     <div 
                       className={`w-12 h-1 ${
                         index < step ? "bg-green-500" : "bg-gray-200"
@@ -426,22 +616,13 @@ const StationRegistration = () => {
           </div>
 
           <div className="relative">
-            {/* Registration form image in the background */}
-            <div className="absolute right-0 top-0 w-1/3 h-full">
-              <img 
-                src="/lovable-uploads/f1f0e7c3-0517-4e65-a773-f0d394b5ec27.png" 
-                alt="Registration illustration" 
-                className="h-full object-contain" 
-              />
-            </div>
-            
             {/* Form steps */}
             <motion.div
               key={step}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.2 }} 
             >
               {steps[step]}
             </motion.div>
