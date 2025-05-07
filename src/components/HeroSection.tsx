@@ -26,7 +26,7 @@ const HeroSection = () => {
       description: `You're being redirected to the ${platform === 'ios' ? 'App Store' : 'Google Play Store'}`,
       duration: 3000,
     });
-    
+
     // Simulate app store redirect
     setTimeout(() => {
       setShowAppStoreModal(false);
@@ -42,7 +42,7 @@ const HeroSection = () => {
     <section className="py-12 md:py-24 overflow-hidden">
       <div className="container px-4 md:px-6">
         <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-          <motion.div 
+          <motion.div
             className="flex flex-col justify-center space-y-4"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -57,23 +57,23 @@ const HeroSection = () => {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
-              <motion.div 
+              <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button 
-                  className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 text-base w-full sm:w-auto" 
+                <Button
+                  className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 text-base w-full sm:w-auto"
                   onClick={handleRegisterClick}
                 >
                   Register Station
                 </Button>
               </motion.div>
-              <motion.div 
+              <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="border-gray-200 w-full sm:w-auto"
                   onClick={handleAppDownloadClick}
                 >
@@ -85,7 +85,7 @@ const HeroSection = () => {
               Downloaded by over 100,000 users
             </p>
           </motion.div>
-          <motion.div 
+          <motion.div
             className="flex justify-center lg:justify-end"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -93,13 +93,13 @@ const HeroSection = () => {
           >
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-blue-500/20 rounded-[32px] blur-xl opacity-30"></div>
-              <motion.div 
+              <motion.div
                 className="relative w-[300px] h-[600px] md:w-[320px] md:h-[640px]"
                 initial={{ y: 20 }}
                 animate={{ y: 0 }}
-                transition={{ 
-                  repeat: Infinity, 
-                  repeatType: "reverse", 
+                transition={{
+                  repeat: Infinity,
+                  repeatType: "reverse",
                   duration: 2,
                   ease: "easeInOut"
                 }}
@@ -115,25 +115,25 @@ const HeroSection = () => {
         </div>
       </div>
       <div className="container px-4 md:px-6 mt-12">
-        <motion.div 
+        <motion.div
           className="grid grid-cols-3 gap-12 md:gap-24 justify-center items-center mt-8"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <motion.div 
+          <motion.div
             className="flex flex-col items-center space-y-2 border rounded-lg p-4 hover:shadow-lg transition-all duration-300"
             whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
           >
             <h3 className="text-lg font-medium">Shell</h3>
           </motion.div>
-          <motion.div 
+          <motion.div
             className="flex flex-col items-center space-y-2 border rounded-lg p-4 hover:shadow-lg transition-all duration-300"
             whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
           >
-            <h3 className="text-lg font-medium">Memphis Gas</h3>
+            <h3 className="text-lg font-medium">Kastrati Oil</h3>
           </motion.div>
-          <motion.div 
+          <motion.div
             className="flex flex-col items-center space-y-2 border rounded-lg p-4 hover:shadow-lg transition-all duration-300"
             whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
           >
@@ -145,28 +145,28 @@ const HeroSection = () => {
       {/* App Store Modal */}
       {showAppStoreModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             className="bg-white rounded-xl p-6 max-w-md w-full mx-4"
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-bold">Download FuelFriendly App</h3>
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setShowAppStoreModal(false)}
               >
                 <X size={20} />
               </Button>
             </div>
-            
+
             <p className="text-gray-600 mb-6">
               Choose your platform to download the FuelFriendly app and start enjoying convenient fuel services.
             </p>
-            
+
             <div className="space-y-3">
-              <Button 
+              <Button
                 className="w-full justify-between bg-black hover:bg-gray-800 text-white py-6"
                 onClick={() => handleDownloadApp('ios')}
               >
@@ -179,8 +179,8 @@ const HeroSection = () => {
                 </div>
                 <ArrowRight size={20} />
               </Button>
-              
-              <Button 
+
+              <Button
                 className="w-full justify-between bg-green-600 hover:bg-green-700 text-white py-6"
                 onClick={() => handleDownloadApp('android')}
               >

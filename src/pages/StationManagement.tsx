@@ -34,13 +34,13 @@ const StationManagement = () => {
 
   const [formData, setFormData] = useState({
     stationName: "Downtown Fuel Station",
-    address: "123 Main Street, Memphis, TN 38103",
-    phone: "(901) 555-1234",
+    address: "123 Rruga e Durrësit, Tirana, Albania 1001",
+    phone: "(+355) 4 234 5678",
     email: "contact@downtownfuel.com",
     operatingHours: "24/7",
     managerName: "John Smith",
-    latitude: "35.1495",
-    longitude: "-90.0490",
+    latitude: "41.3275",
+    longitude: "19.8187",
     petrolPrice: "1.25",
     dieselPrice: "1.45",
     premiumPrice: "1.89",
@@ -72,10 +72,10 @@ const StationManagement = () => {
       { id: "4", name: "Windshield Cleaning", description: "Free windshield cleaning with fuel purchase", price: "0.00", isActive: true }
     ],
     staff: [
-      { id: "1", name: "John Smith", position: "Station Manager", email: "john@downtownfuel.com", phone: "(901) 555-1234" },
-      { id: "2", name: "Sarah Johnson", position: "Assistant Manager", email: "sarah@downtownfuel.com", phone: "(901) 555-2345" },
-      { id: "3", name: "Mike Williams", position: "Cashier", email: "mike@downtownfuel.com", phone: "(901) 555-3456" },
-      { id: "4", name: "Lisa Brown", position: "Attendant", email: "lisa@downtownfuel.com", phone: "(901) 555-4567" }
+      { id: "1", name: "John Smith", position: "Station Manager", email: "john@downtownfuel.com", phone: "(+355) 4 234 5678" },
+      { id: "2", name: "Sarah Johnson", position: "Assistant Manager", email: "sarah@downtownfuel.com", phone: "(+355) 4 234 5679" },
+      { id: "3", name: "Mike Williams", position: "Cashier", email: "mike@downtownfuel.com", phone: "(+355) 4 234 5680" },
+      { id: "4", name: "Lisa Brown", position: "Attendant", email: "lisa@downtownfuel.com", phone: "(+355) 4 234 5681" }
     ],
     promotions: [
       { id: "1", name: "Summer Special", description: "Get 5% off on premium fuel", startDate: "2023-06-01", endDate: "2023-08-31", isActive: true },

@@ -167,7 +167,7 @@ const generateStationsData = () => {
     stationsArray.push({
       id: i + 1,
       name: stationNames[Math.floor(Math.random() * stationNames.length)] + " #" + (i + 1),
-      address: `${randomStreetNumber} ${randomStreetName}, Memphis, TN`,
+      address: `${randomStreetNumber} ${randomStreetName}, Tirana, Albania`,
       distance: `${distance} miles`,
       rating: (Math.floor(Math.random() * 10) + 36) / 10, // Random rating from 3.6 to 4.6
       priceRegular: parseFloat((priceBase).toFixed(2)),
@@ -308,7 +308,7 @@ const NearbyStations = () => {
       // Create a copy of the stations with updated addresses
       const updatedStations = allStations.map(station => ({
         ...station,
-        address: station.address.replace(/Memphis, TN/, `${selectedCity}, ${countryName}`)
+        address: station.address.replace(/Tirana, Albania/, `${selectedCity}, ${countryName}`)
       }));
 
       setAllStations(updatedStations);
