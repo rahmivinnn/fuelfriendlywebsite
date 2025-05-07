@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Search, MapPin, Star, ChevronDown, Filter, Navigation, Clock, Phone, Car, Shell, TrendingUp, AlertTriangle } from 'lucide-react';
+import { Search, MapPin, Star, ChevronDown, Filter, Navigation, Clock, Phone, Car, Shell, TrendingUp, AlertTriangle, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from "@/hooks/use-toast";
+import { countries, cities } from '@/data/countries';
 import {
   Card,
   CardContent,
@@ -43,27 +44,27 @@ import {
 // Expanded station data with 50 entries
 const generateStationsData = () => {
   const stationNames = [
-    "Shell Express Station", "Exxon Fuel Center", "Chevron Gas & Go", "BP Premium Station", 
-    "Marathon Pit Stop", "Citgo Quick Fuel", "Texaco Star Stop", "Mobil Fuel Plus", 
-    "Sunoco Ultra Service", "Phillips 66 Station", "Valero Fresh Start", "Gulf Express", 
-    "ARCO Gas Point", "ConocoPhillips Station", "Speedway Junction", "76 Gas & Market", 
+    "Shell Express Station", "Exxon Fuel Center", "Chevron Gas & Go", "BP Premium Station",
+    "Marathon Pit Stop", "Citgo Quick Fuel", "Texaco Star Stop", "Mobil Fuel Plus",
+    "Sunoco Ultra Service", "Phillips 66 Station", "Valero Fresh Start", "Gulf Express",
+    "ARCO Gas Point", "ConocoPhillips Station", "Speedway Junction", "76 Gas & Market",
     "Circle K Gas", "QuikTrip Fuel", "RaceTrac Gas & Goods", "Wawa Fuel Stop"
   ];
-  
+
   const streetNames = [
-    "Main St", "Oak Ave", "Pine Rd", "Elm St", "Maple Dr", "Cedar Ln", "Walnut Ave", 
-    "Cherry St", "Spruce Rd", "Birch Ln", "Willow Dr", "Poplar Ave", "Chestnut St", 
-    "Sycamore Dr", "Magnolia Blvd", "Laurel Ave", "Juniper Rd", "Cypress Dr", "Hemlock Ln", 
+    "Main St", "Oak Ave", "Pine Rd", "Elm St", "Maple Dr", "Cedar Ln", "Walnut Ave",
+    "Cherry St", "Spruce Rd", "Birch Ln", "Willow Dr", "Poplar Ave", "Chestnut St",
+    "Sycamore Dr", "Magnolia Blvd", "Laurel Ave", "Juniper Rd", "Cypress Dr", "Hemlock Ln",
     "Redwood Blvd", "Beech St", "Holly Dr", "Dogwood Ln", "Aspen Rd", "Locust Ave"
   ];
-  
-  const amenitiesList = ["ATM", "Car Wash", "Convenience Store", "Restrooms", "EV Charging", 
-    "Food Court", "Coffee Shop", "Tire Inflation", "Air Pump", "Vacuum Cleaner", 
+
+  const amenitiesList = ["ATM", "Car Wash", "Convenience Store", "Restrooms", "EV Charging",
+    "Food Court", "Coffee Shop", "Tire Inflation", "Air Pump", "Vacuum Cleaner",
     "Oil Change", "Windshield Service", "Loyalty Program", "WiFi", "Truck Parking"
   ];
-  
+
   const phoneFormats = ["123-456-####", "234-567-####", "345-678-####", "456-789-####", "567-890-####"];
-  
+
   const reviews = [
     "Great service and clean facilities!",
     "The prices are competitive and staff is friendly.",
@@ -86,26 +87,26 @@ const generateStationsData = () => {
     "ATM is always working and convenient.",
     "The air pump is free and easy to use."
   ];
-  
+
   const reviewerNames = [
-    "John S.", "Emily R.", "Michael T.", "Sarah W.", "David L.", "Jessica M.", "Robert P.", 
-    "Lisa K.", "James B.", "Jennifer C.", "Thomas H.", "Amanda G.", "Christopher V.", 
-    "Elizabeth N.", "Daniel F.", "Nicole J.", "Matthew Q.", "Rebecca Z.", "Andrew Y.", 
+    "John S.", "Emily R.", "Michael T.", "Sarah W.", "David L.", "Jessica M.", "Robert P.",
+    "Lisa K.", "James B.", "Jennifer C.", "Thomas H.", "Amanda G.", "Christopher V.",
+    "Elizabeth N.", "Daniel F.", "Nicole J.", "Matthew Q.", "Rebecca Z.", "Andrew Y.",
     "Michelle X.", "Brian W.", "Stephanie V.", "Kevin U.", "Laura T.", "Steven S."
   ];
-  
+
   const randomDate = () => {
     const now = new Date();
     const pastDays = Math.floor(Math.random() * 30) + 1;
     const pastDate = new Date(now.getTime() - (pastDays * 24 * 60 * 60 * 1000));
     return pastDate;
   };
-  
+
   const getFormattedDate = (date) => {
     const now = new Date();
     const diffMs = now - date;
     const diffMins = Math.floor(diffMs / 60000);
-    
+
     if (diffMins < 60) {
       return `${diffMins} min ago`;
     } else if (diffMins < 1440) {
@@ -114,11 +115,11 @@ const generateStationsData = () => {
       return `${Math.floor(diffMins / 1440)} days ago`;
     }
   };
-  
+
   const generateUserReviews = () => {
     const reviewCount = Math.floor(Math.random() * 15) + 5;
     const userReviews = [];
-    
+
     for (let i = 0; i < reviewCount; i++) {
       const reviewDate = randomDate();
       userReviews.push({
@@ -131,37 +132,37 @@ const generateStationsData = () => {
         verified: Math.random() > 0.3,
       });
     }
-    
+
     return userReviews;
   };
-  
+
   let stationsArray = [];
-  
+
   for (let i = 0; i < 50; i++) {
     const priceBase = 2.7 + Math.random() * 0.5;
     const distance = (0.5 + Math.random() * 5).toFixed(1);
     const congestionLevel = Math.random() < 0.33 ? "Low" : (Math.random() < 0.66 ? "Medium" : "High");
     const waitTime = congestionLevel === "Low" ? "< 5 min" : (congestionLevel === "Medium" ? "5-10 min" : "10-15 min");
-    
+
     const randomStreetNumber = Math.floor(Math.random() * 999) + 100;
     const randomStreetName = streetNames[Math.floor(Math.random() * streetNames.length)];
-    
+
     // Select 3-8 random amenities
     const stationAmenities = [];
     const amenitiesCount = Math.floor(Math.random() * 6) + 3;
     const possibleAmenities = [...amenitiesList];
-    
+
     for (let j = 0; j < amenitiesCount; j++) {
       if (possibleAmenities.length === 0) break;
       const randomIndex = Math.floor(Math.random() * possibleAmenities.length);
       stationAmenities.push(possibleAmenities[randomIndex]);
       possibleAmenities.splice(randomIndex, 1);
     }
-    
+
     // Generate random phone number
     const format = phoneFormats[Math.floor(Math.random() * phoneFormats.length)];
     const phoneNumber = format.replace('####', Math.floor(Math.random() * 10000).toString().padStart(4, '0'));
-    
+
     // Generate station
     stationsArray.push({
       id: i + 1,
@@ -184,7 +185,7 @@ const generateStationsData = () => {
       reviews: generateUserReviews(),
     });
   }
-  
+
   return stationsArray;
 };
 
@@ -199,7 +200,12 @@ const NearbyStations = () => {
   const [showStationDetails, setShowStationDetails] = useState(false);
   const [showContactDialog, setShowContactDialog] = useState(false);
   const [showAppStoreDialog, setShowAppStoreDialog] = useState(false);
-  
+
+  // Country and city selection
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [availableCities, setAvailableCities] = useState([]);
+
   // Filter states
   const [fuelTypeFilters, setFuelTypeFilters] = useState({
     regular: true,
@@ -214,12 +220,23 @@ const NearbyStations = () => {
     "Restrooms": false,
   });
 
+  // Filter cities based on selected country
+  useEffect(() => {
+    if (selectedCountry) {
+      const filteredCities = cities.filter(city => city.countryCode === selectedCountry);
+      setAvailableCities(filteredCities);
+      setSelectedCity("");
+    } else {
+      setAvailableCities([]);
+    }
+  }, [selectedCountry]);
+
   // Initialize station data
   useEffect(() => {
     const generatedStations = generateStationsData();
     setAllStations(generatedStations);
     setFilteredStations(generatedStations);
-    
+
     setTimeout(() => {
       setLoading(false);
       toast({
@@ -233,30 +250,30 @@ const NearbyStations = () => {
     const interval = setInterval(() => {
       setAllStations(prev => {
         const updatedStations = [...prev];
-        
+
         // Randomly select 1-3 stations to update
         const updateCount = Math.floor(Math.random() * 3) + 1;
         const updatedIndices = [];
-        
+
         for (let i = 0; i < updateCount; i++) {
           // Generate a random index that hasn't been updated yet
           let randomStationIndex;
           do {
             randomStationIndex = Math.floor(Math.random() * updatedStations.length);
           } while (updatedIndices.includes(randomStationIndex));
-          
+
           updatedIndices.push(randomStationIndex);
-          
+
           // Generate a small random price change (±0.05)
           const priceChange = (Math.random() * 0.1 - 0.05).toFixed(2);
           const oldPrice = updatedStations[randomStationIndex].priceRegular;
           const newPrice = (parseFloat(oldPrice.toString()) + parseFloat(priceChange)).toFixed(2);
-          
+
           // Randomly update congestion and wait time
           const congestionOptions = ["Low", "Medium", "High"];
           const newCongestion = congestionOptions[Math.floor(Math.random() * congestionOptions.length)];
           const newWaitTime = newCongestion === "Low" ? "< 5 min" : (newCongestion === "Medium" ? "5-10 min" : "10-15 min");
-          
+
           // Update the station
           updatedStations[randomStationIndex] = {
             ...updatedStations[randomStationIndex],
@@ -265,7 +282,7 @@ const NearbyStations = () => {
             waitTime: newWaitTime,
             lastUpdated: "Just now"
           };
-          
+
           // Show a notification for the first updated station
           if (i === 0) {
             toast({
@@ -275,29 +292,53 @@ const NearbyStations = () => {
             });
           }
         }
-        
+
         return updatedStations;
       });
     }, 8000); // Update more frequently for demonstration
-    
+
     return () => clearInterval(interval);
   }, [toast]);
+
+  // Update station addresses based on selected country and city
+  useEffect(() => {
+    if (selectedCountry && selectedCity && allStations.length > 0) {
+      const countryName = countries.find(c => c.code === selectedCountry)?.name;
+
+      // Create a copy of the stations with updated addresses
+      const updatedStations = allStations.map(station => ({
+        ...station,
+        address: station.address.replace(/Memphis, TN/, `${selectedCity}, ${countryName}`)
+      }));
+
+      setAllStations(updatedStations);
+    }
+  }, [selectedCountry, selectedCity]);
 
   // Apply filters and sorting
   useEffect(() => {
     if (allStations.length === 0) return;
-    
+
     let filtered = [...allStations];
-    
+
+    // Apply country and city filter
+    if (selectedCountry && selectedCity) {
+      const countryName = countries.find(c => c.code === selectedCountry)?.name;
+      filtered = filtered.filter(station =>
+        station.address.includes(selectedCity) &&
+        station.address.includes(countryName)
+      );
+    }
+
     // Apply search filter
     if (searchInput.trim() !== "") {
       filtered = filtered.filter(
-        station => 
+        station =>
           station.name.toLowerCase().includes(searchInput.toLowerCase()) ||
           station.address.toLowerCase().includes(searchInput.toLowerCase())
       );
     }
-    
+
     // Apply distance filter
     if (distanceFilter !== "any") {
       const maxDistance = parseInt(distanceFilter);
@@ -306,18 +347,18 @@ const NearbyStations = () => {
         return stationDistance <= maxDistance;
       });
     }
-    
+
     // Apply amenity filters
     const selectedAmenities = Object.entries(amenityFilters)
       .filter(([_, isSelected]) => isSelected)
       .map(([amenity]) => amenity);
-    
+
     if (selectedAmenities.length > 0) {
-      filtered = filtered.filter(station => 
+      filtered = filtered.filter(station =>
         selectedAmenities.every(amenity => station.amenities.includes(amenity))
       );
     }
-    
+
     // Apply fuel type filters
     if (!fuelTypeFilters.regular || !fuelTypeFilters.premium || !fuelTypeFilters.diesel) {
       filtered = filtered.filter(station => {
@@ -327,7 +368,7 @@ const NearbyStations = () => {
         return true;
       });
     }
-    
+
     // Apply sorting
     if (sortOption === "distance") {
       filtered.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
@@ -336,9 +377,9 @@ const NearbyStations = () => {
     } else if (sortOption === "rating") {
       filtered.sort((a, b) => b.rating - a.rating);
     }
-    
+
     setFilteredStations(filtered);
-  }, [allStations, searchInput, sortOption, distanceFilter, amenityFilters, fuelTypeFilters]);
+  }, [allStations, searchInput, sortOption, distanceFilter, amenityFilters, fuelTypeFilters, selectedCountry, selectedCity]);
 
   const handleFuelTypeChange = (type) => {
     setFuelTypeFilters(prev => ({
@@ -377,7 +418,7 @@ const NearbyStations = () => {
       description: `Directions to ${station.name} at ${station.address}`,
       duration: 3000,
     });
-    
+
     // Open maps in a new tab (simulated)
     window.open(`https://maps.google.com/maps?q=${encodeURIComponent(station.address)}`, '_blank');
   };
@@ -400,14 +441,14 @@ const NearbyStations = () => {
             <div className="flex justify-between items-center mb-8">
               <div>
                 <Link to="/" className="text-black text-lg font-bold flex items-center">
-                  <img 
-                    src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" 
-                    alt="FuelFriendly" 
-                    className="h-10 mr-2" 
+                  <img
+                    src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png"
+                    alt="FuelFriendly"
+                    className="h-10 mr-2"
                   />
                 </Link>
               </div>
-              
+
               <div className="flex space-x-4 text-black">
                 <Link to="/" className="hover:text-green-600 transition-colors">
                   Home
@@ -426,7 +467,7 @@ const NearbyStations = () => {
                       <h3 className="font-bold text-lg">Download Our App</h3>
                       <p className="text-sm text-gray-600">Get the FuelFriendly app on your mobile device for the best experience!</p>
                       <div className="flex flex-col space-y-2">
-                        <Button 
+                        <Button
                           className="bg-black text-white hover:bg-gray-800"
                           onClick={() => setShowAppStoreDialog(true)}
                         >
@@ -436,7 +477,7 @@ const NearbyStations = () => {
                           </svg>
                           App Store
                         </Button>
-                        <Button 
+                        <Button
                           className="bg-green-600 text-white hover:bg-green-700"
                           onClick={() => setShowAppStoreDialog(true)}
                         >
@@ -455,58 +496,108 @@ const NearbyStations = () => {
                 <Link to="/nearby-stations" className="font-bold underline text-green-600">
                   Nearby Fuel Stations
                 </Link>
-                <button 
+                <button
                   onClick={() => setShowContactDialog(true)}
                   className="hover:text-green-600 transition-colors"
                 >
                   Contact Us
                 </button>
               </div>
-              
+
               <div>
-                <Button 
-                  asChild 
+                <Button
+                  asChild
                   className="bg-green-600 text-white hover:bg-green-700"
                 >
                   <Link to="/station-registration">Register Station</Link>
                 </Button>
               </div>
             </div>
-            
+
             <h1 className="text-3xl md:text-4xl font-bold text-black mb-4">
-              Find Nearby Fuel Stations
+              Find Nearby Fuel Stations Worldwide
             </h1>
             <p className="text-gray-600 text-lg mb-6">
-              Discover the best gas stations near Memphis with real-time prices, wait times, and amenities
+              Discover the best gas stations across 195 countries with real-time prices, wait times, and amenities
             </p>
-            
-            <div className="bg-white p-2 rounded-full shadow-lg flex items-center border border-gray-200">
-              <div className="flex-1 flex items-center pl-4">
-                <MapPin className="text-green-500 mr-2" size={20} />
-                <Input 
-                  placeholder="Search for gas stations or addresses..." 
-                  className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                />
+
+            <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
+              <div className="flex flex-col md:flex-row gap-4 mb-4">
+                <div className="flex-1">
+                  <label className="block text-sm font-medium mb-1 text-gray-700">Country</label>
+                  <Select value={selectedCountry} onValueChange={setSelectedCountry}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a country (195 available)" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      <div className="max-h-[300px] overflow-y-auto">
+                        {countries.map((country) => (
+                          <SelectItem key={country.code} value={country.code}>
+                            {country.name}
+                          </SelectItem>
+                        ))}
+                      </div>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex-1">
+                  <label className="block text-sm font-medium mb-1 text-gray-700">City</label>
+                  <Select
+                    value={selectedCity}
+                    onValueChange={setSelectedCity}
+                    disabled={!selectedCountry || availableCities.length === 0}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder={!selectedCountry ? "Select a country first" : availableCities.length === 0 ? "No cities available" : "Select a city"} />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      <div className="max-h-[300px] overflow-y-auto">
+                        {availableCities.length > 0 ? (
+                          availableCities.map((city) => (
+                            <SelectItem key={city.name} value={city.name}>
+                              {city.name}
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <div className="p-2 text-center text-gray-500">No cities available for this country yet</div>
+                        )}
+                      </div>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-              <Button className="rounded-full bg-green-500 hover:bg-green-600">
-                <Search className="mr-2" size={16} />
-                Search
-              </Button>
+
+              <div className="flex items-center gap-4">
+                <div className="flex-1">
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" size={20} />
+                    <Input
+                      placeholder="Search for gas stations or addresses..."
+                      className="pl-10 border-gray-300"
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <Button className="bg-green-500 hover:bg-green-600">
+                  <Search className="mr-2" size={16} />
+                  Search
+                </Button>
+              </div>
             </div>
           </motion.div>
         </div>
       </div>
-      
+
       {/* Main Content */}
       <div className="container mx-auto max-w-7xl px-6 py-8">
         <div className="flex flex-col md:flex-row gap-6">
-          
+
           <div className="md:w-1/4">
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 sticky top-6">
               <h2 className="text-xl font-bold mb-4">Filters</h2>
-              
+
               <div className="space-y-6">
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 mb-2">Sort By</h3>
@@ -521,35 +612,35 @@ const NearbyStations = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 mb-2">Fuel Type</h3>
                   <div className="space-y-2">
                     <div className="flex items-center">
-                      <input 
-                        id="regular" 
-                        type="checkbox" 
-                        className="rounded text-green-500 focus:ring-green-500" 
+                      <input
+                        id="regular"
+                        type="checkbox"
+                        className="rounded text-green-500 focus:ring-green-500"
                         checked={fuelTypeFilters.regular}
                         onChange={() => handleFuelTypeChange('regular')}
                       />
                       <label htmlFor="regular" className="ml-2 text-sm">Regular</label>
                     </div>
                     <div className="flex items-center">
-                      <input 
-                        id="premium" 
-                        type="checkbox" 
-                        className="rounded text-green-500 focus:ring-green-500" 
+                      <input
+                        id="premium"
+                        type="checkbox"
+                        className="rounded text-green-500 focus:ring-green-500"
                         checked={fuelTypeFilters.premium}
                         onChange={() => handleFuelTypeChange('premium')}
                       />
                       <label htmlFor="premium" className="ml-2 text-sm">Premium</label>
                     </div>
                     <div className="flex items-center">
-                      <input 
-                        id="diesel" 
-                        type="checkbox" 
-                        className="rounded text-green-500 focus:ring-green-500" 
+                      <input
+                        id="diesel"
+                        type="checkbox"
+                        className="rounded text-green-500 focus:ring-green-500"
                         checked={fuelTypeFilters.diesel}
                         onChange={() => handleFuelTypeChange('diesel')}
                       />
@@ -557,53 +648,53 @@ const NearbyStations = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 mb-2">Distance</h3>
                   <div className="space-y-2">
                     <div className="flex items-center">
-                      <input 
-                        id="dist1" 
-                        type="radio" 
-                        name="distance" 
+                      <input
+                        id="dist1"
+                        type="radio"
+                        name="distance"
                         value="any"
-                        className="text-green-500 focus:ring-green-500" 
+                        className="text-green-500 focus:ring-green-500"
                         checked={distanceFilter === "any"}
                         onChange={handleDistanceFilterChange}
                       />
                       <label htmlFor="dist1" className="ml-2 text-sm">Any distance</label>
                     </div>
                     <div className="flex items-center">
-                      <input 
-                        id="dist2" 
-                        type="radio" 
-                        name="distance" 
+                      <input
+                        id="dist2"
+                        type="radio"
+                        name="distance"
                         value="1"
-                        className="text-green-500 focus:ring-green-500" 
+                        className="text-green-500 focus:ring-green-500"
                         checked={distanceFilter === "1"}
                         onChange={handleDistanceFilterChange}
                       />
                       <label htmlFor="dist2" className="ml-2 text-sm">Within 1 mile</label>
                     </div>
                     <div className="flex items-center">
-                      <input 
-                        id="dist3" 
-                        type="radio" 
-                        name="distance" 
+                      <input
+                        id="dist3"
+                        type="radio"
+                        name="distance"
                         value="3"
-                        className="text-green-500 focus:ring-green-500" 
+                        className="text-green-500 focus:ring-green-500"
                         checked={distanceFilter === "3"}
                         onChange={handleDistanceFilterChange}
                       />
                       <label htmlFor="dist3" className="ml-2 text-sm">Within 3 miles</label>
                     </div>
                     <div className="flex items-center">
-                      <input 
-                        id="dist4" 
-                        type="radio" 
-                        name="distance" 
+                      <input
+                        id="dist4"
+                        type="radio"
+                        name="distance"
                         value="5"
-                        className="text-green-500 focus:ring-green-500" 
+                        className="text-green-500 focus:ring-green-500"
                         checked={distanceFilter === "5"}
                         onChange={handleDistanceFilterChange}
                       />
@@ -611,45 +702,45 @@ const NearbyStations = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 mb-2">Amenities</h3>
                   <div className="space-y-2">
                     <div className="flex items-center">
-                      <input 
-                        id="amenity1" 
-                        type="checkbox" 
-                        className="rounded text-green-500 focus:ring-green-500" 
+                      <input
+                        id="amenity1"
+                        type="checkbox"
+                        className="rounded text-green-500 focus:ring-green-500"
                         checked={amenityFilters["ATM"]}
                         onChange={() => handleAmenityChange("ATM")}
                       />
                       <label htmlFor="amenity1" className="ml-2 text-sm">ATM</label>
                     </div>
                     <div className="flex items-center">
-                      <input 
-                        id="amenity2" 
-                        type="checkbox" 
-                        className="rounded text-green-500 focus:ring-green-500" 
+                      <input
+                        id="amenity2"
+                        type="checkbox"
+                        className="rounded text-green-500 focus:ring-green-500"
                         checked={amenityFilters["Car Wash"]}
                         onChange={() => handleAmenityChange("Car Wash")}
                       />
                       <label htmlFor="amenity2" className="ml-2 text-sm">Car Wash</label>
                     </div>
                     <div className="flex items-center">
-                      <input 
-                        id="amenity3" 
-                        type="checkbox" 
-                        className="rounded text-green-500 focus:ring-green-500" 
+                      <input
+                        id="amenity3"
+                        type="checkbox"
+                        className="rounded text-green-500 focus:ring-green-500"
                         checked={amenityFilters["Convenience Store"]}
                         onChange={() => handleAmenityChange("Convenience Store")}
                       />
                       <label htmlFor="amenity3" className="ml-2 text-sm">Convenience Store</label>
                     </div>
                     <div className="flex items-center">
-                      <input 
-                        id="amenity4" 
-                        type="checkbox" 
-                        className="rounded text-green-500 focus:ring-green-500" 
+                      <input
+                        id="amenity4"
+                        type="checkbox"
+                        className="rounded text-green-500 focus:ring-green-500"
                         checked={amenityFilters["Restrooms"]}
                         onChange={() => handleAmenityChange("Restrooms")}
                       />
@@ -657,8 +748,8 @@ const NearbyStations = () => {
                     </div>
                   </div>
                 </div>
-                
-                <Button 
+
+                <Button
                   className="w-full bg-green-500 hover:bg-green-600"
                   onClick={handleApplyFilters}
                 >
@@ -668,7 +759,7 @@ const NearbyStations = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Stations */}
           <div className="md:w-3/4">
             <Tabs defaultValue="list">
@@ -677,16 +768,26 @@ const NearbyStations = () => {
                   <TabsTrigger value="list">List View</TabsTrigger>
                   <TabsTrigger value="map">Map View</TabsTrigger>
                 </TabsList>
-                
+
                 <div className="text-sm text-gray-500">
-                  Showing {filteredStations.length} stations within Memphis
+                  {selectedCountry && selectedCity ? (
+                    <div className="flex items-center">
+                      <Globe size={14} className="mr-1" />
+                      Showing {filteredStations.length} stations in {selectedCity}, {countries.find(c => c.code === selectedCountry)?.name}
+                    </div>
+                  ) : (
+                    <div>
+                      Showing {filteredStations.length} stations
+                      {selectedCountry ? ` in ${countries.find(c => c.code === selectedCountry)?.name}` : ''}
+                    </div>
+                  )}
                 </div>
               </div>
-              
+
               <TabsContent value="list" className="space-y-6">
                 {loading ? (
                   <div className="flex items-center justify-center py-20">
-                    <motion.div 
+                    <motion.div
                       className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full"
                       animate={{ rotate: 360 }}
                       transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
@@ -703,13 +804,13 @@ const NearbyStations = () => {
                       <Card className="overflow-hidden hover:shadow-md transition-shadow">
                         <div className="flex flex-col md:flex-row">
                           <div className="md:w-1/3 h-[200px]">
-                            <img 
-                              src={station.image} 
+                            <img
+                              src={station.image}
                               alt={station.name}
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          
+
                           <div className="md:w-2/3">
                             <CardHeader className="pb-2">
                               <div className="flex justify-between items-start">
@@ -721,11 +822,11 @@ const NearbyStations = () => {
                               </div>
                               <CardDescription className="flex items-center">
                                 <MapPin className="mr-1" size={14} />
-                                {station.address} • 
+                                {station.address} •
                                 <span className="font-medium ml-1">{station.distance}</span>
                               </CardDescription>
                             </CardHeader>
-                            
+
                             <CardContent className="pb-2">
                               <div className="grid grid-cols-3 gap-4 mb-4">
                                 <div>
@@ -741,16 +842,16 @@ const NearbyStations = () => {
                                   <div className="text-xl font-bold">${station.priceDiesel.toFixed(2)}</div>
                                 </div>
                               </div>
-                              
+
                               <div className="flex flex-wrap gap-2 mb-4">
                                 <div className="flex items-center text-xs bg-gray-100 px-2 py-1 rounded">
                                   <Clock size={12} className="mr-1" />
                                   {station.openTime}
                                 </div>
-                                
+
                                 <div className={`flex items-center text-xs px-2 py-1 rounded ${
-                                  station.congestion === 'Low' 
-                                    ? 'bg-green-100 text-green-700' 
+                                  station.congestion === 'Low'
+                                    ? 'bg-green-100 text-green-700'
                                     : station.congestion === 'Medium'
                                     ? 'bg-yellow-100 text-yellow-700'
                                     : 'bg-red-100 text-red-700'
@@ -758,10 +859,10 @@ const NearbyStations = () => {
                                   <Car size={12} className="mr-1" />
                                   {station.congestion} Congestion
                                 </div>
-                                
+
                                 <div className={`flex items-center text-xs px-2 py-1 rounded ${
-                                  station.waitTime === '< 5 min' 
-                                    ? 'bg-green-100 text-green-700' 
+                                  station.waitTime === '< 5 min'
+                                    ? 'bg-green-100 text-green-700'
                                     : station.waitTime === '5-10 min'
                                     ? 'bg-yellow-100 text-yellow-700'
                                     : 'bg-red-100 text-red-700'
@@ -769,13 +870,13 @@ const NearbyStations = () => {
                                   <Clock size={12} className="mr-1" />
                                   Wait: {station.waitTime}
                                 </div>
-                                
+
                                 {station.amenities.slice(0, 2).map(amenity => (
                                   <div key={amenity} className="flex items-center text-xs bg-gray-100 px-2 py-1 rounded">
                                     {amenity}
                                   </div>
                                 ))}
-                                
+
                                 {station.amenities.length > 2 && (
                                   <div className="flex items-center text-xs bg-gray-100 px-2 py-1 rounded">
                                     +{station.amenities.length - 2} more
@@ -783,34 +884,34 @@ const NearbyStations = () => {
                                 )}
                               </div>
                             </CardContent>
-                            
+
                             <CardFooter className="flex justify-between items-center pt-0">
                               <div className="text-xs text-gray-500 flex items-center">
                                 <TrendingUp size={12} className="mr-1" />
                                 Updated {station.lastUpdated}
                               </div>
-                              
+
                               <div className="flex gap-2">
-                                <Button 
-                                  variant="outline" 
-                                  size="sm" 
+                                <Button
+                                  variant="outline"
+                                  size="sm"
                                   className="text-green-600"
                                   onClick={() => handleCallStation(station)}
                                 >
                                   <Phone size={14} className="mr-1" />
                                   Call
                                 </Button>
-                                <Button 
-                                  variant="outline" 
-                                  size="sm" 
+                                <Button
+                                  variant="outline"
+                                  size="sm"
                                   className="text-green-600"
                                   onClick={() => handleGetDirections(station)}
                                 >
                                   <Navigation size={14} className="mr-1" />
                                   Directions
                                 </Button>
-                                <Button 
-                                  size="sm" 
+                                <Button
+                                  size="sm"
                                   className="bg-green-500 hover:bg-green-600"
                                   onClick={() => handleViewDetails(station)}
                                 >
@@ -825,7 +926,7 @@ const NearbyStations = () => {
                   ))
                 )}
               </TabsContent>
-              
+
               <TabsContent value="map">
                 <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden h-[700px] flex items-center justify-center text-center p-6">
                   <div>
@@ -841,22 +942,22 @@ const NearbyStations = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Station Details Modal */}
       {showStationDetails && selectedStation && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto"
           >
             <div className="relative h-64">
-              <img 
-                src={selectedStation.image} 
+              <img
+                src={selectedStation.image}
                 alt={selectedStation.name}
                 className="w-full h-full object-cover"
               />
-              <button 
+              <button
                 className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md"
                 onClick={() => setShowStationDetails(false)}
               >
@@ -873,7 +974,7 @@ const NearbyStations = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
@@ -909,7 +1010,7 @@ const NearbyStations = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div>
                   <h3 className="text-lg font-bold mb-2">Current Fuel Prices</h3>
                   <div className="space-y-3">
@@ -929,7 +1030,7 @@ const NearbyStations = () => {
                       Prices last updated {selectedStation.lastUpdated}
                     </div>
                   </div>
-                  
+
                   <h3 className="text-lg font-bold mt-6 mb-2">Amenities</h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedStation.amenities.map(amenity => (
@@ -940,21 +1041,21 @@ const NearbyStations = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="border-t border-gray-200 pt-6">
                 <h3 className="text-lg font-bold mb-4">Current Status</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className={`p-4 rounded-lg ${
-                    selectedStation.congestion === 'Low' 
-                      ? 'bg-green-50 border border-green-100' 
+                    selectedStation.congestion === 'Low'
+                      ? 'bg-green-50 border border-green-100'
                       : selectedStation.congestion === 'Medium'
                       ? 'bg-yellow-50 border border-yellow-100'
                       : 'bg-red-50 border border-red-100'
                   }`}>
                     <div className="text-sm text-gray-500">Congestion</div>
                     <div className={`font-bold ${
-                      selectedStation.congestion === 'Low' 
-                        ? 'text-green-600' 
+                      selectedStation.congestion === 'Low'
+                        ? 'text-green-600'
                         : selectedStation.congestion === 'Medium'
                         ? 'text-yellow-600'
                         : 'text-red-600'
@@ -962,18 +1063,18 @@ const NearbyStations = () => {
                       {selectedStation.congestion}
                     </div>
                   </div>
-                  
+
                   <div className={`p-4 rounded-lg ${
-                    selectedStation.waitTime === '< 5 min' 
-                      ? 'bg-green-50 border border-green-100' 
+                    selectedStation.waitTime === '< 5 min'
+                      ? 'bg-green-50 border border-green-100'
                       : selectedStation.waitTime === '5-10 min'
                       ? 'bg-yellow-50 border border-yellow-100'
                       : 'bg-red-50 border border-red-100'
                   }`}>
                     <div className="text-sm text-gray-500">Wait Time</div>
                     <div className={`font-bold ${
-                      selectedStation.waitTime === '< 5 min' 
-                        ? 'text-green-600' 
+                      selectedStation.waitTime === '< 5 min'
+                        ? 'text-green-600'
                         : selectedStation.waitTime === '5-10 min'
                         ? 'text-yellow-600'
                         : 'text-red-600'
@@ -981,19 +1082,19 @@ const NearbyStations = () => {
                       {selectedStation.waitTime}
                     </div>
                   </div>
-                  
+
                   <div className="p-4 rounded-lg bg-blue-50 border border-blue-100">
                     <div className="text-sm text-gray-500">Traffic Forecast</div>
                     <div className="font-bold text-blue-600">
-                      {selectedStation.congestion === 'Low' 
-                        ? 'Steady' 
+                      {selectedStation.congestion === 'Low'
+                        ? 'Steady'
                         : selectedStation.congestion === 'Medium'
                         ? 'Increasing'
                         : 'Peak Hours'}
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Reviews Section */}
                 <div className="mt-8">
                   <h3 className="text-lg font-bold mb-4">Customer Reviews</h3>
@@ -1047,23 +1148,23 @@ const NearbyStations = () => {
                     ))}
                   </div>
                 </div>
-                
+
                 <div className="mt-8 flex justify-end space-x-4">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     onClick={() => handleCallStation(selectedStation)}
                   >
                     <Phone className="mr-2" size={16} />
                     Call Station
                   </Button>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     onClick={() => handleGetDirections(selectedStation)}
                   >
                     <Navigation className="mr-2" size={16} />
                     Get Directions
                   </Button>
-                  <Button 
+                  <Button
                     className="bg-green-500 hover:bg-green-600"
                     onClick={() => setShowStationDetails(false)}
                   >
@@ -1075,7 +1176,7 @@ const NearbyStations = () => {
           </motion.div>
         </div>
       )}
-      
+
       {/* Call Station Dialog */}
       <Dialog open={showContactDialog} onOpenChange={setShowContactDialog}>
         <DialogContent className="sm:max-w-md">
@@ -1098,7 +1199,7 @@ const NearbyStations = () => {
           </div>
           <DialogFooter className="sm:justify-end">
             {selectedStation && (
-              <Button 
+              <Button
                 className="bg-green-500 hover:bg-green-600"
                 onClick={() => {
                   toast({
@@ -1116,7 +1217,7 @@ const NearbyStations = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      
+
       {/* App Store Dialog */}
       <Dialog open={showAppStoreDialog} onOpenChange={setShowAppStoreDialog}>
         <DialogContent className="sm:max-w-md">
@@ -1135,7 +1236,7 @@ const NearbyStations = () => {
               <h4 className="font-medium">iOS App</h4>
               <p className="text-sm text-gray-500 mt-1">Download on the App Store</p>
             </div>
-            
+
             <div className="bg-gray-50 p-4 rounded-lg text-center hover:bg-gray-100 transition-colors cursor-pointer">
               <svg className="w-16 h-16 mx-auto mb-2" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M3.60481 21.5988L12.0586 13.145L3.60481 4.69133L3.60481 21.5988Z" />
@@ -1147,7 +1248,7 @@ const NearbyStations = () => {
               <p className="text-sm text-gray-500 mt-1">Get it on Google Play</p>
             </div>
           </div>
-          
+
           <div className="py-4 text-center">
             <h4 className="font-medium mb-2">Scan QR Code</h4>
             <div className="bg-gray-800 inline-block p-2 rounded-lg">
@@ -1156,9 +1257,9 @@ const NearbyStations = () => {
               </div>
             </div>
           </div>
-          
+
           <DialogFooter className="sm:justify-center">
-            <Button 
+            <Button
               variant="outline"
               onClick={() => setShowAppStoreDialog(false)}
             >
