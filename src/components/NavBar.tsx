@@ -183,6 +183,12 @@ const NavBar = () => {
               How It Works
             </button>
             <button
+              onClick={() => navigate('/about-us')}
+              className="text-sm font-medium text-gray-700 hover:text-green-500 transition-colors"
+            >
+              About Us
+            </button>
+            <button
               onClick={handleAppDownloadClick}
               className="text-sm font-medium text-gray-700 hover:text-green-500 transition-colors"
             >
@@ -325,6 +331,12 @@ const NavBar = () => {
                 className="block py-2 text-base font-medium text-gray-700 hover:text-green-500 w-full text-left"
               >
                 How It Works
+              </button>
+              <button
+                onClick={() => navigate('/about-us')}
+                className="block py-2 text-base font-medium text-gray-700 hover:text-green-500 w-full text-left"
+              >
+                About Us
               </button>
               <button
                 onClick={handleAppDownloadClick}
