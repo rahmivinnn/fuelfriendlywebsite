@@ -693,20 +693,67 @@ const NearbyStations: React.FC = () => {
     }
   }, [toast]);
 
+  // Generate default cities for countries without specific city data
+  const getDefaultCitiesForCountry = (countryCode: string) => {
+    // First check if we have specific cities for this country
+    const specificCities = cities.filter(city => city.countryCode === countryCode);
+
+    if (specificCities.length > 0) {
+      return specificCities;
+    }
+
+    // If no specific cities, generate default ones
+    const country = countries.find(c => c.code === countryCode);
+    if (!country) return [];
+
+    // Generate capital city and a few other major cities
+    return [
+      { name: `${country.name} City`, countryCode },
+      { name: `Capital City`, countryCode },
+      { name: `North ${country.name}`, countryCode },
+      { name: `South ${country.name}`, countryCode },
+      { name: `East ${country.name}`, countryCode },
+      { name: `West ${country.name}`, countryCode },
+      { name: `Central ${country.name}`, countryCode },
+      { name: `New ${country.name}`, countryCode },
+      { name: `Old ${country.name}`, countryCode },
+      { name: `${country.name} Harbor`, countryCode },
+    ];
+  };
+
   // Filter cities based on selected country
   useEffect(() => {
     if (selectedCountry) {
-      const filtered = cities.filter(city => city.countryCode === selectedCountry);
+      const filtered = getDefaultCitiesForCountry(selectedCountry);
       setFilteredCities(filtered);
-      setSelectedCity('');
+
+      // Auto-select the first city
+      if (filtered.length > 0) {
+        setSelectedCity(filtered[0].name);
+      } else {
+        setSelectedCity('');
+      }
+
+      // Auto-search when country changes (if a city is available)
+      if (filtered.length > 0) {
+        // Small delay to ensure the city is set
+        setTimeout(() => {
+          handleSearch();
+        }, 100);
+      }
     } else {
       setFilteredCities([]);
+      setSelectedCity('');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCountry]);
 
   // Handle search
   const handleSearch = () => {
     if (!selectedCountry || !selectedCity) {
+      // Don't show error toast when auto-searching
+      if (isLoading) return;
+
       toast({
         title: 'Selection Required',
         description: 'Please select both a country and a city to search for nearby stations.',
@@ -998,7 +1045,15 @@ const NearbyStations: React.FC = () => {
               <label className="block text-sm font-medium mb-1">City</label>
               <Select
                 value={selectedCity}
-                onValueChange={setSelectedCity}
+                onValueChange={(value) => {
+                  setSelectedCity(value);
+                  // Auto-search when city changes
+                  if (value && selectedCountry) {
+                    setTimeout(() => {
+                      handleSearch();
+                    }, 100);
+                  }
+                }}
                 disabled={!selectedCountry || filteredCities.length === 0}
               >
                 <SelectTrigger className={selectedCountry ? "border-green-500 focus:ring-green-500" : ""}>
@@ -1013,13 +1068,16 @@ const NearbyStations: React.FC = () => {
                         </SelectItem>
                       ))
                     ) : (
-                      <div className="p-2 text-center text-gray-500">No cities available for this country yet</div>
+                      <div className="p-2 text-center text-gray-500">Select another country</div>
                     )}
                   </div>
                 </SelectContent>
               </Select>
               {selectedCountry && filteredCities.length > 0 && (
-                <p className="text-xs text-gray-500 mt-1">{filteredCities.length} cities available</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {filteredCities.length} cities available
+                  {selectedCity && <span className="text-green-500"> • Auto-selected</span>}
+                </p>
               )}
             </div>
 
@@ -1034,6 +1092,11 @@ const NearbyStations: React.FC = () => {
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Searching...
+                    </>
+                  ) : hasSearched ? (
+                    <>
+                      <Search className="mr-2 h-4 w-4" />
+                      Refresh Results
                     </>
                   ) : (
                     <>
