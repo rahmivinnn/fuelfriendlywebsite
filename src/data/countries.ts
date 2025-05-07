@@ -10,6 +10,18 @@ export interface City {
 
 // Sample cities for each country
 export const cities: City[] = [
+  // Albania
+  { name: 'Memphis', countryCode: 'AL' },
+  { name: 'Tirana', countryCode: 'AL' },
+  { name: 'Durrës', countryCode: 'AL' },
+  { name: 'Vlorë', countryCode: 'AL' },
+  { name: 'Shkodër', countryCode: 'AL' },
+  { name: 'Elbasan', countryCode: 'AL' },
+  { name: 'Korçë', countryCode: 'AL' },
+  { name: 'Fier', countryCode: 'AL' },
+  { name: 'Berat', countryCode: 'AL' },
+  { name: 'Lushnjë', countryCode: 'AL' },
+
   // United States
   { name: 'New York', countryCode: 'US' },
   { name: 'Los Angeles', countryCode: 'US' },

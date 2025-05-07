@@ -662,8 +662,19 @@ const NearbyStations: React.FC = () => {
   const [userLocation, setUserLocation] = useState<{ lat: number, lng: number } | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
 
-  // Get user's geolocation
+  // Initialize with Albania and Memphis
   useEffect(() => {
+    // Set default country and city
+    setSelectedCountry('AL');
+
+    // The city will be auto-selected in the other useEffect
+
+    toast({
+      title: 'Welcome to Fuel Friendly',
+      description: 'Showing fuel stations in Memphis, Albania by default.',
+    });
+
+    // Optional: Get user's geolocation for future use
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -671,23 +682,9 @@ const NearbyStations: React.FC = () => {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           });
-
-          // For demo purposes, we'll set a default country/city based on geolocation
-          // In a real app, you would use reverse geocoding to get the actual location
-          setSelectedCountry('US');
-
-          toast({
-            title: 'Location Found',
-            description: 'Using your current location to find nearby stations.',
-          });
         },
         (error) => {
           console.error('Error getting geolocation:', error);
-          toast({
-            title: 'Location Error',
-            description: 'Could not access your location. Please select a country and city manually.',
-            variant: 'destructive',
-          });
         }
       );
     }
@@ -705,6 +702,22 @@ const NearbyStations: React.FC = () => {
     // If no specific cities, generate default ones
     const country = countries.find(c => c.code === countryCode);
     if (!country) return [];
+
+    // Special case for Albania - always include Memphis
+    if (countryCode === 'AL') {
+      return [
+        { name: 'Memphis', countryCode },
+        { name: 'Tirana', countryCode },
+        { name: 'Durrës', countryCode },
+        { name: 'Vlorë', countryCode },
+        { name: 'Shkodër', countryCode },
+        { name: 'Elbasan', countryCode },
+        { name: 'Korçë', countryCode },
+        { name: 'Fier', countryCode },
+        { name: 'Berat', countryCode },
+        { name: 'Lushnjë', countryCode },
+      ];
+    }
 
     // Generate capital city and a few other major cities
     return [
@@ -1320,173 +1333,354 @@ const NearbyStations: React.FC = () => {
 
             {viewType === 'list' ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {stations.map((station) => (
-                  <Card key={station.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                    <div className="h-40 bg-gray-200 relative">
-                      {station.photoUrl ? (
-                        <img
-                          src={station.photoUrl}
-                          alt={station.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-700">
-                          <MapPin size={40} className="text-gray-400" />
-                        </div>
-                      )}
-                      <Badge
-                        className={`absolute top-2 right-2 ${
-                          station.isOpen ? 'bg-green-500' : 'bg-red-500'
-                        }`}
-                      >
-                        {station.isOpen ? 'Open Now' : 'Closed'}
-                      </Badge>
+                {stations.map((station, index) => (
+                  <motion.div
+                    key={station.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.4,
+                      delay: index * 0.1,
+                      ease: "easeOut"
+                    }}
+                    whileHover={{
+                      scale: 1.02,
+                      boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+                    }}
+                    className="h-full"
+                  >
+                    <Card className="overflow-hidden h-full flex flex-col border-2 hover:border-green-500 transition-all duration-300">
+                      <div className="h-48 bg-gray-200 relative overflow-hidden group">
+                        {station.photoUrl ? (
+                          <motion.img
+                            src={station.photoUrl}
+                            alt={station.name}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            whileHover={{ scale: 1.05 }}
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+                            <MapPin size={40} className="text-gray-400" />
+                          </div>
+                        )}
+                        <Badge
+                          className={`absolute top-2 right-2 ${
+                            station.isOpen ? 'bg-green-500' : 'bg-red-500'
+                          } transition-all duration-300 hover:scale-110`}
+                        >
+                          {station.isOpen ? 'Open Now' : 'Closed'}
+                        </Badge>
 
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="absolute top-2 left-2 bg-white/80 hover:bg-white rounded-full h-8 w-8"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleToggleFavorite(station.id);
-                        }}
-                      >
-                        <Heart
-                          size={16}
-                          className={station.isFavorite ? "fill-red-500 text-red-500" : "text-gray-500"}
-                        />
-                      </Button>
+                        <motion.div
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          className="absolute top-2 left-2"
+                        >
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="bg-white/80 hover:bg-white rounded-full h-8 w-8 shadow-md"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleToggleFavorite(station.id);
+                            }}
+                          >
+                            <Heart
+                              size={16}
+                              className={station.isFavorite ? "fill-red-500 text-red-500" : "text-gray-500"}
+                            />
+                          </Button>
+                        </motion.div>
 
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
-                        <div className="flex justify-between items-center">
-                          <Badge variant="outline" className="bg-white/90 text-black text-xs">
-                            {station.brand}
-                          </Badge>
-                          <div className="flex items-center">
-                            <Badge variant="outline" className="bg-white/90 text-black text-xs mr-1">
-                              {station.congestion === 'Low' ? '🟢 Low Traffic' :
-                               station.congestion === 'Medium' ? '🟡 Medium Traffic' :
-                               '🔴 High Traffic'}
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3 transform transition-transform duration-300 group-hover:translate-y-0 translate-y-0">
+                          <div className="flex justify-between items-center">
+                            <Badge variant="outline" className="bg-white/90 text-black text-xs font-bold">
+                              {station.brand}
                             </Badge>
-                            <Badge variant="outline" className="bg-white/90 text-black text-xs">
-                              {station.waitTime}
-                            </Badge>
+                            <div className="flex items-center">
+                              <Badge variant="outline" className="bg-white/90 text-black text-xs mr-1">
+                                {station.congestion === 'Low' ? '🟢 Low Traffic' :
+                                 station.congestion === 'Medium' ? '🟡 Medium Traffic' :
+                                 '🔴 High Traffic'}
+                              </Badge>
+                              <Badge variant="outline" className="bg-white/90 text-black text-xs">
+                                {station.waitTime}
+                              </Badge>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-lg flex justify-between">
-                        <span className="truncate mr-2">{station.name}</span>
-                        <span className="text-sm font-normal text-gray-500 whitespace-nowrap">
-                          {station.distance}
-                        </span>
-                      </CardTitle>
-                      <CardDescription className="text-xs truncate">
-                        {station.address}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="pb-2">
-                      <div className="flex justify-between items-center mb-3">
-                        <div className="flex items-center">
-                          <span className="text-yellow-500 mr-1">★</span>
-                          <span>{station.rating}</span>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-lg flex justify-between group">
+                          <span className="truncate mr-2 group-hover:text-green-600 transition-colors duration-300">{station.name}</span>
+                          <span className="text-sm font-normal text-gray-500 whitespace-nowrap">
+                            {station.distance}
+                          </span>
+                        </CardTitle>
+                        <CardDescription className="text-xs truncate">
+                          {station.address}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="pb-2 flex-grow">
+                        <div className="flex justify-between items-center mb-3">
+                          <div className="flex items-center">
+                            <div className="flex">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <motion.span
+                                  key={star}
+                                  className={`${star <= Math.round(station.rating) ? "text-yellow-500" : "text-gray-300"}`}
+                                  whileHover={{ scale: 1.2, rotate: 5 }}
+                                >
+                                  ★
+                                </motion.span>
+                              ))}
+                            </div>
+                            <span className="ml-1">{station.rating}</span>
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            Updated {station.lastUpdated}
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-500">
-                          Updated {station.lastUpdated}
+
+                        <motion.div
+                          className="grid grid-cols-3 gap-1 mb-3 p-2 bg-gray-50 dark:bg-gray-800 rounded-md"
+                          whileHover={{ backgroundColor: "rgba(34, 197, 94, 0.1)" }}
+                        >
+                          {renderFuelPrice(station, 'regular')}
+                          {renderFuelPrice(station, 'premium')}
+                          {renderFuelPrice(station, 'diesel')}
+                        </motion.div>
+
+                        <div className="flex flex-wrap gap-1">
+                          {station.services.slice(0, 3).map((service, index) => (
+                            <motion.div key={index} whileHover={{ scale: 1.05 }}>
+                              <Badge variant="outline" className="text-xs flex items-center hover:bg-green-50 hover:text-green-700 transition-colors duration-300">
+                                {renderServiceIcon(service)}
+                                {service}
+                              </Badge>
+                            </motion.div>
+                          ))}
+                          {station.services.length > 3 && (
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Badge variant="outline" className="text-xs cursor-pointer hover:bg-green-50">
+                                  +{station.services.length - 3} more
+                                </Badge>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-48 p-2">
+                                <div className="space-y-1">
+                                  {station.services.slice(3).map((service, index) => (
+                                    <div key={index} className="flex items-center text-sm">
+                                      {renderServiceIcon(service)}
+                                      {service}
+                                    </div>
+                                  ))}
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          )}
                         </div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-1 mb-3">
-                        {renderFuelPrice(station, 'regular')}
-                        {renderFuelPrice(station, 'premium')}
-                        {renderFuelPrice(station, 'diesel')}
-                      </div>
-
-                      <div className="flex flex-wrap gap-1">
-                        {station.services.slice(0, 3).map((service, index) => (
-                          <Badge key={index} variant="outline" className="text-xs flex items-center">
-                            {renderServiceIcon(service)}
-                            {service}
-                          </Badge>
-                        ))}
-                        {station.services.length > 3 && (
-                          <Badge variant="outline" className="text-xs">
-                            +{station.services.length - 3} more
-                          </Badge>
-                        )}
-                      </div>
-                    </CardContent>
-                    <CardFooter className="grid grid-cols-2 gap-2">
-                      <Button
-                        variant="outline"
-                        className="text-green-600 border-green-600 hover:bg-green-50"
-                        onClick={() => handleViewDetails(station)}
-                      >
-                        <Info size={16} className="mr-2" />
-                        Details
-                      </Button>
-                      <Button
-                        variant="default"
-                        className="bg-green-500 hover:bg-green-600"
-                        onClick={() => handleOpenInGoogleMaps(station.placeId)}
-                      >
-                        <Navigation size={16} className="mr-2" />
-                        Directions
-                      </Button>
-                    </CardFooter>
-                  </Card>
+                      </CardContent>
+                      <CardFooter className="grid grid-cols-2 gap-2">
+                        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                          <Button
+                            variant="outline"
+                            className="w-full text-green-600 border-green-600 hover:bg-green-50"
+                            onClick={() => handleViewDetails(station)}
+                          >
+                            <Info size={16} className="mr-2" />
+                            Details
+                          </Button>
+                        </motion.div>
+                        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                          <Button
+                            variant="default"
+                            className="w-full bg-green-500 hover:bg-green-600"
+                            onClick={() => handleOpenInGoogleMaps(station.placeId)}
+                          >
+                            <Navigation size={16} className="mr-2" />
+                            Directions
+                          </Button>
+                        </motion.div>
+                      </CardFooter>
+                    </Card>
+                  </motion.div>
                 ))}
               </div>
             ) : (
-              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg h-[500px] overflow-hidden relative">
-                {/* Basic map implementation */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="bg-gray-100 dark:bg-gray-700 rounded-lg h-[500px] overflow-hidden relative"
+              >
+                {/* Interactive map implementation */}
                 <div
                   ref={mapRef}
                   className="w-full h-full"
                   style={{
                     backgroundImage: "url('https://maps.googleapis.com/maps/api/staticmap?center=" +
                       selectedCity + "," + countries.find(c => c.code === selectedCountry)?.name +
-                      "&zoom=13&size=1200x500&maptype=roadmap&key=YOUR_API_KEY')",
+                      "&zoom=13&size=1200x500&maptype=roadmap&markers=color:green|label:S|" +
+                      selectedCity + "," + countries.find(c => c.code === selectedCountry)?.name +
+                      "&key=YOUR_API_KEY')",
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                   }}
                 >
-                  {/* This would be replaced with actual Google Maps implementation */}
-                  <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md text-center">
-                      <Info size={48} className="mx-auto mb-4 text-gray-400" />
-                      <h3 className="text-lg font-medium mb-2">Interactive Map View</h3>
-                      <p className="text-gray-500 dark:text-gray-400 mb-4">
-                        This would display an interactive Google Map with markers for each of the {stations.length} fuel stations in {selectedCity}, {countries.find(c => c.code === selectedCountry)?.name}.
-                      </p>
-                      <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                        <Button
-                          variant="outline"
-                          className="border-green-500 text-green-600 hover:bg-green-50"
-                          onClick={() => window.open(`https://www.google.com/maps/search/gas+stations+in+${selectedCity},+${countries.find(c => c.code === selectedCountry)?.name}`, '_blank')}
-                        >
-                          <ExternalLink size={16} className="mr-2" />
-                          View on Google Maps
-                        </Button>
-                        <Button
-                          variant="default"
-                          className="bg-green-500 hover:bg-green-600"
-                          onClick={() => setViewType('list')}
-                        >
-                          Return to List View
-                        </Button>
-                      </div>
-                    </div>
+                  {/* Map overlay with station markers */}
+                  <div className="absolute inset-0">
+                    {/* Simulated station markers */}
+                    {stations.map((station, index) => (
+                      <motion.div
+                        key={station.id}
+                        className="absolute"
+                        style={{
+                          left: `${20 + (index * 5) + Math.random() * 60}%`,
+                          top: `${20 + (index * 3) + Math.random() * 60}%`,
+                        }}
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.5 + (index * 0.1), duration: 0.3 }}
+                        whileHover={{ scale: 1.2, zIndex: 10 }}
+                      >
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              className={`rounded-full h-8 w-8 p-0 shadow-lg border-2 ${
+                                station.isOpen ? 'bg-green-500 border-white text-white' : 'bg-red-500 border-white text-white'
+                              }`}
+                            >
+                              {station.isFavorite ? <Heart className="h-4 w-4 fill-white" /> : <MapPin className="h-4 w-4" />}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-72 p-0 shadow-xl">
+                            <div className="relative h-32 bg-gray-200">
+                              {station.photoUrl ? (
+                                <img
+                                  src={station.photoUrl}
+                                  alt={station.name}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                                  <MapPin size={32} className="text-gray-400" />
+                                </div>
+                              )}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                              <div className="absolute bottom-2 left-2 right-2 text-white">
+                                <h3 className="font-bold text-lg">{station.name}</h3>
+                                <p className="text-xs opacity-90 truncate">{station.address}</p>
+                              </div>
+                            </div>
+                            <div className="p-3">
+                              <div className="flex justify-between items-center mb-2">
+                                <div className="flex items-center">
+                                  <span className="text-yellow-500 mr-1">★</span>
+                                  <span>{station.rating}</span>
+                                </div>
+                                <Badge className={station.isOpen ? 'bg-green-500' : 'bg-red-500'}>
+                                  {station.isOpen ? 'Open Now' : 'Closed'}
+                                </Badge>
+                              </div>
+                              <div className="grid grid-cols-3 gap-1 mb-2 text-center text-sm">
+                                <div>
+                                  <div className="font-semibold text-green-600">${station.regularPrice.toFixed(2)}</div>
+                                  <div className="text-xs text-gray-500">Regular</div>
+                                </div>
+                                <div>
+                                  <div className="font-semibold">${station.premiumPrice.toFixed(2)}</div>
+                                  <div className="text-xs text-gray-500">Premium</div>
+                                </div>
+                                <div>
+                                  <div className="font-semibold">${station.dieselPrice.toFixed(2)}</div>
+                                  <div className="text-xs text-gray-500">Diesel</div>
+                                </div>
+                              </div>
+                              <div className="flex justify-between gap-2 mt-3">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="flex-1"
+                                  onClick={() => handleViewDetails(station)}
+                                >
+                                  <Info size={14} className="mr-1" />
+                                  Details
+                                </Button>
+                                <Button
+                                  variant="default"
+                                  size="sm"
+                                  className="flex-1 bg-green-500 hover:bg-green-600"
+                                  onClick={() => handleOpenInGoogleMaps(station.placeId)}
+                                >
+                                  <Navigation size={14} className="mr-1" />
+                                  Directions
+                                </Button>
+                              </div>
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Map controls */}
+                  <div className="absolute top-4 right-4 flex flex-col gap-2">
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Button
+                        variant="default"
+                        size="sm"
+                        className="bg-white text-gray-800 hover:bg-gray-100 shadow-lg"
+                        onClick={() => setViewType('list')}
+                      >
+                        <Search size={14} className="mr-1" />
+                        List View
+                      </Button>
+                    </motion.div>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Button
+                        variant="default"
+                        size="sm"
+                        className="bg-white text-gray-800 hover:bg-gray-100 shadow-lg"
+                        onClick={() => window.open(`https://www.google.com/maps/search/gas+stations+in+${selectedCity},+${countries.find(c => c.code === selectedCountry)?.name}`, '_blank')}
+                      >
+                        <ExternalLink size={14} className="mr-1" />
+                        Google Maps
+                      </Button>
+                    </motion.div>
                   </div>
                 </div>
 
-                <div className="absolute bottom-4 right-4 z-20">
-                  <Badge className="bg-green-500">
+                <motion.div
+                  className="absolute bottom-4 left-4 z-20"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                >
+                  <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-3">
+                    <h3 className="font-medium text-sm mb-1 flex items-center">
+                      <MapPin size={14} className="text-green-500 mr-1" />
+                      {selectedCity}, {countries.find(c => c.code === selectedCountry)?.name}
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      Showing {stations.length} fuel stations in this area
+                    </p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  className="absolute bottom-4 right-4 z-20"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.5, type: "spring" }}
+                >
+                  <Badge className="bg-green-500 shadow-lg">
                     {selectedCity}, {countries.find(c => c.code === selectedCountry)?.name}
                   </Badge>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             )}
           </>
         )}
