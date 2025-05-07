@@ -475,6 +475,7 @@ const NearbyStations: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
   const [viewType, setViewType] = useState<'list' | 'map'>('list');
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const { toast } = useToast();
 
   // Filter cities based on selected country
@@ -503,14 +504,21 @@ const NearbyStations: React.FC = () => {
     setHasSearched(false);
 
     // Simulate API call to Google Places
+    // In a real implementation, this would call the Google Places API with the selected country and city
     setTimeout(() => {
-      setStations(mockStations);
+      // Customize the mock data to reflect the selected city and country
+      const customizedStations = mockStations.map(station => ({
+        ...station,
+        address: station.address.replace('New York, NY', `${selectedCity}, ${countries.find(c => c.code === selectedCountry)?.name}`),
+      }));
+
+      setStations(customizedStations);
       setIsLoading(false);
       setHasSearched(true);
 
       toast({
         title: 'Stations Found',
-        description: `Found ${mockStations.length} fuel stations in ${selectedCity}, ${countries.find(c => c.code === selectedCountry)?.name}.`,
+        description: `Found ${customizedStations.length} fuel stations in ${selectedCity}, ${countries.find(c => c.code === selectedCountry)?.name}.`,
       });
     }, 1500);
   };
@@ -540,83 +548,123 @@ const NearbyStations: React.FC = () => {
           Find Nearby Fuel Stations
         </h2>
         <p className="text-gray-600 dark:text-gray-300 mb-6">
-          Select a country and city to find fuel stations registered on Google Maps in your area.
+          Select from 195 countries worldwide and find fuel stations registered on Google Maps in your chosen city.
+          Get real-time information on prices, services, and more.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div>
-            <label className="block text-sm font-medium mb-1">Country</label>
-            <Select value={selectedCountry} onValueChange={setSelectedCountry}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a country" />
-              </SelectTrigger>
-              <SelectContent className="max-h-[300px]">
-                <div className="max-h-[300px] overflow-y-auto">
-                  {countries.map((country) => (
-                    <SelectItem key={country.code} value={country.code}>
-                      {country.name}
-                    </SelectItem>
-                  ))}
-                </div>
-              </SelectContent>
-            </Select>
+        <div className="mb-6">
+          <div className="flex items-center justify-center mb-4">
+            <div className="relative w-full max-w-md">
+              <Input
+                type="text"
+                placeholder="Search for a specific station or address..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-4 py-2 border-gray-300 dark:border-gray-600 rounded-lg"
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+            </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">City</label>
-            <Select
-              value={selectedCity}
-              onValueChange={setSelectedCity}
-              disabled={!selectedCountry || filteredCities.length === 0}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={!selectedCountry ? "Select a country first" : "Select a city"} />
-              </SelectTrigger>
-              <SelectContent className="max-h-[300px]">
-                <div className="max-h-[300px] overflow-y-auto">
-                  {filteredCities.map((city) => (
-                    <SelectItem key={city.name} value={city.name}>
-                      {city.name}
-                    </SelectItem>
-                  ))}
-                </div>
-              </SelectContent>
-            </Select>
-          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div>
+              <label className="block text-sm font-medium mb-1">Country</label>
+              <Select value={selectedCountry} onValueChange={setSelectedCountry}>
+                <SelectTrigger className="border-green-500 focus:ring-green-500">
+                  <SelectValue placeholder="Select a country" />
+                </SelectTrigger>
+                <SelectContent className="max-h-[300px]">
+                  <div className="max-h-[300px] overflow-y-auto">
+                    {countries.map((country) => (
+                      <SelectItem key={country.code} value={country.code}>
+                        {country.name}
+                      </SelectItem>
+                    ))}
+                  </div>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-gray-500 mt-1">All 195 countries available</p>
+            </div>
 
-          <div className="flex items-end">
-            <Button
-              onClick={handleSearch}
-              className="w-full bg-green-500 hover:bg-green-600"
-              disabled={isLoading || !selectedCountry || !selectedCity}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Searching...
-                </>
-              ) : (
-                <>
-                  <Search className="mr-2 h-4 w-4" />
-                  Find Stations
-                </>
+            <div>
+              <label className="block text-sm font-medium mb-1">City</label>
+              <Select
+                value={selectedCity}
+                onValueChange={setSelectedCity}
+                disabled={!selectedCountry || filteredCities.length === 0}
+              >
+                <SelectTrigger className={selectedCountry ? "border-green-500 focus:ring-green-500" : ""}>
+                  <SelectValue placeholder={!selectedCountry ? "Select a country first" : filteredCities.length === 0 ? "No cities available" : "Select a city"} />
+                </SelectTrigger>
+                <SelectContent className="max-h-[300px]">
+                  <div className="max-h-[300px] overflow-y-auto">
+                    {filteredCities.length > 0 ? (
+                      filteredCities.map((city) => (
+                        <SelectItem key={city.name} value={city.name}>
+                          {city.name}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <div className="p-2 text-center text-gray-500">No cities available for this country yet</div>
+                    )}
+                  </div>
+                </SelectContent>
+              </Select>
+              {selectedCountry && filteredCities.length > 0 && (
+                <p className="text-xs text-gray-500 mt-1">{filteredCities.length} cities available</p>
               )}
-            </Button>
+            </div>
+
+            <div className="flex items-end">
+              <Button
+                onClick={handleSearch}
+                className="w-full bg-green-500 hover:bg-green-600"
+                disabled={isLoading || !selectedCountry || !selectedCity}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Searching...
+                  </>
+                ) : (
+                  <>
+                    <Search className="mr-2 h-4 w-4" />
+                    Find Stations
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
 
         {hasSearched && (
           <>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold">
-                Stations in {selectedCity}, {countries.find(c => c.code === selectedCountry)?.name}
-              </h3>
-              <Tabs defaultValue="list" className="w-[200px]">
-                <TabsList>
-                  <TabsTrigger value="list" onClick={() => setViewType('list')}>List View</TabsTrigger>
-                  <TabsTrigger value="map" onClick={() => setViewType('map')}>Map View</TabsTrigger>
-                </TabsList>
-              </Tabs>
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mb-6">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                <div>
+                  <h3 className="text-xl font-semibold mb-1">
+                    Fuel Stations in {selectedCity}, {countries.find(c => c.code === selectedCountry)?.name}
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Showing {stations.length} stations • Updated just now
+                  </p>
+                </div>
+                <Tabs defaultValue="list" className="w-[200px] mt-3 md:mt-0">
+                  <TabsList>
+                    <TabsTrigger value="list" onClick={() => setViewType('list')}>List View</TabsTrigger>
+                    <TabsTrigger value="map" onClick={() => setViewType('map')}>Map View</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+
+              {searchQuery && (
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-md mb-4 flex items-center">
+                  <Info size={18} className="text-blue-500 mr-2" />
+                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                    Filtering results for "{searchQuery}" in {selectedCity}, {countries.find(c => c.code === selectedCountry)?.name}
+                  </p>
+                </div>
+              )}
             </div>
 
             {viewType === 'list' ? (
@@ -684,20 +732,38 @@ const NearbyStations: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg h-[500px] flex items-center justify-center">
-                <div className="text-center p-6">
-                  <Info size={48} className="mx-auto mb-4 text-gray-400" />
-                  <h3 className="text-lg font-medium mb-2">Map View</h3>
-                  <p className="text-gray-500 dark:text-gray-400 mb-4">
-                    In the production version, this would display an interactive Google Map with markers for each station.
-                  </p>
-                  <Button
-                    variant="outline"
-                    onClick={() => window.open(`https://www.google.com/maps/search/gas+stations+in+${selectedCity},+${countries.find(c => c.code === selectedCountry)?.name}`, '_blank')}
-                  >
-                    <ExternalLink size={16} className="mr-2" />
-                    View on Google Maps
-                  </Button>
+              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg h-[500px] overflow-hidden relative">
+                <div className="absolute inset-0 bg-gray-200 dark:bg-gray-800 opacity-50 z-10"></div>
+                <div className="absolute inset-0 flex items-center justify-center z-20">
+                  <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md text-center">
+                    <Info size={48} className="mx-auto mb-4 text-gray-400" />
+                    <h3 className="text-lg font-medium mb-2">Interactive Map View</h3>
+                    <p className="text-gray-500 dark:text-gray-400 mb-4">
+                      This would display an interactive Google Map with markers for each of the {stations.length} fuel stations in {selectedCity}, {countries.find(c => c.code === selectedCountry)?.name}.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                      <Button
+                        variant="outline"
+                        className="border-green-500 text-green-600 hover:bg-green-50"
+                        onClick={() => window.open(`https://www.google.com/maps/search/gas+stations+in+${selectedCity},+${countries.find(c => c.code === selectedCountry)?.name}`, '_blank')}
+                      >
+                        <ExternalLink size={16} className="mr-2" />
+                        View on Google Maps
+                      </Button>
+                      <Button
+                        variant="default"
+                        className="bg-green-500 hover:bg-green-600"
+                        onClick={() => setViewType('list')}
+                      >
+                        Return to List View
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute bottom-4 right-4 z-20">
+                  <Badge className="bg-green-500">
+                    {selectedCity}, {countries.find(c => c.code === selectedCountry)?.name}
+                  </Badge>
                 </div>
               </div>
             )}
