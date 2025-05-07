@@ -492,7 +492,7 @@ const mockStations: Station[] = [
   {
     id: '1',
     name: 'ARCO Gas Point #19',
-    address: '1078 Cypress Dr, Memphis, Albania',
+    address: '1078 Rruga Ismail Qemali, Tirana, Albania',
     distance: '0.5 miles',
     rating: 4.4,
     isOpen: true,
@@ -515,7 +515,7 @@ const mockStations: Station[] = [
   {
     id: '2',
     name: 'RaceTrac Gas & Goods #39',
-    address: '831 Magnolia Blvd, Memphis, Albania',
+    address: '831 Bulevardi Dëshmorët e Kombit, Tirana, Albania',
     distance: '0.5 miles',
     rating: 3.9,
     isOpen: true,
@@ -538,7 +538,7 @@ const mockStations: Station[] = [
   {
     id: '3',
     name: 'RaceTrac Gas & Goods #15',
-    address: '551 Sycamore Dr, Memphis, Albania',
+    address: '551 Rruga e Elbasanit, Tirana, Albania',
     distance: '0.6 miles',
     rating: 4.2,
     isOpen: true,
@@ -561,7 +561,7 @@ const mockStations: Station[] = [
   {
     id: '4',
     name: 'Sunoco Ultra Service',
-    address: '321 Riverside Ave, Memphis, Albania',
+    address: '321 Rruga Myslym Shyri, Tirana, Albania',
     distance: '0.8 miles',
     rating: 4.0,
     isOpen: true,
@@ -584,7 +584,7 @@ const mockStations: Station[] = [
   {
     id: '5',
     name: 'Petrol Albania',
-    address: '555 Central Blvd, Memphis, Albania',
+    address: '555 Bulevardi Bajram Curri, Tirana, Albania',
     distance: '1.2 miles',
     rating: 4.3,
     isOpen: true,
@@ -607,7 +607,7 @@ const mockStations: Station[] = [
   {
     id: '6',
     name: 'Kastrati Oil',
-    address: '789 Harbor Road, Memphis, Albania',
+    address: '789 Rruga Sami Frashëri, Tirana, Albania',
     distance: '1.5 miles',
     rating: 3.9,
     isOpen: true,
@@ -662,7 +662,7 @@ const NearbyStations: React.FC = () => {
   const [userLocation, setUserLocation] = useState<{ lat: number, lng: number } | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
 
-  // Initialize with Albania and Memphis
+  // Initialize with Albania and Tirana
   useEffect(() => {
     // Set default country and city
     setSelectedCountry('AL');
@@ -671,7 +671,7 @@ const NearbyStations: React.FC = () => {
 
     toast({
       title: 'Welcome to Fuel Friendly',
-      description: 'Showing fuel stations in Memphis, Albania by default.',
+      description: 'Showing fuel stations in Albania by default.',
     });
 
     // Optional: Get user's geolocation for future use
@@ -703,10 +703,9 @@ const NearbyStations: React.FC = () => {
     const country = countries.find(c => c.code === countryCode);
     if (!country) return [];
 
-    // Special case for Albania - always include Memphis
+    // Special case for Albania
     if (countryCode === 'AL') {
       return [
-        { name: 'Memphis', countryCode },
         { name: 'Tirana', countryCode },
         { name: 'Durrës', countryCode },
         { name: 'Vlorë', countryCode },
@@ -716,6 +715,7 @@ const NearbyStations: React.FC = () => {
         { name: 'Fier', countryCode },
         { name: 'Berat', countryCode },
         { name: 'Lushnjë', countryCode },
+        { name: 'Sarandë', countryCode },
       ];
     }
 
@@ -781,24 +781,18 @@ const NearbyStations: React.FC = () => {
     // Simulate API call to Google Places
     // In a real implementation, this would call the Google Places API with the selected country and city
     setTimeout(() => {
-      // For Albania, keep the original addresses (they're already set to Memphis, Albania)
+      // For Albania, keep the original addresses (they're already set to Albanian cities)
       // For other countries, customize the mock data to reflect the selected city and country
       const customizedStations = mockStations.map(station => {
-        // If we're already showing Albania and Memphis, don't modify the addresses
-        if (selectedCountry === 'AL' && selectedCity === 'Memphis') {
-          return {
-            ...station,
-            // Ensure the address explicitly shows Memphis, Albania (not Memphis, TN)
-            address: station.address.includes('Memphis, Albania')
-              ? station.address
-              : station.address.replace(/Memphis, TN|[^,]+, [^,]+$/, 'Memphis, Albania'),
-          };
+        // If we're already showing Albania and Tirana, don't modify the addresses
+        if (selectedCountry === 'AL' && selectedCity === 'Tirana') {
+          return station;
         }
 
         // Otherwise, update the addresses to match the selected city and country
         return {
           ...station,
-          address: station.address.replace(/Memphis, Albania|Memphis, TN|[^,]+, [^,]+$/, `${selectedCity}, ${countries.find(c => c.code === selectedCountry)?.name}`),
+          address: station.address.replace(/Tirana, Albania|[^,]+, [^,]+$/, `${selectedCity}, ${countries.find(c => c.code === selectedCountry)?.name}`),
         };
       });
 
@@ -1150,9 +1144,9 @@ const NearbyStations: React.FC = () => {
                                   lng: position.coords.longitude
                                 });
 
-                                // Always set to Albania and Memphis
+                                // Always set to Albania and Tirana
                                 setSelectedCountry('AL');
-                                setSelectedCity('Memphis');
+                                setSelectedCity('Tirana');
 
                                 setTimeout(() => {
                                   handleSearch();
