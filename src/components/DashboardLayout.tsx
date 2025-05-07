@@ -67,14 +67,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
 
       const randomMessage = messages[Math.floor(Math.random() * messages.length)];
       setNotificationCount(prev => prev + 1);
-      
+
       toast({
         title: "Real-time Update",
         description: randomMessage,
         duration: 3000,
       });
     }, 45000); // Random update every 45 seconds
-    
+
     return () => clearInterval(interval);
   }, [toast]);
 
@@ -88,15 +88,21 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
   };
 
   const handleSidebarItemClick = (item: SidebarItem) => {
-    // Navigate to the path
-    navigate(item.path);
+    // Prevent multiple rapid clicks
+    const currentPath = location.pathname;
 
-    // Show a toast for the selected item
-    toast({
-      title: `${item.label} Selected`,
-      description: `Navigating to ${item.label.toLowerCase()}`,
-      duration: 2000,
-    });
+    // Only navigate if we're not already on this path
+    if (currentPath !== item.path) {
+      // Navigate to the path
+      navigate(item.path);
+
+      // Show a toast for the selected item
+      toast({
+        title: `${item.label} Selected`,
+        description: `Navigating to ${item.label.toLowerCase()}`,
+        duration: 2000,
+      });
+    }
   };
 
   const handleLogout = () => {
@@ -117,7 +123,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
         initial={{ x: -300 }}
         animate={{ x: 0, width: isSidebarCollapsed ? 80 : 256 }}
         transition={{ type: "spring", stiffness: 100 }}
-        className="bg-white border-r border-gray-200 flex flex-col"
+        className="bg-white border-r border-gray-200 flex flex-col z-20"
       >
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
           <AnimatePresence>
@@ -151,7 +157,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
         <div className="flex-1 p-4 space-y-2 overflow-y-auto">
           {sidebarItems.map((item, index) => {
             const isActive = location.pathname === item.path;
-            
+
             return (
               <motion.div
                 key={item.label}
@@ -160,7 +166,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
                 transition={{ delay: index * 0.05 }}
               >
                 <div
-                  onClick={() => handleSidebarItemClick(item)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent event bubbling
+                    handleSidebarItemClick(item);
+                  }}
                   className={`flex items-center p-3 rounded-lg transition-colors hover:bg-gray-100 cursor-pointer ${isActive ? 'bg-green-50 text-green-500' : 'text-gray-600'}`}
                 >
                   <item.icon size={20} className={isActive ? 'text-green-500' : 'text-gray-500'} />
@@ -215,7 +224,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
       </motion.div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden relative z-10">
         {/* Top Nav */}
         <header className="bg-white border-b border-gray-200 py-4 px-6 flex items-center justify-between">
           <div className="flex items-center">
