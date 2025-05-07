@@ -786,13 +786,19 @@ const NearbyStations: React.FC = () => {
       const customizedStations = mockStations.map(station => {
         // If we're already showing Albania and Memphis, don't modify the addresses
         if (selectedCountry === 'AL' && selectedCity === 'Memphis') {
-          return station;
+          return {
+            ...station,
+            // Ensure the address explicitly shows Memphis, Albania (not Memphis, TN)
+            address: station.address.includes('Memphis, Albania')
+              ? station.address
+              : station.address.replace(/Memphis, TN|[^,]+, [^,]+$/, 'Memphis, Albania'),
+          };
         }
 
         // Otherwise, update the addresses to match the selected city and country
         return {
           ...station,
-          address: station.address.replace(/Memphis, Albania|[^,]+, [^,]+$/, `${selectedCity}, ${countries.find(c => c.code === selectedCountry)?.name}`),
+          address: station.address.replace(/Memphis, Albania|Memphis, TN|[^,]+, [^,]+$/, `${selectedCity}, ${countries.find(c => c.code === selectedCountry)?.name}`),
         };
       });
 
@@ -1144,9 +1150,9 @@ const NearbyStations: React.FC = () => {
                                   lng: position.coords.longitude
                                 });
 
-                                // For demo purposes, we'll set a default country/city
-                                setSelectedCountry('US');
-                                setSelectedCity('New York');
+                                // Always set to Albania and Memphis
+                                setSelectedCountry('AL');
+                                setSelectedCity('Memphis');
 
                                 setTimeout(() => {
                                   handleSearch();
