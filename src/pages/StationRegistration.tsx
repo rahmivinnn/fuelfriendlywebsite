@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import VerificationStep from "@/components/verification/VerificationStep";
 
 const StationRegistration = () => {
   const { toast } = useToast();
@@ -40,9 +41,12 @@ const StationRegistration = () => {
     ownerName: '',
     businessLicense: '',
     taxId: '',
-    paymentMethods: []
+    paymentMethods: [],
+    isVerified: false,
+    licenseVerified: false,
+    faceVerified: false
   });
-  
+
   const [paymentMethod, setPaymentMethod] = useState({
     type: '',
     cardNumber: '',
@@ -115,7 +119,17 @@ const StationRegistration = () => {
   };
 
   const nextStep = () => {
-    if (step < 5) {
+    // If we're on the verification step and not verified, show a message
+    if (step === 4 && !formData.isVerified) {
+      toast({
+        title: "Verification Required",
+        description: "Please complete both verification steps before proceeding.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (step < 6) {
       setStep(prev => prev + 1);
       toast({
         title: "Progress Saved",
@@ -124,13 +138,34 @@ const StationRegistration = () => {
     } else {
       // Immediate redirection - no delays or waiting
       navigate('/station-dashboard');
-      
+
       // Show toast after navigation has started
       toast({
         title: "Registration Complete!",
         description: "Your station has been registered successfully.",
       });
     }
+  };
+
+  // Handle verification completion
+  const handleVerificationComplete = () => {
+    setFormData(prev => ({
+      ...prev,
+      isVerified: true,
+      // These would normally be set by the verification components
+      // but for demo purposes we'll set them here
+      licenseVerified: true,
+      faceVerified: true,
+      // Optional verifications might be partially completed
+      phoneVerified: Math.random() > 0.5,
+      emailVerified: Math.random() > 0.3,
+      documentVerified: Math.random() > 0.7
+    }));
+
+    toast({
+      title: "Verification Complete",
+      description: "Your identity has been verified successfully. You can now proceed with registration.",
+    });
   };
 
   const prevStep = () => {
@@ -147,6 +182,12 @@ const StationRegistration = () => {
         <CardDescription>Create your account to register your station</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+          <h3 className="font-medium text-green-800 mb-1">Free Registration for Station Owners</h3>
+          <p className="text-sm text-green-700">
+            Registration is completely free for all station owners. Join our platform and start growing your business today!
+          </p>
+        </div>
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input
@@ -171,7 +212,7 @@ const StationRegistration = () => {
         </div>
       </CardContent>
       <CardFooter>
-        <Button 
+        <Button
           className="w-full bg-green-500 hover:bg-green-600"
           onClick={nextStep}
         >
@@ -250,13 +291,13 @@ const StationRegistration = () => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           onClick={prevStep}
         >
           Back
         </Button>
-        <Button 
+        <Button
           className="bg-green-500 hover:bg-green-600"
           onClick={nextStep}
         >
@@ -293,7 +334,7 @@ const StationRegistration = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="phoneNumber">Phone Number</Label>
           <Input
@@ -304,7 +345,7 @@ const StationRegistration = () => {
             onChange={handleChange}
           />
         </div>
-        
+
         <div className="space-y-2">
           <Label>Station Amenities</Label>
           <div className="grid grid-cols-2 gap-2">
@@ -328,13 +369,13 @@ const StationRegistration = () => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           onClick={prevStep}
         >
           Back
         </Button>
-        <Button 
+        <Button
           className="bg-green-500 hover:bg-green-600"
           onClick={nextStep}
         >
@@ -360,7 +401,7 @@ const StationRegistration = () => {
             onChange={handleChange}
           />
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="businessLicense">Business License Number</Label>
           <Input
@@ -371,7 +412,7 @@ const StationRegistration = () => {
             onChange={handleChange}
           />
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="taxId">Tax ID / EIN</Label>
           <Input
@@ -382,7 +423,7 @@ const StationRegistration = () => {
             onChange={handleChange}
           />
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="businessHours">Business Hours</Label>
           <Select
@@ -403,13 +444,13 @@ const StationRegistration = () => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           onClick={prevStep}
         >
           Back
         </Button>
-        <Button 
+        <Button
           className="bg-green-500 hover:bg-green-600"
           onClick={nextStep}
         >
@@ -418,7 +459,17 @@ const StationRegistration = () => {
       </CardFooter>
     </Card>,
 
-    // Step 5: Payment Methods
+    // Step 5: Identity Verification
+    <VerificationStep
+      onNext={() => {
+        handleVerificationComplete();
+        nextStep();
+      }}
+      onPrev={prevStep}
+      email={formData.email}
+    />,
+
+    // Step 6: Payment Methods
     <Card className="max-w-md mx-auto">
       <CardHeader>
         <CardTitle>Payment Methods</CardTitle>
@@ -437,8 +488,8 @@ const StationRegistration = () => {
                     {method.cardNumber.substring(0, 4)} •••• •••• {method.cardNumber.slice(-4)} | {method.holderName}
                   </p>
                 </div>
-                <Button 
-                  variant="destructive" 
+                <Button
+                  variant="destructive"
                   size="sm"
                   onClick={() => removePaymentMethod(method.id)}
                 >
@@ -452,7 +503,7 @@ const StationRegistration = () => {
         {/* Add new payment method form */}
         <div className="border p-4 rounded-lg space-y-4">
           <h3 className="text-sm font-medium">Add New Payment Method</h3>
-          
+
           <div className="space-y-2">
             <Label htmlFor="paymentType">Payment Type</Label>
             <Select
@@ -470,7 +521,7 @@ const StationRegistration = () => {
               </SelectContent>
             </Select>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="cardNumber">Card Number</Label>
             <Input
@@ -482,7 +533,7 @@ const StationRegistration = () => {
               maxLength={16}
             />
           </div>
-          
+
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="expiry">Expiry Date</Label>
@@ -508,7 +559,7 @@ const StationRegistration = () => {
               />
             </div>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="holderName">Card Holder Name</Label>
             <Input
@@ -519,8 +570,8 @@ const StationRegistration = () => {
               onChange={handlePaymentMethodChange}
             />
           </div>
-          
-          <Button 
+
+          <Button
             type="button"
             className="w-full bg-green-500 hover:bg-green-600 mt-2"
             onClick={addPaymentMethod}
@@ -530,13 +581,13 @@ const StationRegistration = () => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           onClick={prevStep}
         >
           Back
         </Button>
-        <Button 
+        <Button
           className="bg-green-500 hover:bg-green-600"
           onClick={nextStep}
         >
@@ -545,7 +596,7 @@ const StationRegistration = () => {
       </CardFooter>
     </Card>,
 
-    // Step 6: Review & Submit
+    // Step 7: Review & Submit
     <Card className="max-w-md mx-auto">
       <CardHeader>
         <CardTitle>Complete Registration</CardTitle>
@@ -558,21 +609,57 @@ const StationRegistration = () => {
           <p className="text-sm text-green-700 mb-1"><strong>Address:</strong> {formData.address || "Not provided"}, {formData.city || ""}, {formData.state || ""} {formData.zipCode || ""}</p>
           <p className="text-sm text-green-700 mb-1"><strong>Contact:</strong> {formData.phoneNumber || "Not provided"}</p>
           <p className="text-sm text-green-700 mb-1"><strong>Owner:</strong> {formData.ownerName || "Not provided"}</p>
-          <p className="text-sm text-green-700"><strong>Payment Methods:</strong> {formData.paymentMethods.length} added</p>
+          <p className="text-sm text-green-700 mb-1"><strong>Payment Methods:</strong> {formData.paymentMethods.length} added</p>
+          <p className="text-sm text-green-700 mb-1"><strong>Identity Verification:</strong> {formData.isVerified ? "✓ Verified" : "Not verified"}</p>
+          <div className="mt-2 pt-2 border-t border-green-100">
+            <p className="text-sm font-medium text-green-800 mb-1">Verification Status:</p>
+            <ul className="text-xs text-green-700 space-y-1 pl-2">
+              <li className="flex items-center">
+                <span className="inline-block w-4 h-4 mr-1 bg-green-100 rounded-full flex items-center justify-center">
+                  {formData.licenseVerified ? "✓" : "○"}
+                </span>
+                Driver's License: {formData.licenseVerified ? "Verified" : "Not verified"}
+              </li>
+              <li className="flex items-center">
+                <span className="inline-block w-4 h-4 mr-1 bg-green-100 rounded-full flex items-center justify-center">
+                  {formData.faceVerified ? "✓" : "○"}
+                </span>
+                Face Verification: {formData.faceVerified ? "Verified" : "Not verified"}
+              </li>
+              <li className="flex items-center">
+                <span className="inline-block w-4 h-4 mr-1 bg-green-100 rounded-full flex items-center justify-center">
+                  {formData.phoneVerified ? "✓" : "○"}
+                </span>
+                Phone Number: {formData.phoneVerified ? "Verified" : "Optional"}
+              </li>
+              <li className="flex items-center">
+                <span className="inline-block w-4 h-4 mr-1 bg-green-100 rounded-full flex items-center justify-center">
+                  {formData.emailVerified ? "✓" : "○"}
+                </span>
+                Email Address: {formData.emailVerified ? "Verified" : "Optional"}
+              </li>
+              <li className="flex items-center">
+                <span className="inline-block w-4 h-4 mr-1 bg-green-100 rounded-full flex items-center justify-center">
+                  {formData.documentVerified ? "✓" : "○"}
+                </span>
+                Business Document: {formData.documentVerified ? "Verified" : "Optional"}
+              </li>
+            </ul>
+          </div>
         </div>
-        
+
         <div className="text-sm text-gray-500">
           By clicking "Complete Registration", you agree to our Terms of Service and Privacy Policy. We'll create your station profile and set up your dashboard.
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           onClick={prevStep}
         >
           Back
         </Button>
-        <Button 
+        <Button
           className="bg-green-500 hover:bg-green-600"
           onClick={nextStep}
         >
@@ -587,25 +674,25 @@ const StationRegistration = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8">
-            <img 
-              src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" 
-              alt="FuelFriendly" 
-              className="h-12 mx-auto mb-4" 
+            <img
+              src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png"
+              alt="FuelFriendly"
+              className="h-12 mx-auto mb-4"
             />
             <h1 className="text-2xl font-bold">Station Registration</h1>
             <div className="flex justify-center mt-4">
-              {Array.from({ length: 6 }).map((_, index) => (
+              {Array.from({ length: 7 }).map((_, index) => (
                 <div key={index} className="flex items-center">
-                  <div 
+                  <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center ${
                       index < step + 1 ? "bg-green-500 text-white" : "bg-gray-200 text-gray-500"
                     }`}
                   >
                     {index < step ? "✓" : index + 1}
                   </div>
-                  {index < 5 && (
-                    <div 
-                      className={`w-12 h-1 ${
+                  {index < 6 && (
+                    <div
+                      className={`w-8 h-1 ${
                         index < step ? "bg-green-500" : "bg-gray-200"
                       }`}
                     />
@@ -622,7 +709,7 @@ const StationRegistration = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.2 }} 
+              transition={{ duration: 0.2 }}
             >
               {steps[step]}
             </motion.div>
