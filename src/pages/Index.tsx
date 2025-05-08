@@ -11,6 +11,8 @@ import PricingSection from '@/components/PricingSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import CtaSection from '@/components/CtaSection';
 import Footer from '@/components/Footer';
+import WhyItWorks from '@/components/WhyItWorks';
+import PartnerWithUs from '@/components/PartnerWithUs';
 import { useToast } from "@/hooks/use-toast";
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -34,14 +36,14 @@ const Index = () => {
   useEffect(() => {
     const loadData = setTimeout(() => {
       setIsLoading(false);
-      
+
       // Show welcome toast when the page loads
       toast({
         title: "Welcome to FuelFriendly!",
         description: "Discover the smartest way to find and purchase fuel.",
         duration: 5000,
       });
-      
+
       // Simulate real-time updates
       const interval = setInterval(() => {
         const messages = [
@@ -50,19 +52,19 @@ const Index = () => {
           "Special discount available now!",
           "New feature: Schedule recurring deliveries"
         ];
-        
+
         const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-        
+
         toast({
           title: "Real-time Update",
           description: randomMessage,
           duration: 3000,
         });
       }, 45000); // Show a random update every 45 seconds
-      
+
       return () => clearInterval(interval);
     }, 1000); // Reduced from 1500 to 1000
-    
+
     return () => clearTimeout(loadData);
   }, [toast]);
 
@@ -75,7 +77,7 @@ const Index = () => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="flex min-h-screen flex-col"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -85,7 +87,7 @@ const Index = () => {
       {isLoading ? (
         <div className="flex-1 flex items-center justify-center">
           <div className="space-y-4 text-center">
-            <motion.div 
+            <motion.div
               className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full mx-auto"
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
@@ -99,6 +101,9 @@ const Index = () => {
           <div id="how-it-works">
             <HowItWorks />
           </div>
+          <div id="why-it-works">
+            <WhyItWorks />
+          </div>
           <Features />
           <div id="app">
             <AppShowcase handleAppStoreClick={handleAppStoreClick} />
@@ -107,6 +112,9 @@ const Index = () => {
           <MapSection />
           <PricingSection />
           <TestimonialsSection />
+          <div id="partner-with-us">
+            <PartnerWithUs />
+          </div>
           <div id="contact" className="py-12 flex justify-center">
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/nearby-stations">
@@ -156,7 +164,7 @@ const Index = () => {
               <h4 className="font-medium">iOS App</h4>
               <p className="text-sm text-gray-500 mt-1">Download on the App Store</p>
             </div>
-            
+
             <div className="bg-gray-50 p-4 rounded-lg text-center hover:bg-gray-100 transition-colors cursor-pointer">
               <svg className="w-16 h-16 mx-auto mb-2" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M3.60481 21.5988L12.0586 13.145L3.60481 4.69133L3.60481 21.5988Z" />
@@ -168,7 +176,7 @@ const Index = () => {
               <p className="text-sm text-gray-500 mt-1">Get it on Google Play</p>
             </div>
           </div>
-          
+
           <div className="py-4 text-center">
             <h4 className="font-medium mb-2">Scan QR Code</h4>
             <div className="bg-gray-800 inline-block p-2 rounded-lg">
@@ -177,9 +185,9 @@ const Index = () => {
               </div>
             </div>
           </div>
-          
+
           <DialogFooter className="sm:justify-center">
-            <Button 
+            <Button
               variant="outline"
               onClick={() => setShowAppStoreDialog(false)}
             >
@@ -220,7 +228,7 @@ const Index = () => {
               <p className="text-sm text-gray-500">
                 For fuel station owners looking to register their stations on our platform.
               </p>
-              <Button 
+              <Button
                 asChild
                 className="w-full bg-green-500 hover:bg-green-600 mt-2"
               >
@@ -229,7 +237,7 @@ const Index = () => {
             </div>
           </div>
           <DialogFooter className="sm:justify-center">
-            <Button 
+            <Button
               variant="outline"
               onClick={() => setShowContactDialog(false)}
             >

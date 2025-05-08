@@ -184,6 +184,12 @@ const NavBar = () => {
               How It Works
             </button>
             <button
+              onClick={() => handleNavClick('why-it-works')}
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
+            >
+              Why It Works
+            </button>
+            <button
               onClick={() => navigate('/about-us')}
               className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
@@ -194,6 +200,12 @@ const NavBar = () => {
               className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
               User & Fuel Friend App
+            </button>
+            <button
+              onClick={() => handleNavClick('partner-with-us')}
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
+            >
+              Partner With Us
             </button>
             <button
               onClick={() => navigate('/nearby-stations')}
@@ -348,6 +360,12 @@ const NavBar = () => {
                 How It Works
               </button>
               <button
+                onClick={() => handleNavClick('why-it-works')}
+                className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
+              >
+                Why It Works
+              </button>
+              <button
                 onClick={() => navigate('/about-us')}
                 className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
@@ -358,6 +376,12 @@ const NavBar = () => {
                 className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
                 User & Fuel Friend App
+              </button>
+              <button
+                onClick={() => handleNavClick('partner-with-us')}
+                className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
+              >
+                Partner With Us
               </button>
               <button
                 onClick={() => navigate('/nearby-stations')}
