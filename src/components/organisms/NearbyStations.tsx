@@ -662,17 +662,43 @@ const NearbyStations: React.FC = () => {
   const [userLocation, setUserLocation] = useState<{ lat: number, lng: number } | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
 
-  // Initialize with Albania and Tirana
+  // Initialize with user's location or default to a popular location
   useEffect(() => {
-    // Set default country and city
-    setSelectedCountry('AL');
+    // Try to get user's location from browser
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Use reverse geocoding to get country and city (simplified for demo)
+          // In production, this would use a geocoding API
+          setSelectedCountry('US'); // Default fallback
+          setSelectedCity('New York'); // Default fallback
 
-    // The city will be auto-selected in the other useEffect
+          // Simulate successful location detection
+          toast({
+            title: 'Location Detected',
+            description: 'Showing fuel stations near your location.',
+          });
+        },
+        (error) => {
+          // If geolocation fails, use default
+          setSelectedCountry('US');
+          // City will be auto-selected in the other useEffect
 
-    toast({
-      title: 'Welcome to Fuel Friendly',
-      description: 'Showing fuel stations in Albania by default.',
-    });
+          toast({
+            title: 'Welcome to Fuel Friendly',
+            description: 'Showing fuel stations in your area.',
+          });
+        }
+      );
+    } else {
+      // Geolocation not supported
+      setSelectedCountry('US');
+
+      toast({
+        title: 'Welcome to Fuel Friendly',
+        description: 'Showing fuel stations in your area.',
+      });
+    }
 
     // Optional: Get user's geolocation for future use
     if (navigator.geolocation) {
@@ -781,18 +807,23 @@ const NearbyStations: React.FC = () => {
     // Simulate API call to Google Places
     // In a real implementation, this would call the Google Places API with the selected country and city
     setTimeout(() => {
-      // For Albania, keep the original addresses (they're already set to Albanian cities)
-      // For other countries, customize the mock data to reflect the selected city and country
+      // Customize the mock data to reflect the selected city and country
       const customizedStations = mockStations.map(station => {
-        // If we're already showing Albania and Tirana, don't modify the addresses
-        if (selectedCountry === 'AL' && selectedCity === 'Tirana') {
-          return station;
-        }
+        // Get the country name from the country code
+        const countryName = countries.find(c => c.code === selectedCountry)?.name || 'United States';
 
-        // Otherwise, update the addresses to match the selected city and country
+        // Generate a random street name and number for more realistic addresses
+        const streetNames = [
+          'Main Street', 'Park Avenue', 'Oak Drive', 'Maple Road', 'Cedar Lane',
+          'Pine Street', 'Elm Avenue', 'Washington Boulevard', 'Highland Drive', 'Sunset Road'
+        ];
+        const randomStreetName = streetNames[Math.floor(Math.random() * streetNames.length)];
+        const randomStreetNumber = Math.floor(Math.random() * 1000) + 1;
+
+        // Create a new address with the selected city and country
         return {
           ...station,
-          address: station.address.replace(/Tirana, Albania|[^,]+, [^,]+$/, `${selectedCity}, ${countries.find(c => c.code === selectedCountry)?.name}`),
+          address: `${randomStreetNumber} ${randomStreetName}, ${selectedCity}, ${countryName}`,
         };
       });
 
@@ -1018,13 +1049,13 @@ const NearbyStations: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 max-w-6xl">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
-        <h2 className="text-2xl font-bold mb-4 flex items-center">
+    <div className="container mx-auto p-2 sm:p-4 max-w-6xl">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-6 mb-4 sm:mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-4 flex items-center">
           <MapPin className="mr-2 text-green-500" />
           Find Nearby Fuel Stations
         </h2>
-        <p className="text-gray-600 dark:text-gray-300 mb-6">
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-4 sm:mb-6">
           Select from 195 countries worldwide and find fuel stations registered on Google Maps in your chosen city.
           Get real-time information on prices, services, and more.
         </p>
@@ -1043,7 +1074,7 @@ const NearbyStations: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 mb-4">
             <div>
               <label className="block text-sm font-medium mb-1">Country</label>
               <Select value={selectedCountry} onValueChange={setSelectedCountry}>
@@ -1341,7 +1372,7 @@ const NearbyStations: React.FC = () => {
             </div>
 
             {viewType === 'list' ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
                 {stations.map((station, index) => (
                   <motion.div
                     key={station.id}
@@ -1359,7 +1390,7 @@ const NearbyStations: React.FC = () => {
                     className="h-full"
                   >
                     <Card className="overflow-hidden h-full flex flex-col border-2 hover:border-green-500 transition-all duration-300">
-                      <div className="h-48 bg-gray-200 relative overflow-hidden group">
+                      <div className="h-36 sm:h-48 bg-gray-200 relative overflow-hidden group">
                         {station.photoUrl ? (
                           <motion.img
                             src={station.photoUrl}

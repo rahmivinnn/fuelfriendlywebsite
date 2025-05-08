@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search, User, ChevronDown,
   ShoppingBag, Plus, Bell, MoreVertical,
-  RefreshCcw, BarChart3, CircleDollarSign, Users
+  RefreshCcw, BarChart3, CircleDollarSign, Users,
+  Camera, AlertCircle, Check, Image as ImageIcon
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
@@ -17,6 +18,15 @@ import {
 } from 'recharts';
 import DashboardLayout from '@/components/DashboardLayout';
 import { Badge } from "@/components/ui/badge";
+import StationPhotoUpload from '@/components/station/StationPhotoUpload';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Card,
   CardContent,
@@ -75,6 +85,11 @@ const StationDashboard = () => {
   const [salesCategory, setSalesCategory] = useState('Week');
   const [refreshing, setRefreshing] = useState(false);
   const [userName, setUserName] = useState('Station Owner');
+  const [verificationStatus, setVerificationStatus] = useState('pending'); // 'pending', 'verified', 'rejected'
+  const [verificationDate, setVerificationDate] = useState(null);
+  const [showPhotoUpload, setShowPhotoUpload] = useState(false);
+  const [stationPhotos, setStationPhotos] = useState<string[]>([]);
+  const [showPhotoPreview, setShowPhotoPreview] = useState(false);
 
   // Real-time data states
   const [salesData, setSalesData] = useState(initialSalesData);
@@ -142,6 +157,34 @@ const StationDashboard = () => {
       setUserName(storedName);
     }
 
+    // Get verification status from localStorage
+    const storedVerificationStatus = localStorage.getItem('stationVerificationStatus');
+    if (storedVerificationStatus) {
+      setVerificationStatus(storedVerificationStatus);
+    }
+
+    // Get verification date from localStorage
+    const storedVerificationDate = localStorage.getItem('stationVerificationDate');
+    if (storedVerificationDate) {
+      setVerificationDate(new Date(storedVerificationDate));
+    } else {
+      // If no date is stored, set a default date (3 days ago)
+      const defaultDate = new Date();
+      defaultDate.setDate(defaultDate.getDate() - 1); // Just 1 day ago for demo
+      setVerificationDate(defaultDate);
+      localStorage.setItem('stationVerificationDate', defaultDate.toISOString());
+    }
+
+    // Get station photos from localStorage
+    const storedPhotos = localStorage.getItem('stationPhotos');
+    if (storedPhotos) {
+      try {
+        setStationPhotos(JSON.parse(storedPhotos));
+      } catch (err) {
+        console.error("Error parsing stored photos:", err);
+      }
+    }
+
     const loadDashboard = setTimeout(() => {
       setIsLoading(false);
 
@@ -150,6 +193,23 @@ const StationDashboard = () => {
         description: "Your station dashboard is ready",
         duration: 3000,
       });
+
+      // Show verification status toast
+      if (storedVerificationStatus === 'pending') {
+        const verificationDate = new Date(storedVerificationDate || new Date());
+        const currentDate = new Date();
+        const diffTime = Math.abs(currentDate - verificationDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const remainingDays = Math.max(0, 3 - diffDays);
+
+        setTimeout(() => {
+          toast({
+            title: "Verification Status: Pending",
+            description: `Your station is still being verified. Estimated time remaining: ${remainingDays} days.`,
+            duration: 5000,
+          });
+        }, 1000);
+      }
 
       // Process a new order on initial load
       processNewOrder();
@@ -344,13 +404,81 @@ const StationDashboard = () => {
     });
   };
 
+  // Handle photo upload completion
+  const handlePhotoUploadComplete = (photos: string[]) => {
+    setStationPhotos(photos);
+    setShowPhotoUpload(false);
+
+    // Store photos in localStorage
+    localStorage.setItem('stationPhotos', JSON.stringify(photos));
+
+    toast({
+      title: "Photos Submitted",
+      description: "Your station photos have been submitted for verification",
+      duration: 3000,
+    });
+
+    // Show notification
+    addNotification("Station photos have been submitted for verification");
+  };
+
+  // Handle photo upload cancellation
+  const handlePhotoUploadCancel = () => {
+    setShowPhotoUpload(false);
+
+    toast({
+      title: "Photo Upload Cancelled",
+      description: "You can upload your station photos later",
+      duration: 3000,
+    });
+  };
+
   const content = isLoading ? (
     <div className="flex-1 flex items-center justify-center p-6">
-      <motion.div
-        className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full"
-        animate={{ rotate: 360 }}
-        transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-      />
+      <div className="relative">
+        {/* Elegant loading animation */}
+        <motion.div
+          className="w-20 h-20 rounded-full bg-gradient-to-r from-green-400 to-blue-500"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.5, 0.8, 0.5],
+            rotate: 360
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 3,
+            ease: "easeInOut"
+          }}
+        />
+
+        <motion.div
+          className="absolute top-0 left-0 w-20 h-20 border-4 border-white rounded-full"
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [1, 0.5, 1],
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 2,
+            ease: "easeInOut",
+            delay: 0.5
+          }}
+        />
+
+        <motion.div
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold"
+          animate={{
+            opacity: [0, 1, 0]
+          }}
+          transition={{
+            repeat: Infinity,
+            duration: 2,
+            ease: "easeInOut"
+          }}
+        >
+          Loading
+        </motion.div>
+      </div>
     </div>
   ) : (
     <div className="p-6">
@@ -371,14 +499,114 @@ const StationDashboard = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                Welcome Back, {userName}!
-              </h2>
+              <div className="flex items-center mb-2">
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                  Welcome Back, {userName}!
+                </h2>
+
+                {/* Verification Badge */}
+                {verificationStatus === 'pending' && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.5 }}
+                    className="ml-3"
+                  >
+                    <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300 px-3 py-1 flex items-center gap-1">
+                      <motion.div
+                        animate={{ rotate: [0, 360] }}
+                        transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+                        className="w-3 h-3 border-2 border-yellow-500 border-t-transparent rounded-full"
+                      />
+                      <span>Verification Pending</span>
+                    </Badge>
+                  </motion.div>
+                )}
+
+                {verificationStatus === 'verified' && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.5 }}
+                    className="ml-3"
+                  >
+                    <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300 px-3 py-1 flex items-center gap-1">
+                      <Check size={12} className="text-green-600" />
+                      <span>Verified</span>
+                    </Badge>
+                  </motion.div>
+                )}
+
+                {verificationStatus === 'rejected' && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.5 }}
+                    className="ml-3"
+                  >
+                    <Badge variant="outline" className="bg-red-50 text-red-700 border-red-300 px-3 py-1 flex items-center gap-1">
+                      <AlertCircle size={12} className="text-red-600" />
+                      <span>Verification Failed</span>
+                    </Badge>
+                  </motion.div>
+                )}
+              </div>
+
               <div className="flex items-center">
                 <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
                 <p className="text-gray-600">
                   Live dashboard - Last updated: {new Date().toLocaleTimeString()}
                 </p>
+
+                {verificationStatus === 'pending' && verificationDate && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.7 }}
+                    className="ml-4 text-sm text-yellow-600 flex items-center"
+                  >
+                    <span className="mr-1">•</span>
+                    <span>Verification ETA: {(() => {
+                      const currentDate = new Date();
+                      const diffTime = Math.abs(currentDate - verificationDate);
+                      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                      const remainingDays = Math.max(0, 3 - diffDays);
+                      return remainingDays > 0 ? `${remainingDays} days remaining` : 'Processing';
+                    })()}</span>
+                  </motion.div>
+                )}
+
+                {/* Station Photo Upload Button */}
+                {verificationStatus === 'pending' && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.9 }}
+                    className="ml-4"
+                  >
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => stationPhotos.length > 0 ? setShowPhotoPreview(true) : setShowPhotoUpload(true)}
+                      className="text-xs flex items-center gap-1 bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"
+                    >
+                      {stationPhotos.length > 0 ? (
+                        <>
+                          <ImageIcon size={12} />
+                          <span>View Station Photos</span>
+                          <Badge variant="secondary" className="ml-1 bg-blue-100">
+                            {stationPhotos.length}
+                          </Badge>
+                        </>
+                      ) : (
+                        <>
+                          <Camera size={12} />
+                          <span>Add Station Photos</span>
+                        </>
+                      )}
+                    </Button>
+                  </motion.div>
+                )}
               </div>
             </motion.div>
           </div>
@@ -956,6 +1184,60 @@ const StationDashboard = () => {
   return (
     <DashboardLayout title="Dashboard">
       {content}
+
+      {/* Station Photo Upload Dialog */}
+      <Dialog open={showPhotoUpload} onOpenChange={setShowPhotoUpload}>
+        <DialogContent className="max-w-4xl p-0">
+          <StationPhotoUpload
+            onComplete={handlePhotoUploadComplete}
+            onCancel={handlePhotoUploadCancel}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Photo Preview Dialog */}
+      <Dialog open={showPhotoPreview} onOpenChange={setShowPhotoPreview}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Station Photos</DialogTitle>
+            <DialogDescription>
+              These photos will be used for verification and displayed to customers
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4">
+            {stationPhotos.map((photo, index) => (
+              <div key={index} className="relative rounded-lg overflow-hidden border">
+                <img
+                  src={photo}
+                  alt={`Station Photo ${index + 1}`}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-2">
+                  Photo {index + 1}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowPhotoPreview(false)}
+            >
+              Close
+            </Button>
+            <Button
+              onClick={() => {
+                setShowPhotoPreview(false);
+                setShowPhotoUpload(true);
+              }}
+            >
+              Update Photos
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 };

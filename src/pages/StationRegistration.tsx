@@ -136,14 +136,27 @@ const StationRegistration = () => {
         description: "Your information has been saved. Please continue with the registration.",
       });
     } else {
-      // Immediate redirection - no delays or waiting
-      navigate('/station-dashboard');
-
-      // Show toast after navigation has started
+      // Show verification waiting notification
       toast({
         title: "Registration Complete!",
         description: "Your station has been registered successfully.",
       });
+
+      // Show verification waiting notification
+      setTimeout(() => {
+        toast({
+          title: "Verification Pending",
+          description: "Your station is now pending verification. This process may take up to 3x24 hours.",
+          duration: 6000,
+        });
+      }, 1000);
+
+      // Store verification status in localStorage
+      localStorage.setItem('stationVerificationStatus', 'pending');
+      localStorage.setItem('stationVerificationDate', new Date().toISOString());
+
+      // Redirect to dashboard
+      navigate('/station-dashboard');
     }
   };
 

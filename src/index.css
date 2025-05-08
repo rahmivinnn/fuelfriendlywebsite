@@ -65,17 +65,91 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
+/* Component styles */
 .feature-card {
-  @apply p-6 rounded-lg border border-gray-100 hover:shadow-md transition-all duration-300;
+  @apply p-6 rounded-lg border border-gray-100 dark:border-gray-800 hover:shadow-md transition-all duration-300;
 }
 
 .pricing-card {
-  @apply p-6 rounded-xl border hover:shadow-lg transition-all duration-300;
+  @apply p-6 rounded-xl border hover:shadow-lg transition-all duration-300 dark:border-gray-800;
 }
 
 .testimonial-card {
-  @apply p-6 rounded-lg border border-gray-100 bg-white hover:shadow-md transition-all duration-300;
+  @apply p-6 rounded-lg border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-800 hover:shadow-md transition-all duration-300;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Improved focus styles */
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Improved scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--secondary));
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.5);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.7);
+}
+
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: hsl(var(--secondary));
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.7);
+}
+
+/* Improved selection */
+::selection {
+  background-color: hsl(var(--primary) / 0.2);
+  color: hsl(var(--primary));
+}
+
+/* Improved placeholder */
+::placeholder {
+  color: hsl(var(--muted-foreground) / 0.7);
+}
+
+/* Improved form elements */
+input,
+textarea,
+select {
+  @apply bg-background border-input;
+}
+
+/* Improved buttons */
+button {
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+}
+
+/* Improved links */
+a {
+  @apply text-primary hover:text-primary/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
 }

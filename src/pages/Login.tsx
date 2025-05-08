@@ -14,65 +14,84 @@ const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { login, isLoading } = useAuth();
-  
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     role: UserRole.Level1.toString()
   });
-  
+
   const [showAccessCodeInput, setShowAccessCodeInput] = useState(false);
   const [accessCode, setAccessCode] = useState('');
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
-  
+
   const handleRoleChange = (value: string) => {
     setFormData(prev => ({ ...prev, role: value }));
-    
+
     // Show access code input if Superior Admin is selected
     setShowAccessCodeInput(value === UserRole.SuperiorAdmin.toString());
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.email || !formData.password) {
-      toast({
-        title: "Error",
-        description: "Please fill in all fields",
-        variant: "destructive",
-        duration: 3000,
-      });
-      return;
+
+    // Enhanced form validation
+    const errors: string[] = [];
+
+    if (!formData.email) {
+      errors.push("Email is required");
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.push("Please enter a valid email address");
     }
-    
+
+    if (!formData.password) {
+      errors.push("Password is required");
+    } else if (formData.password.length < 6) {
+      errors.push("Password must be at least 6 characters");
+    }
+
     // If trying to login as Superior Admin, check access code
-    if (formData.role === UserRole.SuperiorAdmin.toString() && accessCode !== 'FUEL-SUPERIOR-2023') {
+    if (formData.role === UserRole.SuperiorAdmin.toString()) {
+      if (!accessCode) {
+        errors.push("Access code is required for Superior Admin");
+      } else if (accessCode !== 'FUEL-SUPERIOR-2023') {
+        errors.push("Invalid Superior Admin access code");
+      }
+    }
+
+    if (errors.length > 0) {
       toast({
-        title: "Access Denied",
-        description: "Invalid Superior Admin access code",
+        title: "Validation Error",
+        description: (
+          <ul className="list-disc pl-4">
+            {errors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        ),
         variant: "destructive",
-        duration: 3000,
+        duration: 5000,
       });
       return;
     }
-    
+
     const success = await login(
-      formData.email, 
-      formData.password, 
+      formData.email,
+      formData.password,
       parseInt(formData.role) as UserRole
     );
-    
+
     if (success) {
       toast({
         title: "Login Successful",
         description: "Welcome to FuelFriendly Admin Panel",
         duration: 3000,
       });
-      
+
       // Redirect based on role
       if (parseInt(formData.role) >= UserRole.Level1) {
         navigate('/admin-dashboard');
@@ -88,7 +107,7 @@ const Login = () => {
       });
     }
   };
-  
+
   const getRoleIcon = (role: string) => {
     switch (parseInt(role)) {
       case UserRole.Level1:
@@ -103,7 +122,7 @@ const Login = () => {
         return <User className="h-4 w-4 mr-2" />;
     }
   };
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <motion.div
@@ -113,15 +132,15 @@ const Login = () => {
         className="w-full max-w-md"
       >
         <div className="text-center mb-8">
-          <img 
-            src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" 
-            alt="FuelFriendly Logo" 
+          <img
+            src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png"
+            alt="FuelFriendly Logo"
             className="h-16 mx-auto mb-4"
           />
           <h1 className="text-2xl font-bold text-gray-900">Welcome to FuelFriendly</h1>
           <p className="text-gray-600">Sign in to access your account</p>
         </div>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Sign In</CardTitle>
@@ -143,7 +162,7 @@ const Login = () => {
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
@@ -156,11 +175,11 @@ const Login = () => {
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="role">Access Level</Label>
-                <Select 
-                  value={formData.role} 
+                <Select
+                  value={formData.role}
                   onValueChange={handleRoleChange}
                 >
                   <SelectTrigger>
@@ -194,9 +213,9 @@ const Login = () => {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               {showAccessCodeInput && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
@@ -216,9 +235,9 @@ const Login = () => {
                   </p>
                 </motion.div>
               )}
-              
-              <Button 
-                type="submit" 
+
+              <Button
+                type="submit"
                 className="w-full bg-green-500 hover:bg-green-600"
                 disabled={isLoading}
               >
@@ -239,8 +258,8 @@ const Login = () => {
           <CardFooter className="flex justify-center">
             <p className="text-sm text-gray-500">
               Don't have an account?{" "}
-              <Button 
-                variant="link" 
+              <Button
+                variant="link"
                 className="p-0 h-auto text-green-500"
                 onClick={() => navigate('/station-registration')}
               >
@@ -249,10 +268,10 @@ const Login = () => {
             </p>
           </CardFooter>
         </Card>
-        
+
         <div className="mt-6 text-center">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             className="text-gray-500"
             onClick={() => navigate('/')}
           >

@@ -7,6 +7,7 @@ import {
   Menu, X, Apple, ArrowRight, LogIn, LogOut,
   User, Shield, ShieldCheck, ShieldAlert, UserCog
 } from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth, UserRole } from '@/contexts/AuthContext';
 import {
@@ -144,7 +145,7 @@ const NavBar = () => {
   };
 
   return (
-    <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm' : 'bg-white'} border-b`}>
+    <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${isScrolled ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-sm' : 'bg-white dark:bg-gray-900'} border-b dark:border-gray-800`}>
       <div className="container flex items-center justify-between h-16 mx-auto px-4 md:px-6">
         <div className="flex items-center">
           <Link to="/" className="flex items-center gap-2">
@@ -172,37 +173,37 @@ const NavBar = () => {
           >
             <button
               onClick={() => navigate('/')}
-              className="text-sm font-medium text-gray-700 hover:text-green-500 transition-colors"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
               Home
             </button>
             <button
               onClick={() => handleNavClick('how-it-works')}
-              className="text-sm font-medium text-gray-700 hover:text-green-500 transition-colors"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
               How It Works
             </button>
             <button
               onClick={() => navigate('/about-us')}
-              className="text-sm font-medium text-gray-700 hover:text-green-500 transition-colors"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
               About Us
             </button>
             <button
               onClick={handleAppDownloadClick}
-              className="text-sm font-medium text-gray-700 hover:text-green-500 transition-colors"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
               User & Fuel Friend App
             </button>
             <button
               onClick={() => navigate('/nearby-stations')}
-              className="text-sm font-medium text-gray-700 hover:text-green-500 transition-colors"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
               Nearby Fuel Stations
             </button>
             <button
               onClick={() => handleNavClick('contact')}
-              className="text-sm font-medium text-gray-700 hover:text-green-500 transition-colors"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
               Contact Us
             </button>
@@ -210,6 +211,14 @@ const NavBar = () => {
         </nav>
 
         <div className="flex items-center space-x-3">
+          <motion.div
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+          >
+            <ThemeToggle />
+          </motion.div>
+
           {!isAuthenticated ? (
             <>
               <motion.div
@@ -221,11 +230,12 @@ const NavBar = () => {
               >
                 <Button
                   variant="outline"
-                  className="border-green-500 text-green-600"
+                  className="border-green-500 text-green-600 dark:border-green-400 dark:text-green-400"
                   onClick={handleLoginClick}
                 >
                   <LogIn size={16} className="mr-2" />
-                  Login
+                  <span className="hidden sm:inline">Login</span>
+                  <span className="sm:hidden">Log In</span>
                 </Button>
               </motion.div>
 
@@ -240,7 +250,8 @@ const NavBar = () => {
                   className="bg-green-500 hover:bg-green-600 text-white"
                   onClick={handleRegisterClick}
                 >
-                  Register Station
+                  <span className="hidden sm:inline">Register Station</span>
+                  <span className="sm:hidden">Register</span>
                 </Button>
               </motion.div>
             </>
@@ -319,40 +330,44 @@ const NavBar = () => {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="px-4 py-3 space-y-1 bg-white border-t">
+            <div className="px-4 py-3 space-y-1 bg-white dark:bg-gray-800 border-t dark:border-gray-700">
+              <div className="flex justify-between items-center py-2">
+                <span className="text-base font-medium text-gray-700 dark:text-gray-300">Theme</span>
+                <ThemeToggle />
+              </div>
               <button
                 onClick={() => navigate('/')}
-                className="block py-2 text-base font-medium text-gray-700 hover:text-green-500 w-full text-left"
+                className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
                 Home
               </button>
               <button
                 onClick={() => handleNavClick('how-it-works')}
-                className="block py-2 text-base font-medium text-gray-700 hover:text-green-500 w-full text-left"
+                className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
                 How It Works
               </button>
               <button
                 onClick={() => navigate('/about-us')}
-                className="block py-2 text-base font-medium text-gray-700 hover:text-green-500 w-full text-left"
+                className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
                 About Us
               </button>
               <button
                 onClick={handleAppDownloadClick}
-                className="block py-2 text-base font-medium text-gray-700 hover:text-green-500 w-full text-left"
+                className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
                 User & Fuel Friend App
               </button>
               <button
                 onClick={() => navigate('/nearby-stations')}
-                className="block py-2 text-base font-medium text-gray-700 hover:text-green-500 w-full text-left"
+                className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
                 Nearby Fuel Stations
               </button>
               <button
                 onClick={() => handleNavClick('contact')}
-                className="block py-2 text-base font-medium text-gray-700 hover:text-green-500 w-full text-left"
+                className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
                 Contact Us
               </button>
