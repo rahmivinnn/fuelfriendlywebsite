@@ -243,7 +243,7 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ email, onNext, onPr
           </Tabs>
         </motion.div>
       </CardContent>
-      <CardFooter className="flex flex-col space-y-3 pt-6">
+      <CardFooter className="flex flex-col space-y-4 pt-6">
         <div className="flex justify-between w-full">
           <Button
             variant="outline"
@@ -279,15 +279,15 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ email, onNext, onPr
           </Button>
         </div>
 
-        {onSkip && (
+        <div className="w-full border-t border-gray-200 pt-4">
           <Button
-            variant="ghost"
-            className="w-full text-gray-500 hover:text-gray-700"
+            variant="outline"
+            className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-100 py-5 border-2 border-gray-300"
             onClick={onSkip}
           >
             I'll Complete Later
           </Button>
-        )}
+        </div>
       </CardFooter>
     </Card>
   );
