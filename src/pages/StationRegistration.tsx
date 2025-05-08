@@ -160,6 +160,29 @@ const StationRegistration = () => {
     }
   };
 
+  // Function to skip to dashboard
+  const skipToDashboard = () => {
+    // Save current progress
+    localStorage.setItem('stationRegistrationProgress', JSON.stringify({
+      step: step,
+      formData: formData
+    }));
+
+    // Set verification status as incomplete
+    localStorage.setItem('stationVerificationStatus', 'incomplete');
+    localStorage.setItem('stationVerificationDate', new Date().toISOString());
+
+    // Show notification
+    toast({
+      title: "Progress Saved",
+      description: "You can complete your registration later from the dashboard.",
+      duration: 5000,
+    });
+
+    // Redirect to dashboard
+    navigate('/station-dashboard');
+  };
+
   // Handle verification completion
   const handleVerificationComplete = () => {
     setFormData(prev => ({
@@ -226,12 +249,19 @@ const StationRegistration = () => {
           />
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex flex-col space-y-3">
         <Button
           className="w-full bg-green-500 hover:bg-green-600"
           onClick={nextStep}
         >
           Continue
+        </Button>
+        <Button
+          variant="ghost"
+          className="w-full text-gray-500 hover:text-gray-700"
+          onClick={skipToDashboard}
+        >
+          I'll Complete Later
         </Button>
       </CardFooter>
     </Card>,
@@ -305,18 +335,27 @@ const StationRegistration = () => {
           />
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex flex-col space-y-3">
+        <div className="flex justify-between w-full">
+          <Button
+            variant="outline"
+            onClick={prevStep}
+          >
+            Back
+          </Button>
+          <Button
+            className="bg-green-500 hover:bg-green-600"
+            onClick={nextStep}
+          >
+            Continue
+          </Button>
+        </div>
         <Button
-          variant="outline"
-          onClick={prevStep}
+          variant="ghost"
+          className="w-full text-gray-500 hover:text-gray-700"
+          onClick={skipToDashboard}
         >
-          Back
-        </Button>
-        <Button
-          className="bg-green-500 hover:bg-green-600"
-          onClick={nextStep}
-        >
-          Continue
+          I'll Complete Later
         </Button>
       </CardFooter>
     </Card>,
@@ -383,18 +422,27 @@ const StationRegistration = () => {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex flex-col space-y-3">
+        <div className="flex justify-between w-full">
+          <Button
+            variant="outline"
+            onClick={prevStep}
+          >
+            Back
+          </Button>
+          <Button
+            className="bg-green-500 hover:bg-green-600"
+            onClick={nextStep}
+          >
+            Continue
+          </Button>
+        </div>
         <Button
-          variant="outline"
-          onClick={prevStep}
+          variant="ghost"
+          className="w-full text-gray-500 hover:text-gray-700"
+          onClick={skipToDashboard}
         >
-          Back
-        </Button>
-        <Button
-          className="bg-green-500 hover:bg-green-600"
-          onClick={nextStep}
-        >
-          Continue
+          I'll Complete Later
         </Button>
       </CardFooter>
     </Card>,
@@ -458,18 +506,27 @@ const StationRegistration = () => {
           </Select>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex flex-col space-y-3">
+        <div className="flex justify-between w-full">
+          <Button
+            variant="outline"
+            onClick={prevStep}
+          >
+            Back
+          </Button>
+          <Button
+            className="bg-green-500 hover:bg-green-600"
+            onClick={nextStep}
+          >
+            Continue
+          </Button>
+        </div>
         <Button
-          variant="outline"
-          onClick={prevStep}
+          variant="ghost"
+          className="w-full text-gray-500 hover:text-gray-700"
+          onClick={skipToDashboard}
         >
-          Back
-        </Button>
-        <Button
-          className="bg-green-500 hover:bg-green-600"
-          onClick={nextStep}
-        >
-          Continue
+          I'll Complete Later
         </Button>
       </CardFooter>
     </Card>,
@@ -481,6 +538,7 @@ const StationRegistration = () => {
         nextStep();
       }}
       onPrev={prevStep}
+      onSkip={skipToDashboard}
       email={formData.email}
     />,
 
@@ -595,18 +653,27 @@ const StationRegistration = () => {
           </Button>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex flex-col space-y-3">
+        <div className="flex justify-between w-full">
+          <Button
+            variant="outline"
+            onClick={prevStep}
+          >
+            Back
+          </Button>
+          <Button
+            className="bg-green-500 hover:bg-green-600"
+            onClick={nextStep}
+          >
+            Continue
+          </Button>
+        </div>
         <Button
-          variant="outline"
-          onClick={prevStep}
+          variant="ghost"
+          className="w-full text-gray-500 hover:text-gray-700"
+          onClick={skipToDashboard}
         >
-          Back
-        </Button>
-        <Button
-          className="bg-green-500 hover:bg-green-600"
-          onClick={nextStep}
-        >
-          Continue
+          I'll Complete Later
         </Button>
       </CardFooter>
     </Card>,
@@ -679,31 +746,40 @@ const StationRegistration = () => {
           By clicking "Complete Registration", you agree to our Terms of Service and Privacy Policy. We'll create your station profile and set up your dashboard.
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex flex-col space-y-3">
+        <div className="flex justify-between w-full">
+          <Button
+            variant="outline"
+            onClick={prevStep}
+            className="px-6 py-6 rounded-xl border-2 hover:bg-gray-50 transition-all duration-300 font-medium"
+            size="lg"
+          >
+            <span className="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back
+            </span>
+          </Button>
+          <Button
+            className="bg-green-500 hover:bg-green-600 px-6 py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 font-medium"
+            onClick={nextStep}
+            size="lg"
+          >
+            <span className="flex items-center">
+              Complete Registration
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+          </Button>
+        </div>
         <Button
-          variant="outline"
-          onClick={prevStep}
-          className="px-6 py-6 rounded-xl border-2 hover:bg-gray-50 transition-all duration-300 font-medium"
-          size="lg"
+          variant="ghost"
+          className="w-full text-gray-500 hover:text-gray-700"
+          onClick={skipToDashboard}
         >
-          <span className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back
-          </span>
-        </Button>
-        <Button
-          className="bg-green-500 hover:bg-green-600 px-6 py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 font-medium"
-          onClick={nextStep}
-          size="lg"
-        >
-          <span className="flex items-center">
-            Complete Registration
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </span>
+          I'll Complete Later
         </Button>
       </CardFooter>
     </Card>

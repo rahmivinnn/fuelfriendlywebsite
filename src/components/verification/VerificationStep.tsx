@@ -27,11 +27,12 @@ interface VerificationStepProps {
   email: string;
   onNext: () => void;
   onPrev: () => void;
+  onSkip?: () => void;
 }
 
-const VerificationStep: React.FC<VerificationStepProps> = ({ email, onNext, onPrev }) => {
+const VerificationStep: React.FC<VerificationStepProps> = ({ email, onNext, onPrev, onSkip }) => {
   const [activeTab, setActiveTab] = useState('license');
-  
+
   // Verification states
   const [licenseVerified, setLicenseVerified] = useState(false);
   const [faceVerified, setFaceVerified] = useState(false);
@@ -40,7 +41,7 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ email, onNext, onPr
   const [documentVerified, setDocumentVerified] = useState(false);
   const [governmentIdVerified, setGovernmentIdVerified] = useState(false);
   const [biometricVerified, setBiometricVerified] = useState(false);
-  
+
   // Verification data
   const [licenseData, setLicenseData] = useState(null);
   const [faceData, setFaceData] = useState(null);
@@ -49,21 +50,21 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ email, onNext, onPr
   const [documentData, setDocumentData] = useState(null);
   const [governmentIdData, setGovernmentIdData] = useState(null);
   const [biometricData, setBiometricData] = useState(null);
-  
+
   // Verification completion status
   const [isRequiredVerificationComplete, setIsRequiredVerificationComplete] = useState(false);
   const [isAllVerificationComplete, setIsAllVerificationComplete] = useState(false);
-  
+
   // Check verification status
   useEffect(() => {
     // Check if all required verifications are complete
     const requiredComplete = licenseVerified && faceVerified && phoneVerified && emailVerified;
     setIsRequiredVerificationComplete(requiredComplete);
-    
+
     // Check if all verifications are complete
     const allComplete = requiredComplete && documentVerified && governmentIdVerified && biometricVerified;
     setIsAllVerificationComplete(allComplete);
-    
+
     // Auto-advance to next required verification
     if (licenseVerified && activeTab === 'license') {
       setActiveTab('face');
@@ -75,38 +76,38 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ email, onNext, onPr
       setActiveTab('document');
     }
   }, [licenseVerified, faceVerified, phoneVerified, emailVerified, documentVerified, governmentIdVerified, biometricVerified, activeTab]);
-  
+
   // Verification handlers
   const handleLicenseVerification = (data) => {
     setLicenseVerified(true);
     setLicenseData(data);
   };
-  
+
   const handleFaceVerification = (data) => {
     setFaceVerified(true);
     setFaceData(data);
   };
-  
+
   const handlePhoneVerification = (data) => {
     setPhoneVerified(true);
     setPhoneData(data);
   };
-  
+
   const handleEmailVerification = (data) => {
     setEmailVerified(true);
     setEmailData(data);
   };
-  
+
   const handleDocumentVerification = (data) => {
     setDocumentVerified(true);
     setDocumentData(data);
   };
-  
+
   const handleGovernmentIdVerification = (data) => {
     setGovernmentIdVerified(true);
     setGovernmentIdData(data);
   };
-  
+
   const handleBiometricVerification = (data) => {
     setBiometricVerified(true);
     setBiometricData(data);
@@ -117,7 +118,7 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ email, onNext, onPr
       <CardContent className="pt-6">
         <div className="flex flex-wrap gap-2 mb-6">
           {verificationTypes.map((type, index) => {
-            const isVerified = 
+            const isVerified =
               (type.id === 'license' && licenseVerified) ||
               (type.id === 'face' && faceVerified) ||
               (type.id === 'phone' && phoneVerified) ||
@@ -125,7 +126,7 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ email, onNext, onPr
               (type.id === 'document' && documentVerified) ||
               (type.id === 'government_id' && governmentIdVerified) ||
               (type.id === 'biometric' && biometricVerified);
-            
+
             return (
               <motion.div
                 key={type.id}
@@ -133,10 +134,10 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ email, onNext, onPr
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 * index }}
                 className={`flex items-center px-3 py-1.5 rounded-full text-xs font-medium ${
-                  isVerified 
-                    ? 'bg-green-100 text-green-800' 
-                    : type.required 
-                      ? 'bg-amber-100 text-amber-800' 
+                  isVerified
+                    ? 'bg-green-100 text-green-800'
+                    : type.required
+                      ? 'bg-amber-100 text-amber-800'
                       : 'bg-gray-100 text-gray-800'
                 }`}
               >
@@ -242,39 +243,51 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ email, onNext, onPr
           </Tabs>
         </motion.div>
       </CardContent>
-      <CardFooter className="flex justify-between pt-6">
-        <Button
-          variant="outline"
-          onClick={onPrev}
-          className="relative overflow-hidden group border-2 border-gray-300 hover:border-gray-400 px-6 py-2 rounded-xl transition-all duration-300"
-        >
-          <span className="absolute inset-0 w-0 bg-gray-100 transition-all duration-300 group-hover:w-full"></span>
-          <span className="relative flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back
-          </span>
-        </Button>
+      <CardFooter className="flex flex-col space-y-3 pt-6">
+        <div className="flex justify-between w-full">
+          <Button
+            variant="outline"
+            onClick={onPrev}
+            className="relative overflow-hidden group border-2 border-gray-300 hover:border-gray-400 px-6 py-2 rounded-xl transition-all duration-300"
+          >
+            <span className="absolute inset-0 w-0 bg-gray-100 transition-all duration-300 group-hover:w-full"></span>
+            <span className="relative flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back
+            </span>
+          </Button>
 
-        <Button
-          className={`relative overflow-hidden group px-6 py-2 rounded-xl transition-all duration-300 shadow-md ${
-            !isRequiredVerificationComplete
-              ? 'bg-gray-300 cursor-not-allowed'
-              : isAllVerificationComplete
-                ? 'bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600'
-                : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700'
-          }`}
-          onClick={onNext}
-          disabled={!isRequiredVerificationComplete}
-        >
-          <span className="relative flex items-center text-white font-medium">
-            {isAllVerificationComplete ? 'Continue with Full Verification' : 'Continue'}
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </span>
-        </Button>
+          <Button
+            className={`relative overflow-hidden group px-6 py-2 rounded-xl transition-all duration-300 shadow-md ${
+              !isRequiredVerificationComplete
+                ? 'bg-gray-300 cursor-not-allowed'
+                : isAllVerificationComplete
+                  ? 'bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600'
+                  : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700'
+            }`}
+            onClick={onNext}
+            disabled={!isRequiredVerificationComplete}
+          >
+            <span className="relative flex items-center text-white font-medium">
+              {isAllVerificationComplete ? 'Continue with Full Verification' : 'Continue'}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+          </Button>
+        </div>
+
+        {onSkip && (
+          <Button
+            variant="ghost"
+            className="w-full text-gray-500 hover:text-gray-700"
+            onClick={onSkip}
+          >
+            I'll Complete Later
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );
