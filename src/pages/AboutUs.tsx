@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Truck, Clock, Shield, CreditCard, MapPin, Users, 
-  Heart, Fuel, ChevronRight, Star, ArrowRight, 
+import {
+  Truck, Clock, Shield, CreditCard, MapPin, Users,
+  Heart, Fuel, ChevronRight, Star, ArrowRight,
   Sparkles, Zap, GasStation, Leaf
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,7 @@ import Footer from '@/components/Footer';
 const AboutUs = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('mission');
+  const [activeTab, setActiveTab] = useState('about');
   const [isLoading, setIsLoading] = useState(true);
   const [teamMembers, setTeamMembers] = useState([]);
   const [stats, setStats] = useState({
@@ -29,14 +29,14 @@ const AboutUs = () => {
   useEffect(() => {
     const loadData = setTimeout(() => {
       setIsLoading(false);
-      
+
       // Show welcome toast when the page loads
       toast({
         title: "About Fuel Friendly",
         description: "Learn more about our mission and values.",
         duration: 3000,
       });
-      
+
       // Set team members data
       setTeamMembers([
         {
@@ -68,14 +68,14 @@ const AboutUs = () => {
           bio: "Building relationships with fuel stations and convenience stores worldwide."
         }
       ]);
-      
+
       // Animate stats
       animateStats();
     }, 800);
-    
+
     return () => clearTimeout(loadData);
   }, [toast]);
-  
+
   // Animate stats counting up
   const animateStats = () => {
     const finalStats = {
@@ -84,24 +84,24 @@ const AboutUs = () => {
       customers: 125000,
       deliveries: 3750000
     };
-    
+
     const duration = 2000; // 2 seconds
     const steps = 50;
     const interval = duration / steps;
-    
+
     let step = 0;
-    
+
     const timer = setInterval(() => {
       step++;
       const progress = step / steps;
-      
+
       setStats({
         stations: Math.floor(progress * finalStats.stations),
         countries: Math.floor(progress * finalStats.countries),
         customers: Math.floor(progress * finalStats.customers),
         deliveries: Math.floor(progress * finalStats.deliveries)
       });
-      
+
       if (step >= steps) {
         clearInterval(timer);
       }
@@ -134,7 +134,7 @@ const AboutUs = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <motion.div 
+          <motion.div
             className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full mx-auto mb-4"
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
@@ -148,7 +148,7 @@ const AboutUs = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <NavBar />
-      
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-green-600 to-green-500 text-white py-20">
         <div className="absolute inset-0 overflow-hidden">
@@ -175,17 +175,17 @@ const AboutUs = () => {
               Redefining convenience by bringing fuel and everyday essentials directly to your doorstep.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 onClick={() => navigate('/station-registration')}
                 className="bg-white text-green-600 hover:bg-gray-100 rounded-full px-8"
               >
                 Register Your Station
                 <ChevronRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
+              <Button
+                size="lg"
+                variant="outline"
                 onClick={() => navigate('/nearby-stations')}
                 className="border-white text-white hover:bg-white/10 rounded-full px-8"
               >
@@ -201,7 +201,7 @@ const AboutUs = () => {
       <section className="py-12 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <motion.div 
+            <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -214,8 +214,8 @@ const AboutUs = () => {
                 Partner Stations
               </div>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -228,8 +228,8 @@ const AboutUs = () => {
                 Countries
               </div>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.3 }}
@@ -242,8 +242,8 @@ const AboutUs = () => {
                 Happy Customers
               </div>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
@@ -265,22 +265,28 @@ const AboutUs = () => {
         <div className="max-w-4xl mx-auto">
           <div className="flex overflow-x-auto mb-8 pb-2 scrollbar-hide">
             <div className="flex space-x-2 mx-auto bg-gray-100 dark:bg-gray-800 p-1 rounded-full">
-              {['mission', 'story', 'values', 'team'].map((tab) => (
+              {[
+                { id: 'about', label: 'About Us' },
+                { id: 'mission', label: 'Our Mission' },
+                { id: 'story', label: 'What We Do' },
+                { id: 'values', label: 'Our Values' },
+                { id: 'team', label: 'Our Team' }
+              ].map((tab) => (
                 <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
                   className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                    activeTab === tab
+                    activeTab === tab.id
                       ? 'bg-green-500 text-white shadow-md'
                       : 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                   }`}
                 >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  {tab.label}
                 </button>
               ))}
             </div>
           </div>
-          
+
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -289,11 +295,30 @@ const AboutUs = () => {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
+              {activeTab === 'about' && (
+                <div className="space-y-6">
+                  <h2 className="text-3xl font-bold text-gray-800 dark:text-white">About Us</h2>
+                  <p className="text-lg text-gray-600 dark:text-gray-300">
+                    At Fuel Friendly we're redefining convenience by bringing fuel and everyday essentials directly to your car side. Whether you're at home, at work, or on the go, our app connects you with friendly, professional drivers—your "Fuel Friends"—ready to serve you with a smile.
+                  </p>
+                  <p className="text-lg text-gray-600 dark:text-gray-300">
+                    Join the Fuel Friends community today and experience a new level of convenience.
+                  </p>
+                  <div className="mt-8">
+                    <img
+                      src="/fuel-delivery.jpg"
+                      alt="Fuel Friendly Service"
+                      className="rounded-xl shadow-lg w-full object-cover h-64"
+                    />
+                  </div>
+                </div>
+              )}
+
               {activeTab === 'mission' && (
                 <div className="space-y-6">
                   <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Our Mission</h2>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
-                    At Fuel Friendly, our mission is to revolutionize the way people access fuel and convenience store items. We believe that time is your most valuable resource, and we're committed to giving you more of it by bringing essential products directly to you.
+                    Our mission is simple: to make your life easier, more safer, more convenient. We understand that time is valuable, and running errands can be a hassle. That's why we're here—to save you time and effort by delivering what you need, when you need it.
                   </p>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
                     We're building a world where you never have to interrupt your day for a fuel stop again. Whether you're at home, work, or on the go, Fuel Friendly ensures you have what you need, when you need it, delivered with a smile.
@@ -320,47 +345,89 @@ const AboutUs = () => {
                   </div>
                 </div>
               )}
-              
+
               {activeTab === 'story' && (
                 <div className="space-y-6">
-                  <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Our Story</h2>
+                  <h2 className="text-3xl font-bold text-gray-800 dark:text-white">What We Do</h2>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
-                    Fuel Friendly began in 2018 when our founder, Sarah Johnson, found herself stranded with an empty gas tank on a busy highway during rush hour. After waiting hours for roadside assistance, she wondered: "Why can't fuel come to me?"
+                    At Fuel Friendly we're redefining convenience by bringing fuel and everyday essentials directly to your car side. Whether you're at home, at work, or on the go, our app connects you with friendly, professional drivers—your "Fuel Friends"—ready to serve you with a smile.
                   </p>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
-                    That moment of frustration sparked an idea that would grow into a global service. Sarah assembled a team of logistics experts, tech innovators, and fuel industry veterans to create the first version of Fuel Friendly.
+                    We offer on-demand fuel service and a wide selection of convenience store items, all accessible through our easy-to-use mobile app. From snacks and drinks to toiletries and emergency fuel top-ups, we've got you covered—whenever and wherever you need it.
                   </p>
-                  <p className="text-lg text-gray-600 dark:text-gray-300">
-                    What started as a small pilot program in one city has now expanded to operations in 42 countries, with thousands of partner stations and millions of happy customers who never have to worry about running on empty again.
-                  </p>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-                    <div className="text-center">
-                      <div className="text-green-600 dark:text-green-400 font-bold">2018</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-300">Founded</div>
+
+                  <h2 className="text-3xl font-bold text-gray-800 dark:text-white mt-10">Why Choose Us?</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    <div className="flex items-start">
+                      <div className="bg-green-100 dark:bg-green-800 w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
+                        <Zap className="h-5 w-5 text-green-600 dark:text-green-400" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Convenience at Your Fingertips</h3>
+                        <p className="text-gray-600 dark:text-gray-300">
+                          Order fuel and essentials with just a few taps on your phone.
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-green-600 dark:text-green-400 font-bold">2019</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-300">First 10 Cities</div>
+
+                    <div className="flex items-start">
+                      <div className="bg-green-100 dark:bg-green-800 w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
+                        <Heart className="h-5 w-5 text-green-600 dark:text-green-400" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Friendly Service</h3>
+                        <p className="text-gray-600 dark:text-gray-300">
+                          Our "Fuel Friends" are dedicated to providing you with a positive experience.
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-green-600 dark:text-green-400 font-bold">2021</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-300">International Expansion</div>
+
+                    <div className="flex items-start">
+                      <div className="bg-green-100 dark:bg-green-800 w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
+                        <Truck className="h-5 w-5 text-green-600 dark:text-green-400" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Emergency Assistance</h3>
+                        <p className="text-gray-600 dark:text-gray-300">
+                          Running low on fuel? We're here to help, even in a pinch.
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-green-600 dark:text-green-400 font-bold">Today</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-300">Global Presence</div>
+
+                    <div className="flex items-start">
+                      <div className="bg-green-100 dark:bg-green-800 w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
+                        <CreditCard className="h-5 w-5 text-green-600 dark:text-green-400" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Secure Payments</h3>
+                        <p className="text-gray-600 dark:text-gray-300">
+                          Multiple payment options ensure a smooth and safe transaction every time.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start">
+                      <div className="bg-green-100 dark:bg-green-800 w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 mt-1">
+                        <MapPin className="h-5 w-5 text-green-600 dark:text-green-400" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Real-Time Tracking</h3>
+                        <p className="text-gray-600 dark:text-gray-300">
+                          Know exactly when your delivery will arrive with our live tracking feature.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
               )}
-              
+
               {activeTab === 'values' && (
                 <div className="space-y-6">
                   <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Our Values</h2>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
                     At Fuel Friendly, our values guide everything we do. They shape our culture, inform our decisions, and help us deliver exceptional service to our customers and partners.
                   </p>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
                     <div className="border border-gray-200 dark:border-gray-700 p-6 rounded-xl hover:shadow-md transition-shadow">
                       <div className="flex items-center mb-4">
@@ -373,7 +440,7 @@ const AboutUs = () => {
                         We prioritize customer needs above all else, constantly seeking ways to improve their experience.
                       </p>
                     </div>
-                    
+
                     <div className="border border-gray-200 dark:border-gray-700 p-6 rounded-xl hover:shadow-md transition-shadow">
                       <div className="flex items-center mb-4">
                         <div className="bg-green-100 dark:bg-green-800 w-10 h-10 rounded-full flex items-center justify-center mr-4">
@@ -385,7 +452,7 @@ const AboutUs = () => {
                         We never compromise on safety standards or the quality of products we deliver.
                       </p>
                     </div>
-                    
+
                     <div className="border border-gray-200 dark:border-gray-700 p-6 rounded-xl hover:shadow-md transition-shadow">
                       <div className="flex items-center mb-4">
                         <div className="bg-green-100 dark:bg-green-800 w-10 h-10 rounded-full flex items-center justify-center mr-4">
@@ -397,7 +464,7 @@ const AboutUs = () => {
                         We continuously seek new ways to improve our service and solve customer problems.
                       </p>
                     </div>
-                    
+
                     <div className="border border-gray-200 dark:border-gray-700 p-6 rounded-xl hover:shadow-md transition-shadow">
                       <div className="flex items-center mb-4">
                         <div className="bg-green-100 dark:bg-green-800 w-10 h-10 rounded-full flex items-center justify-center mr-4">
@@ -412,14 +479,14 @@ const AboutUs = () => {
                   </div>
                 </div>
               )}
-              
+
               {activeTab === 'team' && (
                 <div className="space-y-6">
                   <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Our Team</h2>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
                     Meet the passionate individuals behind Fuel Friendly who are working to revolutionize fuel delivery and convenience.
                   </p>
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
                     {teamMembers.map((member, index) => (
                       <motion.div
@@ -430,9 +497,9 @@ const AboutUs = () => {
                         className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow"
                       >
                         <div className="h-48 overflow-hidden">
-                          <img 
-                            src={member.image} 
-                            alt={member.name} 
+                          <img
+                            src={member.image}
+                            alt={member.name}
                             className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                           />
                         </div>
@@ -468,17 +535,17 @@ const AboutUs = () => {
               Whether you're a station owner looking to expand your reach or a customer seeking convenience, we're here to serve you.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 onClick={() => navigate('/station-registration')}
                 className="bg-green-600 hover:bg-green-700 text-white rounded-full px-8"
               >
                 Register Your Station
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
+              <Button
+                size="lg"
+                variant="outline"
                 onClick={() => navigate('/nearby-stations')}
                 className="border-green-600 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/50 rounded-full px-8"
               >
@@ -489,7 +556,7 @@ const AboutUs = () => {
           </motion.div>
         </div>
       </section>
-      
+
       <Footer />
     </div>
   );
