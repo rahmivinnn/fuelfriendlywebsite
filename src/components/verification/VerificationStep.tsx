@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, AlertCircle, ShieldCheck, BadgeCheck, LucideIcon, FileText, Phone, Mail, CreditCard, User } from 'lucide-react';
+import {
+  Check, AlertCircle, ShieldCheck, BadgeCheck, LucideIcon,
+  FileText, Phone, Mail, CreditCard, User, Fingerprint,
+  IdCard, Shield
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,6 +14,8 @@ import FaceVerification from './FaceVerification';
 import PhoneVerification from './PhoneVerification';
 import EmailVerification from './EmailVerification';
 import DocumentVerification from './DocumentVerification';
+import BiometricVerification from './BiometricVerification';
+import GovernmentIdVerification from './GovernmentIdVerification';
 
 interface VerificationStepProps {
   onNext: () => void;
@@ -36,12 +42,16 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ onNext, onPrev, ema
   const [phoneVerified, setPhoneVerified] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
   const [documentVerified, setDocumentVerified] = useState(false);
+  const [governmentIdVerified, setGovernmentIdVerified] = useState(false);
+  const [biometricVerified, setBiometricVerified] = useState(false);
 
   // Verification data
   const [licenseData, setLicenseData] = useState<any>(null);
   const [phoneData, setPhoneData] = useState<any>(null);
   const [emailData, setEmailData] = useState<any>(null);
   const [documentData, setDocumentData] = useState<any>(null);
+  const [governmentIdData, setGovernmentIdData] = useState<any>(null);
+  const [biometricData, setBiometricData] = useState<any>(null);
 
   // Define verification types
   const verificationTypes: VerificationType[] = [
@@ -58,6 +68,20 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ onNext, onPrev, ema
       icon: User,
       required: true,
       description: 'Confirm your identity with facial recognition'
+    },
+    {
+      id: 'government_id',
+      name: 'Government ID',
+      icon: IdCard,
+      required: false,
+      description: 'Verify using passport, national ID, or residence permit'
+    },
+    {
+      id: 'biometric',
+      name: 'Biometric',
+      icon: Fingerprint,
+      required: false,
+      description: 'Use fingerprint, face scan, or voice recognition'
     },
     {
       id: 'phone',
@@ -127,13 +151,35 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ onNext, onPrev, ema
     }
   };
 
+  const handleGovernmentIdVerification = (verified: boolean, data?: any) => {
+    setGovernmentIdVerified(verified);
+    if (verified && data) {
+      setGovernmentIdData(data);
+      updateVerificationProgress();
+    }
+  };
+
+  const handleBiometricVerification = (verified: boolean, data?: any) => {
+    setBiometricVerified(verified);
+    if (verified && data) {
+      setBiometricData(data);
+      updateVerificationProgress();
+    }
+  };
+
   // Update verification progress
   const updateVerificationProgress = () => {
     // Calculate progress based on completed verifications
     const completedRequired = [licenseVerified, faceVerified].filter(Boolean).length;
     const totalRequired = requiredVerifications.length;
 
-    const completedOptional = [phoneVerified, emailVerified, documentVerified].filter(Boolean).length;
+    const completedOptional = [
+      phoneVerified,
+      emailVerified,
+      documentVerified,
+      governmentIdVerified,
+      biometricVerified
+    ].filter(Boolean).length;
     const totalOptional = verificationTypes.length - totalRequired;
 
     // Weight required verifications more heavily (70% of progress)
@@ -151,7 +197,13 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ onNext, onPrev, ema
   const isRequiredVerificationComplete = licenseVerified && faceVerified;
 
   // Check if all verifications are complete
-  const isAllVerificationComplete = licenseVerified && faceVerified && phoneVerified && emailVerified && documentVerified;
+  const isAllVerificationComplete = licenseVerified &&
+    faceVerified &&
+    phoneVerified &&
+    emailVerified &&
+    documentVerified &&
+    governmentIdVerified &&
+    biometricVerified;
 
   return (
     <Card className="max-w-md mx-auto">
@@ -190,80 +242,98 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ onNext, onPrev, ema
         </div>
 
         {/* Verification status summary */}
-        <div className="grid grid-cols-3 gap-2">
-          {verificationTypes.map((type) => (
-            <div
-              key={type.id}
-              className={`p-3 rounded-lg border ${
-                (type.id === 'license' && licenseVerified) ||
-                (type.id === 'face' && faceVerified) ||
-                (type.id === 'phone' && phoneVerified) ||
-                (type.id === 'email' && emailVerified) ||
-                (type.id === 'document' && documentVerified)
-                  ? 'bg-green-50 border-green-200'
-                  : 'bg-gray-50 border-gray-200'
-              }`}
-            >
-              <div className="flex flex-col items-center text-center space-y-1">
-                <div className="relative">
-                  {type.required && (
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
-                  )}
-                  {(
-                    (type.id === 'license' && licenseVerified) ||
-                    (type.id === 'face' && faceVerified) ||
-                    (type.id === 'phone' && phoneVerified) ||
-                    (type.id === 'email' && emailVerified) ||
-                    (type.id === 'document' && documentVerified)
-                  ) ? (
-                    <Check className="text-green-500" size={20} />
-                  ) : (
-                    <type.icon className="text-gray-400" size={20} />
-                  )}
+        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+          {verificationTypes.map((type) => {
+            // Determine if this verification type is verified
+            const isVerified =
+              (type.id === 'license' && licenseVerified) ||
+              (type.id === 'face' && faceVerified) ||
+              (type.id === 'phone' && phoneVerified) ||
+              (type.id === 'email' && emailVerified) ||
+              (type.id === 'document' && documentVerified) ||
+              (type.id === 'government_id' && governmentIdVerified) ||
+              (type.id === 'biometric' && biometricVerified);
+
+            return (
+              <div
+                key={type.id}
+                onClick={() => setActiveTab(type.id)}
+                className={`p-3 rounded-lg border cursor-pointer transition-all duration-300 hover:shadow-md ${
+                  isVerified
+                    ? 'bg-green-50 border-green-200'
+                    : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+                }`}
+              >
+                <div className="flex flex-col items-center text-center space-y-1">
+                  <div className="relative">
+                    {type.required && (
+                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
+                    )}
+                    {isVerified ? (
+                      <div className="bg-green-100 p-1.5 rounded-full">
+                        <Check className="text-green-500" size={16} />
+                      </div>
+                    ) : (
+                      <div className="bg-gray-100 p-1.5 rounded-full">
+                        <type.icon className="text-gray-400" size={16} />
+                      </div>
+                    )}
+                  </div>
+                  <span className={`text-xs font-medium ${
+                    isVerified ? 'text-green-800' : 'text-gray-600'
+                  }`}>
+                    {type.name}
+                  </span>
                 </div>
-                <span className={`text-xs font-medium ${
-                  (type.id === 'license' && licenseVerified) ||
-                  (type.id === 'face' && faceVerified) ||
-                  (type.id === 'phone' && phoneVerified) ||
-                  (type.id === 'email' && emailVerified) ||
-                  (type.id === 'document' && documentVerified)
-                    ? 'text-green-800'
-                    : 'text-gray-600'
-                }`}>
-                  {type.name}
-                </span>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Verification tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
-            {verificationTypes.map((type) => (
-              <TabsTrigger
-                key={type.id}
-                value={type.id}
-                disabled={
-                  (type.id === 'face' && !licenseVerified) ||
-                  (
-                    (type.id === 'license' && licenseVerified) &&
-                    (type.id === 'face' && faceVerified) &&
-                    (type.id === 'phone' && phoneVerified) &&
-                    (type.id === 'email' && emailVerified) &&
-                    (type.id === 'document' && documentVerified)
-                  )
-                }
-                className="relative"
-              >
-                {type.required && (
-                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
-                )}
-                <type.icon className="mr-1" size={14} />
-                <span className="hidden sm:inline">{type.name}</span>
-                <span className="sm:hidden">{type.name.split(' ')[0]}</span>
-              </TabsTrigger>
-            ))}
+          <TabsList className="flex flex-wrap w-full">
+            {verificationTypes.map((type) => {
+              // Determine if this verification type is verified
+              const isVerified =
+                (type.id === 'license' && licenseVerified) ||
+                (type.id === 'face' && faceVerified) ||
+                (type.id === 'phone' && phoneVerified) ||
+                (type.id === 'email' && emailVerified) ||
+                (type.id === 'document' && documentVerified) ||
+                (type.id === 'government_id' && governmentIdVerified) ||
+                (type.id === 'biometric' && biometricVerified);
+
+              // Determine if this tab should be disabled
+              const isDisabled =
+                // Face verification requires license verification first
+                (type.id === 'face' && !licenseVerified) ||
+                // Government ID and biometric require face verification
+                ((type.id === 'government_id' || type.id === 'biometric') && !faceVerified) ||
+                // If all verifications are complete, disable all tabs
+                (licenseVerified && faceVerified && phoneVerified && emailVerified &&
+                 documentVerified && governmentIdVerified && biometricVerified);
+
+              return (
+                <TabsTrigger
+                  key={type.id}
+                  value={type.id}
+                  disabled={isDisabled}
+                  className={`relative flex-1 min-w-[80px] ${isVerified ? 'bg-green-50 data-[state=active]:bg-green-100' : ''}`}
+                >
+                  {type.required && (
+                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
+                  )}
+                  {isVerified ? (
+                    <Check className="mr-1" size={14} />
+                  ) : (
+                    <type.icon className="mr-1" size={14} />
+                  )}
+                  <span className="hidden sm:inline">{type.name}</span>
+                  <span className="sm:hidden">{type.name.split(' ')[0]}</span>
+                </TabsTrigger>
+              );
+            })}
           </TabsList>
 
           {/* License verification */}
@@ -374,6 +444,74 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ onNext, onPrev, ema
               </div>
             ) : (
               <DocumentVerification onVerificationComplete={handleDocumentVerification} />
+            )}
+          </TabsContent>
+
+          {/* Government ID verification */}
+          <TabsContent value="government_id" className="mt-4">
+            {governmentIdVerified ? (
+              <div className="space-y-4">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-start">
+                  <Check className="text-green-500 mr-3 mt-0.5 flex-shrink-0" size={20} />
+                  <div>
+                    <h4 className="font-medium text-green-800">Government ID Verified</h4>
+                    <p className="text-sm text-green-700">
+                      Your {governmentIdData?.idTypeLabel} has been successfully verified.
+                    </p>
+                  </div>
+                </div>
+                {governmentIdData && (
+                  <div className="border rounded-lg p-4 space-y-2">
+                    <h4 className="text-sm font-medium">ID Information</h4>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div className="text-gray-500">ID Type:</div>
+                      <div>{governmentIdData.idTypeLabel}</div>
+                      <div className="text-gray-500">Verification ID:</div>
+                      <div>{governmentIdData.verificationId}</div>
+                      <div className="text-gray-500">Verified At:</div>
+                      <div>{new Date(governmentIdData.verifiedAt).toLocaleString()}</div>
+                      <div className="text-gray-500">Expiry Date:</div>
+                      <div>{new Date(governmentIdData.expiryDate).toLocaleDateString()}</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <GovernmentIdVerification onVerificationComplete={handleGovernmentIdVerification} />
+            )}
+          </TabsContent>
+
+          {/* Biometric verification */}
+          <TabsContent value="biometric" className="mt-4">
+            {biometricVerified ? (
+              <div className="space-y-4">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-start">
+                  <Check className="text-green-500 mr-3 mt-0.5 flex-shrink-0" size={20} />
+                  <div>
+                    <h4 className="font-medium text-green-800">Biometric Verification Complete</h4>
+                    <p className="text-sm text-green-700">
+                      Your {biometricData?.scanType} scan has been successfully verified.
+                    </p>
+                  </div>
+                </div>
+                {biometricData && (
+                  <div className="border rounded-lg p-4 space-y-2">
+                    <h4 className="text-sm font-medium">Biometric Information</h4>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div className="text-gray-500">Scan Type:</div>
+                      <div>{biometricData.scanType}</div>
+                      <div className="text-gray-500">Confidence Score:</div>
+                      <div>{biometricData.confidenceScore}%</div>
+                      <div className="text-gray-500">Verification ID:</div>
+                      <div>{biometricData.verificationId}</div>
+                      <div className="text-gray-500">Verified At:</div>
+                      <div>{new Date(biometricData.verifiedAt).toLocaleString()}</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <BiometricVerification onVerificationComplete={handleBiometricVerification} />
             )}
           </TabsContent>
         </Tabs>

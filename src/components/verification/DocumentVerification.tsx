@@ -4,20 +4,20 @@ import { FileText, Upload, Check, AlertCircle, RefreshCw, Camera, Image } from '
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
 } from '@/components/ui/select';
 
 interface DocumentVerificationProps {
   onVerificationComplete: (verified: boolean, documentData?: any) => void;
 }
 
-const DocumentVerification: React.FC<DocumentVerificationProps> = ({ 
-  onVerificationComplete 
+const DocumentVerification: React.FC<DocumentVerificationProps> = ({
+  onVerificationComplete
 }) => {
   const { toast } = useToast();
   const [documentType, setDocumentType] = useState<string>('business_license');
@@ -54,17 +54,17 @@ const DocumentVerification: React.FC<DocumentVerificationProps> = ({
           facingMode: 'environment'
         }
       };
-      
+
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
       streamRef.current = stream;
-      
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
       }
-      
+
       setCaptureMode('camera');
       setVerificationStatus('capturing');
-      
+
       toast({
         title: "Camera Started",
         description: `Position your ${getDocumentTypeLabel()} within the frame.`,
@@ -91,7 +91,7 @@ const DocumentVerification: React.FC<DocumentVerificationProps> = ({
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
     }
-    
+
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
@@ -103,12 +103,12 @@ const DocumentVerification: React.FC<DocumentVerificationProps> = ({
       const video = videoRef.current;
       const canvas = canvasRef.current;
       const context = canvas.getContext('2d');
-      
+
       if (context) {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        
+
         const imageDataUrl = canvas.toDataURL('image/png');
         setDocumentImage(imageDataUrl);
         processDocumentImage(imageDataUrl);
@@ -119,7 +119,7 @@ const DocumentVerification: React.FC<DocumentVerificationProps> = ({
   // Handle file upload
   const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    
+
     if (file) {
       // Check file size (max 10MB)
       if (file.size > 10 * 1024 * 1024) {
@@ -130,7 +130,7 @@ const DocumentVerification: React.FC<DocumentVerificationProps> = ({
         });
         return;
       }
-      
+
       // Check file type
       if (!file.type.startsWith('image/') && !file.type.startsWith('application/pdf')) {
         toast({
@@ -140,15 +140,15 @@ const DocumentVerification: React.FC<DocumentVerificationProps> = ({
         });
         return;
       }
-      
+
       const reader = new FileReader();
-      
+
       reader.onload = (e) => {
         const imageDataUrl = e.target?.result as string;
         setDocumentImage(imageDataUrl);
         processDocumentImage(imageDataUrl);
       };
-      
+
       reader.readAsDataURL(file);
     }
   }, [toast]);
@@ -157,22 +157,22 @@ const DocumentVerification: React.FC<DocumentVerificationProps> = ({
   const processDocumentImage = useCallback((imageData: string) => {
     setVerificationStatus('processing');
     stopCamera();
-    
+
     // Simulate processing with progress updates
     let currentProgress = 0;
     const interval = setInterval(() => {
       currentProgress += 3;
       setProgress(currentProgress);
-      
+
       if (currentProgress >= 100) {
         clearInterval(interval);
-        
+
         // Simulate successful verification (85% success rate)
         const isSuccessful = Math.random() < 0.85;
-        
+
         if (isSuccessful) {
           setVerificationStatus('success');
-          
+
           // Mock document data
           const documentData = {
             documentType: documentType,
@@ -182,27 +182,27 @@ const DocumentVerification: React.FC<DocumentVerificationProps> = ({
             expiryDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(), // 1 year from now
             verified: true
           };
-          
+
           toast({
             title: "Verification Successful",
             description: `Your ${getDocumentTypeLabel()} has been verified successfully.`,
           });
-          
+
           onVerificationComplete(true, documentData);
         } else {
           setVerificationStatus('failed');
-          
+
           toast({
             title: "Verification Failed",
             description: `We couldn't verify your ${getDocumentTypeLabel()}. Please try again with a clearer image.`,
             variant: "destructive"
           });
-          
+
           onVerificationComplete(false);
         }
       }
     }, 100);
-    
+
     return () => clearInterval(interval);
   }, [documentType, getDocumentTypeLabel, onVerificationComplete, stopCamera, toast]);
 
@@ -250,26 +250,33 @@ const DocumentVerification: React.FC<DocumentVerificationProps> = ({
               </SelectContent>
             </Select>
           </div>
-          
-          <div className="flex justify-center space-x-4">
-            <Button
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div
               onClick={startCamera}
-              className="flex items-center space-x-2"
+              className="relative cursor-pointer bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 border-2 border-green-200 rounded-xl p-6 transition-all duration-300 hover:shadow-md flex flex-col items-center justify-center text-center"
             >
-              <Camera size={16} />
-              <span>Use Camera</span>
-            </Button>
-            <Button
+              <div className="bg-green-500 text-white p-3 rounded-full mb-3">
+                <Camera size={24} />
+              </div>
+              <h4 className="font-medium text-green-800 mb-1">Use Camera</h4>
+              <p className="text-xs text-green-600">Take a photo of your document using your device's camera</p>
+            </div>
+
+            <div
               onClick={() => {
                 setCaptureMode('upload');
                 fileInputRef.current?.click();
               }}
-              variant="outline"
-              className="flex items-center space-x-2"
+              className="relative cursor-pointer bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 border-2 border-blue-200 rounded-xl p-6 transition-all duration-300 hover:shadow-md flex flex-col items-center justify-center text-center"
             >
-              <Upload size={16} />
-              <span>Upload Document</span>
-            </Button>
+              <div className="bg-blue-500 text-white p-3 rounded-full mb-3">
+                <Upload size={24} />
+              </div>
+              <h4 className="font-medium text-blue-800 mb-1">Upload Document</h4>
+              <p className="text-xs text-blue-600">Select a file from your device (JPG, PNG, PDF)</p>
+            </div>
+
             <input
               type="file"
               ref={fileInputRef}
@@ -278,19 +285,52 @@ const DocumentVerification: React.FC<DocumentVerificationProps> = ({
               onChange={handleFileUpload}
             />
           </div>
-          
-          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h4 className="text-sm font-medium text-blue-800 mb-2 flex items-center">
-              <FileText size={16} className="mr-2" />
+
+          <div className="p-5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl shadow-sm">
+            <h4 className="text-sm font-medium text-blue-800 mb-3 flex items-center">
+              <div className="bg-blue-100 p-1.5 rounded-full mr-2">
+                <FileText size={16} className="text-blue-600" />
+              </div>
               Document Requirements
             </h4>
-            <ul className="text-xs text-blue-700 space-y-1 list-disc pl-5">
-              <li>Document must be current and not expired</li>
-              <li>All four corners of the document must be visible</li>
-              <li>Text must be clearly readable</li>
-              <li>File must be less than 10MB in size</li>
-              <li>Accepted formats: JPG, PNG, PDF</li>
-            </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="flex items-start space-x-2">
+                <div className="bg-blue-100 rounded-full p-1 mt-0.5">
+                  <Check size={12} className="text-blue-600" />
+                </div>
+                <span className="text-xs text-blue-700">Document must be current and not expired</span>
+              </div>
+              <div className="flex items-start space-x-2">
+                <div className="bg-blue-100 rounded-full p-1 mt-0.5">
+                  <Check size={12} className="text-blue-600" />
+                </div>
+                <span className="text-xs text-blue-700">All four corners must be visible</span>
+              </div>
+              <div className="flex items-start space-x-2">
+                <div className="bg-blue-100 rounded-full p-1 mt-0.5">
+                  <Check size={12} className="text-blue-600" />
+                </div>
+                <span className="text-xs text-blue-700">Text must be clearly readable</span>
+              </div>
+              <div className="flex items-start space-x-2">
+                <div className="bg-blue-100 rounded-full p-1 mt-0.5">
+                  <Check size={12} className="text-blue-600" />
+                </div>
+                <span className="text-xs text-blue-700">File must be less than 10MB</span>
+              </div>
+              <div className="flex items-start space-x-2">
+                <div className="bg-blue-100 rounded-full p-1 mt-0.5">
+                  <Check size={12} className="text-blue-600" />
+                </div>
+                <span className="text-xs text-blue-700">Accepted formats: JPG, PNG, PDF</span>
+              </div>
+              <div className="flex items-start space-x-2">
+                <div className="bg-blue-100 rounded-full p-1 mt-0.5">
+                  <Check size={12} className="text-blue-600" />
+                </div>
+                <span className="text-xs text-blue-700">Good lighting conditions</span>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -298,7 +338,7 @@ const DocumentVerification: React.FC<DocumentVerificationProps> = ({
       {/* Camera view */}
       {captureMode === 'camera' && verificationStatus === 'capturing' && (
         <div className="space-y-4">
-          <div className="relative border-2 border-dashed border-gray-300 rounded-lg overflow-hidden aspect-video bg-gray-50">
+          <div className="relative border-3 border-dashed border-green-300 rounded-xl overflow-hidden aspect-video bg-gray-50 shadow-lg">
             <video
               ref={videoRef}
               autoPlay
@@ -306,13 +346,30 @@ const DocumentVerification: React.FC<DocumentVerificationProps> = ({
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="border-2 border-green-500 w-4/5 h-4/5 rounded-md opacity-50"></div>
+              <div className="border-3 border-green-500 w-4/5 h-4/5 rounded-lg opacity-60 animate-pulse"></div>
+            </div>
+            <div className="absolute top-3 left-3 bg-black bg-opacity-50 text-white text-xs py-1 px-3 rounded-full">
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></div>
+                <span>LIVE</span>
+              </div>
+            </div>
+            <div className="absolute bottom-3 left-0 right-0 text-center">
+              <div className="bg-black bg-opacity-70 text-white text-xs py-2 px-4 rounded-full inline-block">
+                Position document within the green frame
+              </div>
             </div>
           </div>
           <div className="flex justify-center">
-            <Button onClick={captureImage} className="bg-green-500 hover:bg-green-600">
-              <Image size={16} className="mr-2" />
-              Capture Document
+            <Button
+              onClick={captureImage}
+              className="bg-green-500 hover:bg-green-600 text-white font-medium px-6 py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex items-center space-x-2"
+              size="lg"
+            >
+              <div className="bg-white bg-opacity-20 p-2 rounded-full mr-2">
+                <Image size={20} className="text-white" />
+              </div>
+              <span>Capture Document</span>
             </Button>
           </div>
         </div>

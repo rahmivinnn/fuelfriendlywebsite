@@ -159,7 +159,9 @@ const StationRegistration = () => {
       // Optional verifications might be partially completed
       phoneVerified: Math.random() > 0.5,
       emailVerified: Math.random() > 0.3,
-      documentVerified: Math.random() > 0.7
+      documentVerified: Math.random() > 0.7,
+      governmentIdVerified: Math.random() > 0.6,
+      biometricVerified: Math.random() > 0.4
     }));
 
     toast({
@@ -644,6 +646,18 @@ const StationRegistration = () => {
                 </span>
                 Business Document: {formData.documentVerified ? "Verified" : "Optional"}
               </li>
+              <li className="flex items-center">
+                <span className="inline-block w-4 h-4 mr-1 bg-green-100 rounded-full flex items-center justify-center">
+                  {formData.governmentIdVerified ? "✓" : "○"}
+                </span>
+                Government ID: {formData.governmentIdVerified ? "Verified" : "Optional"}
+              </li>
+              <li className="flex items-center">
+                <span className="inline-block w-4 h-4 mr-1 bg-green-100 rounded-full flex items-center justify-center">
+                  {formData.biometricVerified ? "✓" : "○"}
+                </span>
+                Biometric: {formData.biometricVerified ? "Verified" : "Optional"}
+              </li>
             </ul>
           </div>
         </div>
@@ -656,14 +670,27 @@ const StationRegistration = () => {
         <Button
           variant="outline"
           onClick={prevStep}
+          className="px-6 py-6 rounded-xl border-2 hover:bg-gray-50 transition-all duration-300 font-medium"
+          size="lg"
         >
-          Back
+          <span className="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back
+          </span>
         </Button>
         <Button
-          className="bg-green-500 hover:bg-green-600"
+          className="bg-green-500 hover:bg-green-600 px-6 py-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 font-medium"
           onClick={nextStep}
+          size="lg"
         >
-          Complete Registration
+          <span className="flex items-center">
+            Complete Registration
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
         </Button>
       </CardFooter>
     </Card>
