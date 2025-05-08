@@ -5,7 +5,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth, UserRole } from "@/contexts/AuthContext";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import ChatBot from "@/components/organisms/ChatBot";
 import Index from "./pages/Index";
+import AboutUs from "./pages/AboutUs";
 import NearbyStations from "./pages/NearbyStations";
 import StationRegistration from "./pages/StationRegistration";
 import StationDashboard from "./pages/StationDashboard";
@@ -54,14 +57,17 @@ const ProtectedRoute = ({
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
+    <ThemeProvider defaultTheme="system" storageKey="theme">
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <ChatBot />
+            <Routes>
             {/* Public routes */}
             <Route path="/" element={<Index />} />
+            <Route path="/about-us" element={<AboutUs />} />
             <Route path="/nearby-stations" element={<NearbyStations />} />
             <Route path="/station-registration" element={<StationRegistration />} />
             <Route path="/login" element={<Login />} />
@@ -160,6 +166,7 @@ const App = () => (
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

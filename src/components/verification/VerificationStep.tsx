@@ -207,43 +207,102 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ onNext, onPrev, ema
 
   return (
     <Card className="max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <BadgeCheck className="mr-2 text-green-500" size={24} />
-          Identity Verification
-        </CardTitle>
-        <CardDescription>
-          Complete the verification process to continue
-        </CardDescription>
+      <CardHeader className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-green-50 to-blue-50 opacity-70"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-green-200 rounded-full -mr-16 -mt-16 opacity-20"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-200 rounded-full -ml-12 -mb-12 opacity-20"></div>
+
+        <div className="relative z-10">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center"
+          >
+            <div className="bg-gradient-to-r from-green-500 to-blue-500 p-2 rounded-full mr-3">
+              <BadgeCheck className="text-white" size={28} />
+            </div>
+            <div>
+              <CardTitle className="text-2xl bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                Identity Verification
+              </CardTitle>
+              <CardDescription className="mt-1">
+                Complete the verification process to continue
+              </CardDescription>
+            </div>
+          </motion.div>
+        </div>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 pt-6">
         {/* Free verification notice */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start">
-          <ShieldCheck className="text-blue-500 mr-3 mt-0.5 flex-shrink-0" size={20} />
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-5 flex items-start shadow-sm"
+        >
+          <div className="bg-white p-2 rounded-full mr-3 shadow-md">
+            <ShieldCheck className="text-blue-500" size={24} />
+          </div>
           <div>
-            <h4 className="font-medium text-blue-800">Free for Station Owners</h4>
-            <p className="text-sm text-blue-700">
+            <h4 className="font-medium text-blue-800 text-lg">Free for Station Owners</h4>
+            <p className="text-sm text-blue-700 mt-1">
               The verification process is completely free for all station owners. This helps us ensure the security and quality of our platform.
             </p>
           </div>
-        </div>
+        </motion.div>
 
         {/* Verification progress */}
-        <div className="space-y-2">
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="space-y-3"
+        >
           <div className="flex justify-between items-center">
-            <span className="text-sm font-medium">Verification Progress</span>
-            <span className="text-sm font-medium">{verificationProgress}%</span>
+            <div className="flex items-center">
+              <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+              <span className="text-sm font-medium">Verification Progress</span>
+            </div>
+            <motion.span
+              key={verificationProgress}
+              initial={{ scale: 1.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="text-sm font-bold bg-gradient-to-r from-green-500 to-blue-500 text-white px-3 py-1 rounded-full"
+            >
+              {verificationProgress}%
+            </motion.span>
           </div>
-          <Progress value={verificationProgress} className="h-2" />
-          <div className="flex justify-between text-xs text-gray-500">
-            <span>Required: {[licenseVerified, faceVerified].filter(Boolean).length}/{requiredVerifications.length}</span>
-            <span>Optional: {[phoneVerified, emailVerified, documentVerified].filter(Boolean).length}/{verificationTypes.length - requiredVerifications.length}</span>
+          <div className="relative pt-1">
+            <div className="overflow-hidden h-3 text-xs flex rounded-full bg-gray-100">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${verificationProgress}%` }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-green-500 to-blue-500 rounded-full"
+              ></motion.div>
+            </div>
           </div>
-        </div>
+          <div className="flex justify-between text-xs text-gray-500 px-1">
+            <div className="flex items-center">
+              <span className="inline-block w-3 h-3 bg-red-100 border border-red-300 rounded-full mr-1 flex items-center justify-center text-[8px] text-red-500 font-bold">!</span>
+              <span>Required: {[licenseVerified, faceVerified].filter(Boolean).length}/{requiredVerifications.length}</span>
+            </div>
+            <div className="flex items-center">
+              <span className="inline-block w-3 h-3 bg-blue-100 border border-blue-300 rounded-full mr-1 flex items-center justify-center text-[8px] text-blue-500 font-bold">+</span>
+              <span>Optional: {[phoneVerified, emailVerified, documentVerified, governmentIdVerified, biometricVerified].filter(Boolean).length}/{verificationTypes.length - requiredVerifications.length}</span>
+            </div>
+          </div>
+        </motion.div>
 
         {/* Verification status summary */}
-        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-          {verificationTypes.map((type) => {
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="grid grid-cols-3 sm:grid-cols-4 gap-3"
+        >
+          {verificationTypes.map((type, index) => {
             // Determine if this verification type is verified
             const isVerified =
               (type.id === 'license' && licenseVerified) ||
@@ -255,86 +314,158 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ onNext, onPrev, ema
               (type.id === 'biometric' && biometricVerified);
 
             return (
-              <div
+              <motion.div
                 key={type.id}
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.1 * index }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setActiveTab(type.id)}
-                className={`p-3 rounded-lg border cursor-pointer transition-all duration-300 hover:shadow-md ${
+                className={`p-3 rounded-xl border-2 cursor-pointer transition-all duration-300 shadow-sm ${
                   isVerified
-                    ? 'bg-green-50 border-green-200'
-                    : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+                    ? 'bg-gradient-to-br from-green-50 to-green-100 border-green-200'
+                    : 'bg-gradient-to-br from-gray-50 to-gray-100 border-gray-200 hover:border-blue-200 hover:from-blue-50 hover:to-blue-100'
                 }`}
               >
-                <div className="flex flex-col items-center text-center space-y-1">
+                <div className="flex flex-col items-center text-center space-y-2">
                   <div className="relative">
                     {type.required && (
-                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: [0, 1.2, 1] }}
+                        transition={{ duration: 0.5, delay: 0.5 + (0.1 * index) }}
+                        className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white shadow-sm z-10"
+                      />
                     )}
                     {isVerified ? (
-                      <div className="bg-green-100 p-1.5 rounded-full">
-                        <Check className="text-green-500" size={16} />
-                      </div>
+                      <motion.div
+                        initial={{ rotate: 0 }}
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 0.5, delay: 0.2 * index }}
+                        className="bg-gradient-to-br from-green-400 to-green-500 p-2.5 rounded-full shadow-md"
+                      >
+                        <Check className="text-white" size={18} />
+                      </motion.div>
                     ) : (
-                      <div className="bg-gray-100 p-1.5 rounded-full">
-                        <type.icon className="text-gray-400" size={16} />
+                      <div className="bg-gradient-to-br from-gray-100 to-gray-200 p-2.5 rounded-full shadow-md">
+                        <type.icon className={`${activeTab === type.id ? 'text-blue-500' : 'text-gray-400'}`} size={18} />
                       </div>
                     )}
                   </div>
                   <span className={`text-xs font-medium ${
-                    isVerified ? 'text-green-800' : 'text-gray-600'
+                    isVerified ? 'text-green-800' : activeTab === type.id ? 'text-blue-600' : 'text-gray-600'
                   }`}>
                     {type.name}
                   </span>
+
+                  {/* Status indicator */}
+                  {isVerified ? (
+                    <span className="text-[10px] bg-green-100 text-green-600 px-2 py-0.5 rounded-full">
+                      Verified
+                    </span>
+                  ) : type.required ? (
+                    <span className="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full">
+                      Required
+                    </span>
+                  ) : (
+                    <span className="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">
+                      Optional
+                    </span>
+                  )}
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Verification tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="flex flex-wrap w-full">
-            {verificationTypes.map((type) => {
-              // Determine if this verification type is verified
-              const isVerified =
-                (type.id === 'license' && licenseVerified) ||
-                (type.id === 'face' && faceVerified) ||
-                (type.id === 'phone' && phoneVerified) ||
-                (type.id === 'email' && emailVerified) ||
-                (type.id === 'document' && documentVerified) ||
-                (type.id === 'government_id' && governmentIdVerified) ||
-                (type.id === 'biometric' && biometricVerified);
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="flex flex-wrap w-full p-1 bg-gray-100 rounded-xl">
+              {verificationTypes.map((type, index) => {
+                // Determine if this verification type is verified
+                const isVerified =
+                  (type.id === 'license' && licenseVerified) ||
+                  (type.id === 'face' && faceVerified) ||
+                  (type.id === 'phone' && phoneVerified) ||
+                  (type.id === 'email' && emailVerified) ||
+                  (type.id === 'document' && documentVerified) ||
+                  (type.id === 'government_id' && governmentIdVerified) ||
+                  (type.id === 'biometric' && biometricVerified);
 
-              // Determine if this tab should be disabled
-              const isDisabled =
-                // Face verification requires license verification first
-                (type.id === 'face' && !licenseVerified) ||
-                // Government ID and biometric require face verification
-                ((type.id === 'government_id' || type.id === 'biometric') && !faceVerified) ||
-                // If all verifications are complete, disable all tabs
-                (licenseVerified && faceVerified && phoneVerified && emailVerified &&
-                 documentVerified && governmentIdVerified && biometricVerified);
+                // Determine if this tab should be disabled
+                const isDisabled =
+                  // Face verification requires license verification first
+                  (type.id === 'face' && !licenseVerified) ||
+                  // Government ID and biometric require face verification
+                  ((type.id === 'government_id' || type.id === 'biometric') && !faceVerified) ||
+                  // If all verifications are complete, disable all tabs
+                  (licenseVerified && faceVerified && phoneVerified && emailVerified &&
+                   documentVerified && governmentIdVerified && biometricVerified);
 
-              return (
-                <TabsTrigger
-                  key={type.id}
-                  value={type.id}
-                  disabled={isDisabled}
-                  className={`relative flex-1 min-w-[80px] ${isVerified ? 'bg-green-50 data-[state=active]:bg-green-100' : ''}`}
-                >
-                  {type.required && (
-                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
-                  )}
-                  {isVerified ? (
-                    <Check className="mr-1" size={14} />
-                  ) : (
-                    <type.icon className="mr-1" size={14} />
-                  )}
-                  <span className="hidden sm:inline">{type.name}</span>
-                  <span className="sm:hidden">{type.name.split(' ')[0]}</span>
-                </TabsTrigger>
-              );
-            })}
-          </TabsList>
+                return (
+                  <motion.div
+                    key={type.id}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.1 * index }}
+                    className="flex-1 min-w-[80px]"
+                  >
+                    <TabsTrigger
+                      value={type.id}
+                      disabled={isDisabled}
+                      className={`
+                        relative w-full rounded-lg transition-all duration-300
+                        ${isVerified
+                          ? 'data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-400 data-[state=active]:to-green-500 data-[state=active]:text-white'
+                          : 'data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-400 data-[state=active]:to-blue-500 data-[state=active]:text-white'
+                        }
+                        ${isDisabled && !isVerified ? 'opacity-50' : 'hover:opacity-90'}
+                      `}
+                    >
+                      {type.required && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ duration: 0.3, delay: 0.3 + (0.1 * index) }}
+                          className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full shadow-sm"
+                        />
+                      )}
+
+                      <div className="flex items-center justify-center">
+                        {isVerified ? (
+                          <div className="mr-1 bg-white bg-opacity-20 p-1 rounded-full">
+                            <Check size={12} />
+                          </div>
+                        ) : (
+                          <div className={`mr-1 ${activeTab === type.id ? 'bg-white bg-opacity-20 p-1 rounded-full' : ''}`}>
+                            <type.icon size={12} />
+                          </div>
+                        )}
+                        <span className="hidden sm:inline text-xs">{type.name}</span>
+                        <span className="sm:hidden text-xs">{type.name.split(' ')[0]}</span>
+                      </div>
+
+                      {/* Animated pulse for active tab */}
+                      {activeTab === type.id && (
+                        <motion.div
+                          layoutId="activeTabIndicator"
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.3 }}
+                        />
+                      )}
+                    </TabsTrigger>
+                  </motion.div>
+                );
+              })}
+            </TabsList>
 
           {/* License verification */}
           <TabsContent value="license" className="mt-4">
@@ -556,20 +687,77 @@ const VerificationStep: React.FC<VerificationStepProps> = ({ onNext, onPrev, ema
           </motion.div>
         )}
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button
-          variant="outline"
-          onClick={onPrev}
+      <CardFooter className="flex justify-between pt-6">
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
         >
-          Back
-        </Button>
-        <Button
-          className="bg-green-500 hover:bg-green-600"
-          onClick={onNext}
-          disabled={!isRequiredVerificationComplete}
+          <Button
+            variant="outline"
+            onClick={onPrev}
+            className="relative overflow-hidden group border-2 border-gray-300 hover:border-gray-400 px-6 py-2 rounded-xl transition-all duration-300"
+          >
+            <span className="absolute inset-0 w-0 bg-gray-100 transition-all duration-300 group-hover:w-full"></span>
+            <span className="relative flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back
+            </span>
+          </Button>
+        </motion.div>
+
+        <motion.div
+          initial={{ x: 20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
         >
-          {isAllVerificationComplete ? 'Continue with Full Verification' : 'Continue'}
-        </Button>
+          <Button
+            className={`relative overflow-hidden group px-6 py-2 rounded-xl transition-all duration-300 shadow-md ${
+              !isRequiredVerificationComplete
+                ? 'bg-gray-300 cursor-not-allowed'
+                : isAllVerificationComplete
+                  ? 'bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600'
+                  : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700'
+            }`}
+            onClick={onNext}
+            disabled={!isRequiredVerificationComplete}
+          >
+            {isRequiredVerificationComplete && (
+              <span className="absolute top-0 left-0 w-full h-full bg-white opacity-0 transition-opacity duration-300 group-hover:opacity-10"></span>
+            )}
+            <span className="relative flex items-center text-white font-medium">
+              {isAllVerificationComplete ? 'Continue with Full Verification' : 'Continue'}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+
+            {/* Animated dots for disabled state */}
+            {!isRequiredVerificationComplete && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="flex space-x-1">
+                  <motion.div
+                    animate={{ scale: [0.5, 1, 0.5] }}
+                    transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                    className="w-1.5 h-1.5 bg-white rounded-full"
+                  />
+                  <motion.div
+                    animate={{ scale: [0.5, 1, 0.5] }}
+                    transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut", delay: 0.2 }}
+                    className="w-1.5 h-1.5 bg-white rounded-full"
+                  />
+                  <motion.div
+                    animate={{ scale: [0.5, 1, 0.5] }}
+                    transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut", delay: 0.4 }}
+                    className="w-1.5 h-1.5 bg-white rounded-full"
+                  />
+                </div>
+              </div>
+            )}
+          </Button>
+        </motion.div>
       </CardFooter>
     </Card>
   );
