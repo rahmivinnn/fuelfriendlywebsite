@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Truck, Clock, Shield, CreditCard, MapPin, Users,
   Heart, Fuel, ChevronRight, Star, ArrowRight,
-  Sparkles, Zap, GasStation, Leaf
+  Sparkles, Zap, Leaf, Droplet
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -134,11 +134,9 @@ const AboutUs = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <motion.div
-            className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full mx-auto mb-4"
-            animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-          />
+          <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mx-auto mb-4">
+            Loading
+          </div>
           <p className="text-gray-500">Loading About Us...</p>
         </div>
       </div>
@@ -153,7 +151,6 @@ const AboutUs = () => {
       <section className="relative bg-gradient-to-r from-green-600 to-green-500 text-white py-20">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-black opacity-10"></div>
-          <div className="absolute inset-0 bg-[url('/fuel-pattern.svg')] opacity-10"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
@@ -168,7 +165,7 @@ const AboutUs = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="bg-white/10 p-3 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center backdrop-blur-sm"
             >
-              <GasStation className="h-10 w-10" />
+              <Droplet className="h-10 w-10" />
             </motion.div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">About Fuel Friendly</h1>
             <p className="text-xl md:text-2xl mb-8">
@@ -305,11 +302,11 @@ const AboutUs = () => {
                     Join the Fuel Friends community today and experience a new level of convenience.
                   </p>
                   <div className="mt-8">
-                    <img
-                      src="/fuel-delivery.jpg"
-                      alt="Fuel Friendly Service"
-                      className="rounded-xl shadow-lg w-full object-cover h-64"
-                    />
+                    <div
+                      className="rounded-xl shadow-lg w-full h-64 bg-gradient-to-r from-green-500 to-blue-500 flex items-center justify-center text-white font-bold text-xl"
+                    >
+                      Fuel Friendly Service
+                    </div>
                   </div>
                 </div>
               )}

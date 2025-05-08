@@ -350,7 +350,7 @@ const HeroSection = () => {
                       className="flex items-center text-sm"
                     >
                       <div className={`${alerts[0]?.color} mr-2`}>
-                        {alerts[0]?.icon && <alerts[0].icon size={14} />}
+                        {alerts[0]?.icon && React.createElement(alerts[0].icon, { size: 14 })}
                       </div>
                       <span className="font-medium">{alerts[0]?.message}</span>
                       <span className="mx-2 text-gray-400">•</span>
@@ -666,7 +666,7 @@ const HeroSection = () => {
                       className="flex items-center bg-white p-3 rounded-lg"
                     >
                       <div className={`${alert.color} p-2 rounded-full mr-3`}>
-                        <alert.icon size={16} />
+                        {React.createElement(alert.icon, { size: 16 })}
                       </div>
                       <div className="flex-1">
                         <div className="font-medium">{alert.message}</div>

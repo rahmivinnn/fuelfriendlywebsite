@@ -218,41 +218,59 @@ const StationDashboard = () => {
     return () => clearTimeout(loadDashboard);
   }, [toast, processNewOrder]);
 
-  // Auto-refresh effect with more frequent updates
+  // Auto-refresh effect with real-time updates every second
   useEffect(() => {
     let interval;
 
-    if (autoRefresh) {
-      // Initial refresh
-      refreshData();
+    // Always enable auto-refresh for real-time data
+    setAutoRefresh(true);
 
-      // Set up interval for continuous updates
-      interval = setInterval(() => {
-        refreshData();
+    // Initial refresh
+    refreshData();
 
-        // Show a real-time activity toast occasionally
-        if (Math.random() > 0.7) {
-          const activities = [
-            "New customer just registered in your area",
-            "Fuel price update detected in nearby station",
-            "System detected increased demand for diesel today",
-            "New promotion opportunity available for your station",
-            "Customer satisfaction rating increased by 4.2%"
-          ];
+    // Set up interval for continuous updates every second
+    interval = setInterval(() => {
+      // Update daily stats in real-time
+      setDailyStats(prev => ({
+        todayCustomers: prev.todayCustomers + Math.floor(Math.random() * 3),
+        newCustomers: prev.newCustomers + Math.floor(Math.random() * 2),
+        averageRevenue: prev.averageRevenue + Math.floor(Math.random() * 5) - 2,
+        totalRevenue: prev.totalRevenue + Math.floor(Math.random() * 10)
+      }));
 
-          toast({
-            title: "Real-time Activity",
-            description: activities[Math.floor(Math.random() * activities.length)],
-            duration: 5000,
-          });
-        }
-      }, 15000); // More frequent refresh every 15 seconds
-    }
+      // Update sales data slightly
+      setSalesData(prev => {
+        const newData = [...prev];
+        const randomIndex = Math.floor(Math.random() * newData.length);
+        newData[randomIndex] = {
+          ...newData[randomIndex],
+          value: newData[randomIndex].value + Math.floor(Math.random() * 5) - 2
+        };
+        return newData;
+      });
+
+      // Occasionally show a real-time activity toast
+      if (Math.random() > 0.95) { // Reduced frequency to avoid too many toasts
+        const activities = [
+          "New customer just registered in your area",
+          "Fuel price update detected in nearby station",
+          "System detected increased demand for diesel today",
+          "New promotion opportunity available for your station",
+          "Customer satisfaction rating increased by 4.2%"
+        ];
+
+        toast({
+          title: "Real-time Activity",
+          description: activities[Math.floor(Math.random() * activities.length)],
+          duration: 3000,
+        });
+      }
+    }, 1000); // Update every second for true real-time feel
 
     return () => clearInterval(interval);
-  }, [autoRefresh]);
+  }, []);
 
-  // Real-time order updates
+  // Real-time order updates every 5 seconds
   useEffect(() => {
     let orderInterval;
 
@@ -264,24 +282,27 @@ const StationDashboard = () => {
           const randomIndex = Math.floor(Math.random() * updated.length);
 
           // Random chance to change status
-          if (updated[randomIndex].status === 'New') {
+          if (updated[randomIndex].status === 'New' && Math.random() > 0.5) {
             updated[randomIndex] = {
               ...updated[randomIndex],
               status: 'Completed'
             };
 
-            addNotification(`Order ${updated[randomIndex].id} has been completed`);
+            // Only show notification occasionally to avoid too many
+            if (Math.random() > 0.7) {
+              addNotification(`Order ${updated[randomIndex].id} has been completed`);
+            }
           }
 
           return updated;
         });
       }
 
-      // Random chance to receive a new order
-      if (Math.random() > 0.7) {
+      // Random chance to receive a new order (increased probability)
+      if (Math.random() > 0.8) {
         processNewOrder();
       }
-    }, 15000); // Check every 15 seconds
+    }, 5000); // Check every 5 seconds for more frequent updates
 
     return () => clearInterval(orderInterval);
   }, [recentOrders, addNotification, processNewOrder]);
@@ -296,97 +317,47 @@ const StationDashboard = () => {
   const refreshData = () => {
     setRefreshing(true);
 
-    // Show loading toast for better user feedback
-    toast({
-      title: "Refreshing Dashboard",
-      description: "Fetching real-time data from your station...",
-      duration: 2000,
+    // Update all data immediately without delays
+
+    // Update sales data
+    setSalesData(prev => {
+      return prev.map(item => ({
+        ...item,
+        value: fluctuate(item.value)
+      }));
     });
 
-    // Simulate progressive data loading with sequential updates
-    setTimeout(() => {
-      // Update sales data first
-      setSalesData(prev => {
-        const newData = prev.map(item => ({
-          ...item,
-          value: fluctuate(item.value)
-        }));
+    // Update pie chart data
+    setPieData(prev => {
+      // Keep total at 100%
+      const newPetrol = Math.floor(35 + Math.random() * 30);
+      const newDiesel = Math.floor(25 + Math.random() * 20);
+      const newGrocery = 100 - newPetrol - newDiesel;
 
-        // Show sales data update toast
-        toast({
-          title: "Sales Data Updated",
-          description: `Monthly revenue trends refreshed with ${Math.floor(Math.random() * 12) + 5} new transactions`,
-          duration: 2000,
-        });
+      return [
+        { name: 'Petrol', value: newPetrol },
+        { name: 'Diesel', value: newDiesel },
+        { name: 'Grocery Items', value: newGrocery }
+      ];
+    });
 
-        return newData;
-      });
+    // Update daily stats
+    setDailyStats(prev => {
+      return {
+        todayCustomers: fluctuate(prev.todayCustomers),
+        newCustomers: fluctuate(prev.newCustomers),
+        averageRevenue: fluctuate(prev.averageRevenue),
+        totalRevenue: fluctuate(prev.totalRevenue)
+      };
+    });
 
-      // Then update pie chart data after a short delay
-      setTimeout(() => {
-        setPieData(prev => {
-          // Keep total at 100%
-          const newPetrol = Math.floor(35 + Math.random() * 30);
-          const newDiesel = Math.floor(25 + Math.random() * 20);
-          const newGrocery = 100 - newPetrol - newDiesel;
-
-          // Show product distribution update toast
-          toast({
-            title: "Product Distribution Updated",
-            description: `Petrol: ${newPetrol}%, Diesel: ${newDiesel}%, Grocery: ${newGrocery}%`,
-            duration: 2000,
-          });
-
-          return [
-            { name: 'Petrol', value: newPetrol },
-            { name: 'Diesel', value: newDiesel },
-            { name: 'Grocery Items', value: newGrocery }
-          ];
-        });
-
-        // Finally update daily stats
-        setTimeout(() => {
-          setDailyStats(prev => {
-            const newStats = {
-              todayCustomers: fluctuate(prev.todayCustomers),
-              newCustomers: fluctuate(prev.newCustomers),
-              averageRevenue: fluctuate(prev.averageRevenue),
-              totalRevenue: fluctuate(prev.totalRevenue)
-            };
-
-            // Calculate percentage changes for better insights
-            const customerChange = Math.floor(((newStats.todayCustomers - prev.todayCustomers) / prev.todayCustomers) * 100);
-            const revenueChange = Math.floor(((newStats.totalRevenue - prev.totalRevenue) / prev.totalRevenue) * 100);
-
-            // Show daily stats update toast with insights
-            toast({
-              title: "Daily Statistics Updated",
-              description: `Customer traffic ${customerChange >= 0 ? 'up' : 'down'} by ${Math.abs(customerChange)}%, Revenue ${revenueChange >= 0 ? 'up' : 'down'} by ${Math.abs(revenueChange)}%`,
-              duration: 3000,
-            });
-
-            return newStats;
-          });
-
-          // Complete the refresh process
-          setRefreshing(false);
-
-          // Final completion toast
-          toast({
-            title: "Dashboard Refresh Complete",
-            description: "All real-time data has been updated successfully",
-            duration: 3000,
-          });
-        }, 500);
-      }, 500);
-    }, 500);
-
-    // Randomly add a new order during refresh for more dynamism
-    if (Math.random() > 0.5) {
-      setTimeout(() => {
-        processNewOrder();
-      }, 1500);
+    // Occasionally add a new order
+    if (Math.random() > 0.7) {
+      processNewOrder();
     }
+
+    // Complete the refresh process
+    setRefreshing(false);
   };
 
   // Change order status
@@ -436,48 +407,9 @@ const StationDashboard = () => {
   const content = isLoading ? (
     <div className="flex-1 flex items-center justify-center p-6">
       <div className="relative">
-        {/* Elegant loading animation */}
-        <motion.div
-          className="w-20 h-20 rounded-full bg-gradient-to-r from-green-400 to-blue-500"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.5, 0.8, 0.5],
-            rotate: 360
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: 3,
-            ease: "easeInOut"
-          }}
-        />
-
-        <motion.div
-          className="absolute top-0 left-0 w-20 h-20 border-4 border-white rounded-full"
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [1, 0.5, 1],
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: 2,
-            ease: "easeInOut",
-            delay: 0.5
-          }}
-        />
-
-        <motion.div
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold"
-          animate={{
-            opacity: [0, 1, 0]
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: 2,
-            ease: "easeInOut"
-          }}
-        >
-          Loading
-        </motion.div>
+        <div className="w-20 h-20 rounded-full bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center">
+          <div className="text-white font-bold">Loading</div>
+        </div>
       </div>
     </div>
   ) : (
