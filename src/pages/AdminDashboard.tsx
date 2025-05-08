@@ -5,10 +5,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth, UserRole } from '@/contexts/AuthContext';
-import { 
-  BarChart, LineChart, PieChart, Activity, Users, 
-  Building2, ShoppingBag, AlertTriangle, CheckCircle, 
-  TrendingUp, TrendingDown, Fuel, Zap, Shield, ShieldAlert, 
+import {
+  BarChart, LineChart, PieChart, Activity, Users,
+  Building2, ShoppingBag, AlertTriangle, CheckCircle,
+  TrendingUp, TrendingDown, Fuel, Zap, Shield, ShieldAlert,
   ShieldCheck, UserCog, Lock
 } from 'lucide-react';
 
@@ -28,32 +28,32 @@ const AdminDashboard = () => {
     orderGrowth: 0,
     revenueGrowth: 0
   });
-  
+
   // Simulate loading data
   useEffect(() => {
     const timer = setTimeout(() => {
       setStats({
-        totalUsers: 1254,
-        totalStations: 87,
-        totalOrders: 12567,
-        totalRevenue: 456789,
-        activeAlerts: 3,
+        totalUsers: 50000,
+        totalStations: 1250,
+        totalOrders: 125670,
+        totalRevenue: 4567890,
+        activeAlerts: 15,
         systemStatus: 'Operational',
-        userGrowth: 12.5,
-        stationGrowth: 8.3,
-        orderGrowth: 15.7,
-        revenueGrowth: 23.4
+        userGrowth: 25.8,
+        stationGrowth: 18.3,
+        orderGrowth: 35.7,
+        revenueGrowth: 43.4
       });
       setIsLoading(false);
     }, 1500);
-    
+
     return () => clearTimeout(timer);
   }, []);
-  
+
   // Get role-specific welcome message
   const getWelcomeMessage = () => {
     if (!user) return "Welcome to the Admin Dashboard";
-    
+
     switch (user.role) {
       case UserRole.Level1:
         return "Welcome to the Basic Admin Dashboard";
@@ -67,11 +67,11 @@ const AdminDashboard = () => {
         return "Welcome to the Admin Dashboard";
     }
   };
-  
+
   // Get role-specific description
   const getRoleDescription = () => {
     if (!user) return "";
-    
+
     switch (user.role) {
       case UserRole.Level1:
         return "You have basic access to view stations, orders, and messages.";
@@ -85,11 +85,11 @@ const AdminDashboard = () => {
         return "";
     }
   };
-  
+
   // Get role icon
   const getRoleIcon = () => {
     if (!user) return null;
-    
+
     switch (user.role) {
       case UserRole.Level1:
         return <Shield size={24} className="text-blue-500" />;
@@ -103,13 +103,13 @@ const AdminDashboard = () => {
         return null;
     }
   };
-  
+
   return (
     <AdminDashboardLayout title="Admin Dashboard">
       {isLoading ? (
         <div className="h-full flex items-center justify-center">
           <div className="text-center">
-            <motion.div 
+            <motion.div
               className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full mx-auto"
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
@@ -133,7 +133,7 @@ const AdminDashboard = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Users Card */}
@@ -164,7 +164,7 @@ const AdminDashboard = () => {
                 </div>
               </CardContent>
             </Card>
-            
+
             {/* Stations Card */}
             <Card>
               <CardHeader className="pb-2">
@@ -193,7 +193,7 @@ const AdminDashboard = () => {
                 </div>
               </CardContent>
             </Card>
-            
+
             {/* Orders Card */}
             <Card>
               <CardHeader className="pb-2">
@@ -222,7 +222,7 @@ const AdminDashboard = () => {
                 </div>
               </CardContent>
             </Card>
-            
+
             {/* Revenue Card */}
             <Card>
               <CardHeader className="pb-2">
@@ -252,7 +252,7 @@ const AdminDashboard = () => {
               </CardContent>
             </Card>
           </div>
-          
+
           {/* System Status and Alerts */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* System Status */}
@@ -271,7 +271,7 @@ const AdminDashboard = () => {
                     <div className="text-sm text-gray-500">All systems running normally</div>
                   </div>
                 </div>
-                
+
                 <div className="mt-4 space-y-2">
                   <div className="flex justify-between items-center">
                     <span className="text-sm">API Services</span>
@@ -295,7 +295,7 @@ const AdminDashboard = () => {
                 <Button variant="outline" className="w-full">View System Health</Button>
               </CardFooter>
             </Card>
-            
+
             {/* Active Alerts */}
             <Card>
               <CardHeader>
@@ -312,7 +312,7 @@ const AdminDashboard = () => {
                     <div className="text-sm text-gray-500">Requiring administrator attention</div>
                   </div>
                 </div>
-                
+
                 <div className="mt-4 space-y-3">
                   <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
                     <div className="flex items-center text-amber-800 font-medium">
@@ -323,7 +323,7 @@ const AdminDashboard = () => {
                       Station ID #1234 exceeding rate limits
                     </div>
                   </div>
-                  
+
                   <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
                     <div className="flex items-center text-red-800 font-medium">
                       <AlertTriangle size={16} className="mr-2" />
@@ -333,7 +333,7 @@ const AdminDashboard = () => {
                       Multiple failed attempts for admin@fuelfriendly.com
                     </div>
                   </div>
-                  
+
                   <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
                     <div className="flex items-center text-blue-800 font-medium">
                       <AlertTriangle size={16} className="mr-2" />
@@ -350,7 +350,7 @@ const AdminDashboard = () => {
               </CardFooter>
             </Card>
           </div>
-          
+
           {/* Charts Section - Only visible to Level 2 and above */}
           {user && user.role >= UserRole.Level2 && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -364,7 +364,7 @@ const AdminDashboard = () => {
                     <PieChart size={160} className="text-gray-300" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
-                        <div className="text-2xl font-bold">1,254</div>
+                        <div className="text-2xl font-bold">50,000</div>
                         <div className="text-xs text-gray-500">Total Users</div>
                       </div>
                     </div>
@@ -385,7 +385,7 @@ const AdminDashboard = () => {
                   </div>
                 </CardFooter>
               </Card>
-              
+
               <Card className="col-span-1">
                 <CardHeader>
                   <CardTitle>Station Types</CardTitle>
@@ -396,7 +396,7 @@ const AdminDashboard = () => {
                     <PieChart size={160} className="text-gray-300" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
-                        <div className="text-2xl font-bold">87</div>
+                        <div className="text-2xl font-bold">1,250</div>
                         <div className="text-xs text-gray-500">Total Stations</div>
                       </div>
                     </div>
@@ -417,7 +417,7 @@ const AdminDashboard = () => {
                   </div>
                 </CardFooter>
               </Card>
-              
+
               <Card className="col-span-1">
                 <CardHeader>
                   <CardTitle>Revenue Sources</CardTitle>
@@ -428,7 +428,7 @@ const AdminDashboard = () => {
                     <PieChart size={160} className="text-gray-300" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
-                        <div className="text-2xl font-bold">$456K</div>
+                        <div className="text-2xl font-bold">$4.57M</div>
                         <div className="text-xs text-gray-500">Total Revenue</div>
                       </div>
                     </div>
@@ -451,15 +451,15 @@ const AdminDashboard = () => {
               </Card>
             </div>
           )}
-          
+
           {/* Advanced System Controls - Only visible to Level 3 and Superior Admin */}
           {user && user.role >= UserRole.Level3 && (
             <Card>
               <CardHeader>
                 <CardTitle>Advanced System Controls</CardTitle>
                 <CardDescription>
-                  {user.role === UserRole.SuperiorAdmin 
-                    ? "Full system control with superior admin privileges" 
+                  {user.role === UserRole.SuperiorAdmin
+                    ? "Full system control with superior admin privileges"
                     : "Advanced system management options"}
                 </CardDescription>
               </CardHeader>
@@ -471,14 +471,14 @@ const AdminDashboard = () => {
                       <span>Fuel Price Control</span>
                     </div>
                   </Button>
-                  
+
                   <Button variant="outline" className="flex items-center justify-center h-20">
                     <div className="flex flex-col items-center">
                       <Zap size={24} className="mb-2 text-amber-600" />
                       <span>System Maintenance</span>
                     </div>
                   </Button>
-                  
+
                   <Button variant="outline" className="flex items-center justify-center h-20">
                     <div className="flex flex-col items-center">
                       <Lock size={24} className="mb-2 text-red-600" />
@@ -486,7 +486,7 @@ const AdminDashboard = () => {
                     </div>
                   </Button>
                 </div>
-                
+
                 {/* Superior Admin Only Controls */}
                 {user.role === UserRole.SuperiorAdmin && (
                   <div className="mt-4 p-4 border border-red-200 bg-red-50 rounded-lg">

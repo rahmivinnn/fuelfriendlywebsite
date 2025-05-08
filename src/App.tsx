@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import ChatBot from "@/components/organisms/ChatBot";
 import Index from "./pages/Index";
 import AboutUs from "./pages/AboutUs";
+import ContactUs from "./pages/ContactUs";
 import NearbyStations from "./pages/NearbyStations";
 import StationRegistration from "./pages/StationRegistration";
 import StationDashboard from "./pages/StationDashboard";
@@ -68,6 +69,7 @@ const App = () => (
             {/* Public routes */}
             <Route path="/" element={<Index />} />
             <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/nearby-stations" element={<NearbyStations />} />
             <Route path="/station-registration" element={<StationRegistration />} />
             <Route path="/login" element={<Login />} />

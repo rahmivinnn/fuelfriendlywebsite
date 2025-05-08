@@ -6,14 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth, UserRole } from '@/contexts/AuthContext';
-import { 
-  Users, Search, Filter, MoreHorizontal, Shield, ShieldAlert, 
-  ShieldCheck, UserCog, Edit, Trash2, UserPlus, CheckCircle, 
+import {
+  Users, Search, Filter, MoreHorizontal, Shield, ShieldAlert,
+  ShieldCheck, UserCog, Edit, Trash2, UserPlus, CheckCircle,
   XCircle, ArrowUpDown
 } from 'lucide-react';
-import { 
-  Table, TableBody, TableCell, TableHead, 
-  TableHeader, TableRow 
+import {
+  Table, TableBody, TableCell, TableHead,
+  TableHeader, TableRow
 } from '@/components/ui/table';
 import {
   DropdownMenu,
@@ -40,20 +40,20 @@ const generateMockUsers = () => {
   const roles = [UserRole.Level1, UserRole.Level2, UserRole.Level3, UserRole.SuperiorAdmin];
   const statuses = ['Active', 'Inactive', 'Pending'];
   const names = [
-    'John Smith', 'Sarah Johnson', 'Michael Brown', 'Emily Davis', 
+    'John Smith', 'Sarah Johnson', 'Michael Brown', 'Emily Davis',
     'David Wilson', 'Jessica Taylor', 'Daniel Anderson', 'Jennifer Thomas',
     'Matthew Jackson', 'Amanda White', 'Christopher Harris', 'Ashley Martin',
     'James Thompson', 'Stephanie Garcia', 'Robert Martinez', 'Nicole Robinson',
     'William Clark', 'Elizabeth Rodriguez', 'Joseph Lewis', 'Melissa Lee'
   ];
-  
-  return Array.from({ length: 20 }, (_, i) => {
+
+  return Array.from({ length: 50000 }, (_, i) => {
     const name = names[i % names.length];
     const email = name.toLowerCase().replace(' ', '.') + '@example.com';
     const role = roles[Math.floor(Math.random() * (roles.length - 1))]; // Less chance for SuperiorAdmin
     const status = statuses[Math.floor(Math.random() * statuses.length)];
     const lastLogin = new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000).toISOString();
-    
+
     return {
       id: `user-${i + 1}`,
       name,
@@ -80,7 +80,7 @@ const UserManagement = () => {
     key: string;
     direction: 'ascending' | 'descending';
   } | null>(null);
-  
+
   // Form state for adding/editing users
   const [formData, setFormData] = useState({
     name: '',
@@ -88,7 +88,7 @@ const UserManagement = () => {
     role: UserRole.Level1.toString(),
     status: 'Active'
   });
-  
+
   // Load mock data
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -97,34 +97,34 @@ const UserManagement = () => {
       setFilteredUsers(mockUsers);
       setIsLoading(false);
     }, 1500);
-    
+
     return () => clearTimeout(timer);
   }, []);
-  
+
   // Handle search
   useEffect(() => {
     if (searchQuery.trim() === '') {
       setFilteredUsers(users);
     } else {
       const query = searchQuery.toLowerCase();
-      const filtered = users.filter(user => 
-        user.name.toLowerCase().includes(query) || 
+      const filtered = users.filter(user =>
+        user.name.toLowerCase().includes(query) ||
         user.email.toLowerCase().includes(query)
       );
       setFilteredUsers(filtered);
     }
   }, [searchQuery, users]);
-  
+
   // Handle sorting
   const requestSort = (key: string) => {
     let direction: 'ascending' | 'descending' = 'ascending';
-    
+
     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
     }
-    
+
     setSortConfig({ key, direction });
-    
+
     const sortedUsers = [...filteredUsers].sort((a, b) => {
       if (a[key] < b[key]) {
         return direction === 'ascending' ? -1 : 1;
@@ -134,21 +134,21 @@ const UserManagement = () => {
       }
       return 0;
     });
-    
+
     setFilteredUsers(sortedUsers);
   };
-  
+
   // Get sort direction indicator
   const getSortDirectionIndicator = (key: string) => {
     if (!sortConfig || sortConfig.key !== key) {
       return <ArrowUpDown size={14} />;
     }
-    
-    return sortConfig.direction === 'ascending' 
-      ? <ArrowUpDown size={14} className="text-green-500" /> 
+
+    return sortConfig.direction === 'ascending'
+      ? <ArrowUpDown size={14} className="text-green-500" />
       : <ArrowUpDown size={14} className="text-red-500" />;
   };
-  
+
   // Handle edit user
   const handleEditUser = (user: any) => {
     setSelectedUser(user);
@@ -160,62 +160,62 @@ const UserManagement = () => {
     });
     setShowUserForm(true);
   };
-  
+
   // Handle delete user
   const handleDeleteUser = (user: any) => {
     setSelectedUser(user);
     setShowDeleteConfirm(true);
   };
-  
+
   // Confirm delete
   const confirmDelete = () => {
     if (selectedUser) {
       setUsers(users.filter(u => u.id !== selectedUser.id));
       setFilteredUsers(filteredUsers.filter(u => u.id !== selectedUser.id));
-      
+
       toast({
         title: "User Deleted",
         description: `${selectedUser.name} has been removed from the system`,
         duration: 3000,
       });
-      
+
       setShowDeleteConfirm(false);
       setSelectedUser(null);
     }
   };
-  
+
   // Handle form input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
-  
+
   // Handle select change
   const handleSelectChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
-  
+
   // Handle save user
   const handleSaveUser = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (selectedUser) {
       // Update existing user
-      const updatedUsers = users.map(u => 
-        u.id === selectedUser.id 
-          ? { 
-              ...u, 
-              name: formData.name, 
-              email: formData.email, 
-              role: parseInt(formData.role), 
-              status: formData.status 
-            } 
+      const updatedUsers = users.map(u =>
+        u.id === selectedUser.id
+          ? {
+              ...u,
+              name: formData.name,
+              email: formData.email,
+              role: parseInt(formData.role),
+              status: formData.status
+            }
           : u
       );
-      
+
       setUsers(updatedUsers);
       setFilteredUsers(updatedUsers);
-      
+
       toast({
         title: "User Updated",
         description: `${formData.name}'s information has been updated`,
@@ -232,21 +232,21 @@ const UserManagement = () => {
         lastLogin: 'Never',
         createdAt: new Date().toISOString()
       };
-      
+
       setUsers([newUser, ...users]);
       setFilteredUsers([newUser, ...filteredUsers]);
-      
+
       toast({
         title: "User Added",
         description: `${formData.name} has been added to the system`,
         duration: 3000,
       });
     }
-    
+
     setShowUserForm(false);
     setSelectedUser(null);
   };
-  
+
   // Handle add new user
   const handleAddUser = () => {
     setSelectedUser(null);
@@ -258,7 +258,7 @@ const UserManagement = () => {
     });
     setShowUserForm(true);
   };
-  
+
   // Get role badge
   const getRoleBadge = (role: UserRole) => {
     switch (role) {
@@ -294,7 +294,7 @@ const UserManagement = () => {
         return null;
     }
   };
-  
+
   // Get status badge
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -323,11 +323,11 @@ const UserManagement = () => {
         return null;
     }
   };
-  
+
   // Format date
   const formatDate = (dateString: string) => {
     if (dateString === 'Never') return 'Never';
-    
+
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
@@ -337,17 +337,15 @@ const UserManagement = () => {
       minute: '2-digit'
     }).format(date);
   };
-  
+
   return (
     <AdminDashboardLayout title="User Management">
       {isLoading ? (
         <div className="h-full flex items-center justify-center">
           <div className="text-center">
-            <motion.div 
-              className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full mx-auto"
-              animate={{ rotate: 360 }}
-              transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-            />
+            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mx-auto">
+              Loading
+            </div>
             <p className="mt-4 text-gray-500">Loading user data...</p>
           </div>
         </div>
@@ -365,8 +363,8 @@ const UserManagement = () => {
                     Manage user accounts and access levels
                   </CardDescription>
                 </div>
-                
-                <Button 
+
+                <Button
                   onClick={handleAddUser}
                   className="bg-green-500 hover:bg-green-600"
                   disabled={!user || user.role < UserRole.Level2}
@@ -387,7 +385,7 @@ const UserManagement = () => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
-                
+
                 <div className="flex items-center">
                   <Button variant="outline" className="flex items-center">
                     <Filter size={16} className="mr-2" />
@@ -395,14 +393,14 @@ const UserManagement = () => {
                   </Button>
                 </div>
               </div>
-              
+
               <div className="rounded-md border">
                 <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead className="w-[250px]">
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           className="flex items-center p-0 h-auto font-medium"
                           onClick={() => requestSort('name')}
                         >
@@ -410,8 +408,8 @@ const UserManagement = () => {
                         </Button>
                       </TableHead>
                       <TableHead>
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           className="flex items-center p-0 h-auto font-medium"
                           onClick={() => requestSort('email')}
                         >
@@ -419,8 +417,8 @@ const UserManagement = () => {
                         </Button>
                       </TableHead>
                       <TableHead>
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           className="flex items-center p-0 h-auto font-medium"
                           onClick={() => requestSort('role')}
                         >
@@ -428,8 +426,8 @@ const UserManagement = () => {
                         </Button>
                       </TableHead>
                       <TableHead>
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           className="flex items-center p-0 h-auto font-medium"
                           onClick={() => requestSort('status')}
                         >
@@ -437,8 +435,8 @@ const UserManagement = () => {
                         </Button>
                       </TableHead>
                       <TableHead>
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           className="flex items-center p-0 h-auto font-medium"
                           onClick={() => requestSort('lastLogin')}
                         >
@@ -456,7 +454,7 @@ const UserManagement = () => {
                         </TableCell>
                       </TableRow>
                     ) : (
-                      filteredUsers.map((user) => (
+                      filteredUsers.slice(0, 100).map((user) => (
                         <TableRow key={user.id}>
                           <TableCell className="font-medium">{user.name}</TableCell>
                           <TableCell>{user.email}</TableCell>
@@ -477,7 +475,7 @@ const UserManagement = () => {
                                   <Edit size={14} className="mr-2" />
                                   Edit
                                 </DropdownMenuItem>
-                                <DropdownMenuItem 
+                                <DropdownMenuItem
                                   onClick={() => handleDeleteUser(user)}
                                   className="text-red-600"
                                   disabled={!user || user.role < UserRole.Level3}
@@ -497,9 +495,9 @@ const UserManagement = () => {
             </CardContent>
             <CardFooter className="flex justify-between">
               <div className="text-sm text-gray-500">
-                Showing {filteredUsers.length} of {users.length} users
+                Showing {filteredUsers.length > 100 ? 100 : filteredUsers.length} of {users.length} users
               </div>
-              
+
               <div className="flex items-center space-x-2">
                 <Button variant="outline" size="sm" disabled>
                   Previous
@@ -510,14 +508,14 @@ const UserManagement = () => {
               </div>
             </CardFooter>
           </Card>
-          
+
           {/* User Form Dialog */}
           <Dialog open={showUserForm} onOpenChange={setShowUserForm}>
             <DialogContent className="sm:max-w-[525px]">
               <DialogHeader>
                 <DialogTitle>{selectedUser ? 'Edit User' : 'Add New User'}</DialogTitle>
                 <DialogDescription>
-                  {selectedUser 
+                  {selectedUser
                     ? 'Update user information and access level'
                     : 'Fill out the form below to add a new user'}
                 </DialogDescription>
@@ -555,8 +553,8 @@ const UserManagement = () => {
                     <Label htmlFor="role" className="text-right">
                       Role
                     </Label>
-                    <Select 
-                      value={formData.role} 
+                    <Select
+                      value={formData.role}
                       onValueChange={(value) => handleSelectChange('role', value)}
                     >
                       <SelectTrigger className="col-span-3">
@@ -596,8 +594,8 @@ const UserManagement = () => {
                     <Label htmlFor="status" className="text-right">
                       Status
                     </Label>
-                    <Select 
-                      value={formData.status} 
+                    <Select
+                      value={formData.status}
                       onValueChange={(value) => handleSelectChange('status', value)}
                     >
                       <SelectTrigger className="col-span-3">
@@ -637,7 +635,7 @@ const UserManagement = () => {
               </form>
             </DialogContent>
           </Dialog>
-          
+
           {/* Delete Confirmation Dialog */}
           <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
             <DialogContent className="sm:max-w-[425px]">
@@ -662,8 +660,8 @@ const UserManagement = () => {
                 <Button variant="outline" onClick={() => setShowDeleteConfirm(false)}>
                   Cancel
                 </Button>
-                <Button 
-                  variant="destructive" 
+                <Button
+                  variant="destructive"
                   onClick={confirmDelete}
                 >
                   Delete User
