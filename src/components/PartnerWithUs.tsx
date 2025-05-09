@@ -44,6 +44,7 @@ const PartnerWithUs = () => {
     vehicleType: '',
     experience: '',
     message: '',
+    cv: null as File | null,
     agreeToTerms: false
   });
 
@@ -57,6 +58,26 @@ const PartnerWithUs = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    if (!formData.cv) {
+      toast({
+        title: "CV Required",
+        description: "Please upload your CV",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
 
     if (!formData.agreeToTerms) {
       toast({
@@ -92,6 +113,38 @@ const PartnerWithUs = () => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    
+    if (type === 'file') {
+      const fileInput = e.target as HTMLInputElement;
+      const file = fileInput.files?.[0] || null;
+      
+      if (file && !file.type.match('application/pdf|application/msword|application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+        toast({
+          title: "Invalid File Type",
+          description: "Please upload a PDF or Word document",
+          variant: "destructive",
+          duration: 3000,
+        });
+        return;
+      }
+      
+      if (file && file.size > 5 * 1024 * 1024) { // 5MB limit
+        toast({
+          title: "File Too Large",
+          description: "Please upload a file smaller than 5MB",
+          variant: "destructive",
+          duration: 3000,
+        });
+        return;
+      }
+      
+      setFormData(prev => ({
+        ...prev,
+        cv: file
+      }));
+      return;
+    }
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -223,6 +276,7 @@ const PartnerWithUs = () => {
             className="bg-white p-8 rounded-xl shadow-md border border-gray-100 flex flex-col justify-between"
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
+            whileHover={{ scale: 1.02, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
@@ -266,20 +320,32 @@ const PartnerWithUs = () => {
             </div>
 
             <div className="mt-8 space-y-4">
-              <Button
-                className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-6 text-lg"
-                onClick={handlePartnerClick}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                Apply to Partner With Us
-              </Button>
+                <Button
+                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-6 text-lg"
+                  onClick={handlePartnerClick}
+                >
+                  Become a Fuel Friend
+                </Button>
+              </motion.div>
 
-              <Button
-                variant="outline"
-                className="w-full border-green-200 text-green-700 hover:bg-green-50"
-                onClick={handleViewAgreement}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                View Partner Agreement
-              </Button>
+                <Button
+                  variant="outline"
+                  className="w-full border-green-200 text-green-700 hover:bg-green-50"
+                  onClick={handleViewAgreement}
+                >
+                  View Partner Agreement
+                </Button>
+              </motion.div>
             </div>
           </motion.div>
         </div>
@@ -295,8 +361,28 @@ const PartnerWithUs = () => {
             </DialogDescription>
           </DialogHeader>
 
-          <form onSubmit={handleSubmit} className="space-y-4 py-4">
+          <motion.form
+            onSubmit={handleSubmit}
+            className="space-y-4 py-4"
+            encType="multipart/form-data"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2 col-span-2">
+                <Label htmlFor="cv">CV/Resume</Label>
+                <Input
+                  type="file"
+                  id="cv"
+                  name="cv"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleInputChange}
+                  className="cursor-pointer"
+                  required
+                />
+                <p className="text-xs text-gray-500">Upload your CV (PDF or Word, max 5MB)</p>
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="firstName">First Name</Label>
                 <Input
@@ -344,6 +430,19 @@ const PartnerWithUs = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2 col-span-2">
+                <Label htmlFor="cv">CV/Resume</Label>
+                <Input
+                  type="file"
+                  id="cv"
+                  name="cv"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleInputChange}
+                  className="cursor-pointer"
+                  required
+                />
+                <p className="text-xs text-gray-500">Upload your CV (PDF or Word, max 5MB)</p>
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="city">City</Label>
                 <Input
@@ -435,9 +534,17 @@ const PartnerWithUs = () => {
             </div>
 
             <DialogFooter>
-              <Button type="submit">Submit Application</Button>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
+                <Button type="submit" className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white">
+                  Submit Application
+                </Button>
+              </motion.div>
             </DialogFooter>
-          </form>
+          </motion.form>
         </DialogContent>
       </Dialog>
 

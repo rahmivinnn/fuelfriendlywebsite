@@ -11,6 +11,7 @@ import {
   DialogFooter
 } from '@/components/ui/dialog';
 import { useToast } from "@/hooks/use-toast";
+import { motion } from 'framer-motion';
 
 const PricingSection = () => {
   const { toast } = useToast();
@@ -107,18 +108,25 @@ const PricingSection = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
           {plans.map((plan, index) => (
-            <div 
+            <motion.div 
               key={index} 
-              className={`pricing-card flex flex-col justify-between p-6 rounded-lg shadow-sm ${
-                plan.highlighted 
-                  ? "border-primary bg-primary/5 relative" 
-                  : "border border-gray-200 bg-white"
-              }`}
+              className={`pricing-card flex flex-col justify-between p-6 rounded-lg shadow-sm ${plan.highlighted ? "border-primary bg-primary/5 relative" : "border border-gray-200 bg-white"}`}
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.6, delay: index * 0.2, type: "spring", stiffness: 100 }}
+              viewport={{ once: true, margin: "-50px" }}
+              whileHover={{ scale: 1.03, y: -5 }}
+              whileTap={{ scale: 0.98 }}
             >
               {plan.highlighted && (
-                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-white text-xs px-3 py-1 rounded-full">
+                <motion.div 
+                  className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-white text-xs px-3 py-1 rounded-full"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+                >
                   Most Popular
-                </div>
+                </motion.div>
               )}
               <div>
                 <h3 className="text-xl font-bold">{plan.name}</h3>

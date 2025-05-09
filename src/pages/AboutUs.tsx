@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import {
   Truck, Clock, Shield, CreditCard, MapPin, Users,
   Heart, Fuel, ChevronRight, Star, ArrowRight,
-  Sparkles, Zap, Leaf, Droplet
+  Sparkles, Zap, Leaf, Droplet, Mail, Phone, Globe
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
@@ -24,6 +24,20 @@ const AboutUs = () => {
     customers: 0,
     deliveries: 0
   });
+
+  // Refs for scroll animations
+  const statsRef = useRef(null);
+  const statsInView = useInView(statsRef, { once: true, amount: 0.3 });
+
+  // Interactive feedback for tab changes
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    toast({
+      title: `${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`,
+      description: `Viewing ${tabId} information`,
+      duration: 1500,
+    });
+  };
 
   // Simulate data loading
   useEffect(() => {
@@ -195,14 +209,22 @@ const AboutUs = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 bg-white dark:bg-gray-800">
+      <section className="py-12 bg-white dark:bg-gray-800" ref={statsRef}>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <motion.div
               initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
+              animate={statsInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="p-6"
+              whileHover={{ scale: 1.05 }}
+              className="p-6 cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
+              onClick={() => {
+                toast({
+                  title: "Partner Stations",
+                  description: `We have ${stats.stations.toLocaleString()}+ partner stations worldwide`,
+                  duration: 2000,
+                });
+              }}
             >
               <div className="text-3xl md:text-4xl font-bold text-green-600 dark:text-green-400 mb-2">
                 {stats.stations.toLocaleString()}+
@@ -214,9 +236,17 @@ const AboutUs = () => {
 
             <motion.div
               initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
+              animate={statsInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="p-6"
+              whileHover={{ scale: 1.05 }}
+              className="p-6 cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
+              onClick={() => {
+                toast({
+                  title: "Global Presence",
+                  description: `We operate in ${stats.countries.toLocaleString()} countries around the world`,
+                  duration: 2000,
+                });
+              }}
             >
               <div className="text-3xl md:text-4xl font-bold text-green-600 dark:text-green-400 mb-2">
                 {stats.countries.toLocaleString()}
@@ -228,9 +258,17 @@ const AboutUs = () => {
 
             <motion.div
               initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
+              animate={statsInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="p-6"
+              whileHover={{ scale: 1.05 }}
+              className="p-6 cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
+              onClick={() => {
+                toast({
+                  title: "Happy Customers",
+                  description: `Over ${stats.customers.toLocaleString()}+ satisfied customers and growing`,
+                  duration: 2000,
+                });
+              }}
             >
               <div className="text-3xl md:text-4xl font-bold text-green-600 dark:text-green-400 mb-2">
                 {stats.customers.toLocaleString()}+
@@ -242,9 +280,17 @@ const AboutUs = () => {
 
             <motion.div
               initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
+              animate={statsInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="p-6"
+              whileHover={{ scale: 1.05 }}
+              className="p-6 cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
+              onClick={() => {
+                toast({
+                  title: "Deliveries Completed",
+                  description: `We've successfully completed ${stats.deliveries.toLocaleString()}+ deliveries`,
+                  duration: 2000,
+                });
+              }}
             >
               <div className="text-3xl md:text-4xl font-bold text-green-600 dark:text-green-400 mb-2">
                 {stats.deliveries.toLocaleString()}+
@@ -269,9 +315,11 @@ const AboutUs = () => {
                 { id: 'values', label: 'Our Values' },
                 { id: 'team', label: 'Our Team' }
               ].map((tab) => (
-                <button
+                <motion.button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => handleTabChange(tab.id)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                     activeTab === tab.id
                       ? 'bg-green-500 text-white shadow-md'
@@ -279,7 +327,7 @@ const AboutUs = () => {
                   }`}
                 >
                   {tab.label}
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
@@ -512,6 +560,106 @@ const AboutUs = () => {
               )}
             </motion.div>
           </AnimatePresence>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="py-16 bg-white dark:bg-gray-800">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="max-w-5xl mx-auto"
+          >
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4 text-gray-800 dark:text-white">Get In Touch</h2>
+              <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                Have questions about our services or interested in partnering with us? We'd love to hear from you!
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <motion.div
+                whileHover={{ y: -5 }}
+                className="bg-green-50 dark:bg-green-900/20 p-6 rounded-xl text-center"
+              >
+                <div className="bg-green-100 dark:bg-green-800 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Phone className="h-6 w-6 text-green-600 dark:text-green-400" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Call Us</h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                  Our support team is available 24/7
+                </p>
+                <Button
+                  variant="outline"
+                  className="border-green-500 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-400"
+                  onClick={() => {
+                    toast({
+                      title: "Phone Contact",
+                      description: "Calling support at +1 (555) 123-4567",
+                      duration: 3000,
+                    });
+                  }}
+                >
+                  +1 (555) 123-4567
+                </Button>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ y: -5 }}
+                className="bg-green-50 dark:bg-green-900/20 p-6 rounded-xl text-center"
+              >
+                <div className="bg-green-100 dark:bg-green-800 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Mail className="h-6 w-6 text-green-600 dark:text-green-400" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Email Us</h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                  Send us an email and we'll respond within 24 hours
+                </p>
+                <Button
+                  variant="outline"
+                  className="border-green-500 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-400"
+                  onClick={() => {
+                    toast({
+                      title: "Email Contact",
+                      description: "Opening email to support@fuelfriendly.com",
+                      duration: 3000,
+                    });
+                  }}
+                >
+                  support@fuelfriendly.com
+                </Button>
+              </motion.div>
+
+              <motion.div
+                whileHover={{ y: -5 }}
+                className="bg-green-50 dark:bg-green-900/20 p-6 rounded-xl text-center"
+              >
+                <div className="bg-green-100 dark:bg-green-800 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Globe className="h-6 w-6 text-green-600 dark:text-green-400" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Visit Us</h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                  Come visit our headquarters
+                </p>
+                <Button
+                  variant="outline"
+                  className="border-green-500 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-400"
+                  onClick={() => {
+                    toast({
+                      title: "Office Location",
+                      description: "Opening maps to 123 Fuel St, San Francisco, CA",
+                      duration: 3000,
+                    });
+                  }}
+                >
+                  123 Fuel St, San Francisco, CA
+                </Button>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </section>
 

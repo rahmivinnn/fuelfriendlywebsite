@@ -171,19 +171,20 @@ const Features = () => {
             <motion.div
               key={index}
               className="feature-card flex flex-col space-y-4 rounded-xl hover:shadow-lg transition-all duration-300 border border-gray-100 p-6 cursor-pointer relative overflow-hidden"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -10, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.5, delay: index * 0.1, type: "spring", stiffness: 100 }}
+              viewport={{ once: true, margin: "-50px" }}
+              whileHover={{ y: -10, scale: 1.02, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => handleFeatureClick(feature)}
             >
-              {/* Hover effect overlay */}
+              {/* Hover effect overlay with improved animation */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-blue-50 to-green-50 opacity-0"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 0.5 }}
-                transition={{ duration: 0.3 }}
+                className="absolute inset-0 bg-gradient-to-r from-blue-50 via-green-50 to-blue-50 opacity-0"
+                initial={{ opacity: 0, x: -100 }}
+                whileHover={{ opacity: 0.6, x: 100 }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
               />
 
               <div className="flex items-center space-x-4 relative z-10">
