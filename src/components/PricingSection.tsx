@@ -94,14 +94,14 @@ const PricingSection = () => {
   };
 
   return (
-    <section className="py-12 md:py-24">
+    <section className="py-12 md:py-24 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl dark:text-white">
               Choose the Perfect Plan for Your Fuel Station
             </h2>
-            <p className="text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+            <p className="text-gray-500 dark:text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               Select a plan that fits your needs and budget
             </p>
           </div>
@@ -110,7 +110,11 @@ const PricingSection = () => {
           {plans.map((plan, index) => (
             <motion.div
               key={index}
-              className={`pricing-card flex flex-col justify-between p-6 rounded-lg shadow-sm ${plan.highlighted ? "border-primary bg-primary/5 relative" : "border border-gray-200 bg-white"}`}
+              className={`pricing-card flex flex-col justify-between p-6 rounded-lg shadow-sm ${
+                plan.highlighted
+                  ? "border-primary bg-primary/5 dark:bg-primary/10 relative"
+                  : "border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
+              }`}
               initial={{ opacity: 0, y: 50, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.6, delay: index * 0.2, type: "spring", stiffness: 100 }}
@@ -129,17 +133,17 @@ const PricingSection = () => {
                 </motion.div>
               )}
               <div>
-                <h3 className="text-xl font-bold">{plan.name}</h3>
+                <h3 className="text-xl font-bold dark:text-white">{plan.name}</h3>
                 <div className="mt-4 flex items-baseline">
-                  <span className="text-4xl font-extrabold">{plan.price}</span>
-                  <span className="ml-1 text-gray-500">/{plan.period}</span>
+                  <span className="text-4xl font-extrabold dark:text-white">{plan.price}</span>
+                  <span className="ml-1 text-gray-500 dark:text-gray-400">/{plan.period}</span>
                 </div>
-                <p className="mt-2 text-gray-500 text-sm">{plan.description}</p>
+                <p className="mt-2 text-gray-500 dark:text-gray-400 text-sm">{plan.description}</p>
                 <ul className="mt-6 space-y-3">
                   {plan.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className="flex items-start">
-                      <Check className="h-5 w-5 text-primary flex-shrink-0 mr-2" />
-                      <span className="text-sm">{feature}</span>
+                      <Check className="h-5 w-5 text-primary dark:text-primary flex-shrink-0 mr-2" />
+                      <span className="text-sm dark:text-gray-300">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -148,7 +152,7 @@ const PricingSection = () => {
                 className={`mt-8 ${
                   plan.highlighted
                     ? "bg-primary hover:bg-primary/90 text-white"
-                    : "bg-white text-primary border border-primary hover:bg-primary/5"
+                    : "bg-white dark:bg-gray-700 text-primary dark:text-primary border border-primary dark:border-primary hover:bg-primary/5 dark:hover:bg-primary/20"
                 }`}
                 onClick={() => handlePaymentClick(plan)}
               >
@@ -161,10 +165,10 @@ const PricingSection = () => {
 
       {/* Payment Dialog */}
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] dark:bg-gray-800 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle>Subscribe to {selectedPlan?.name}</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="dark:text-white">Subscribe to {selectedPlan?.name}</DialogTitle>
+            <DialogDescription className="dark:text-gray-300">
               Complete your subscription by adding a payment method.
             </DialogDescription>
           </DialogHeader>
@@ -172,74 +176,89 @@ const PricingSection = () => {
           {!paymentSuccess ? (
             <div className="grid gap-4 py-4">
               <div className="space-y-2">
-                <h3 className="text-sm font-medium">Select Payment Method</h3>
+                <h3 className="text-sm font-medium dark:text-white">Select Payment Method</h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div
-                    className={`flex items-center justify-center p-3 border rounded-md cursor-pointer ${paymentMethod === 'credit' ? 'bg-green-50 border-green-500' : 'hover:bg-gray-50'}`}
+                    className={`flex items-center justify-center p-3 border rounded-md cursor-pointer ${
+                      paymentMethod === 'credit'
+                        ? 'bg-green-50 dark:bg-green-900/30 border-green-500 dark:border-green-600'
+                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600'
+                    }`}
                     onClick={() => setPaymentMethod('credit')}
                   >
-                    <span>Credit Card</span>
+                    <span className="dark:text-white">Credit Card</span>
                   </div>
                   <div
-                    className={`flex items-center justify-center p-3 border rounded-md cursor-pointer ${paymentMethod === 'debit' ? 'bg-green-50 border-green-500' : 'hover:bg-gray-50'}`}
+                    className={`flex items-center justify-center p-3 border rounded-md cursor-pointer ${
+                      paymentMethod === 'debit'
+                        ? 'bg-green-50 dark:bg-green-900/30 border-green-500 dark:border-green-600'
+                        : 'hover:bg-gray-50 dark:hover:bg-gray-700 dark:border-gray-600'
+                    }`}
                     onClick={() => setPaymentMethod('debit')}
                   >
-                    <span>Debit Card</span>
+                    <span className="dark:text-white">Debit Card</span>
                   </div>
                 </div>
               </div>
 
               <div className="grid gap-2">
-                <label htmlFor="cardNumber" className="text-sm">Card Number</label>
+                <label htmlFor="cardNumber" className="text-sm dark:text-white">Card Number</label>
                 <input
                   id="cardNumber"
                   type="text"
                   placeholder="1234 5678 9012 3456"
-                  className="w-full p-2 border rounded-md"
+                  className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <label htmlFor="expiry" className="text-sm">Expiry Date</label>
+                  <label htmlFor="expiry" className="text-sm dark:text-white">Expiry Date</label>
                   <input
                     id="expiry"
                     type="text"
                     placeholder="MM/YY"
-                    className="w-full p-2 border rounded-md"
+                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <label htmlFor="cvc" className="text-sm">CVC</label>
+                  <label htmlFor="cvc" className="text-sm dark:text-white">CVC</label>
                   <input
                     id="cvc"
                     type="text"
                     placeholder="123"
-                    className="w-full p-2 border rounded-md"
+                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   />
                 </div>
               </div>
 
               <DialogFooter>
-                <Button variant="outline" onClick={() => setShowPaymentDialog(false)}>
+                <Button
+                  variant="outline"
+                  className="dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+                  onClick={() => setShowPaymentDialog(false)}
+                >
                   Cancel
                 </Button>
-                <Button className="bg-green-500 hover:bg-green-600" onClick={handlePaymentSubmit}>
+                <Button
+                  className="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
+                  onClick={handlePaymentSubmit}
+                >
                   Pay Now
                 </Button>
               </DialogFooter>
             </div>
           ) : (
             <div className="py-6 flex flex-col items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-4">
-                <Check className="h-6 w-6 text-green-600" />
+              <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center mb-4">
+                <Check className="h-6 w-6 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="text-lg font-medium text-center">Payment Successful!</h3>
-              <p className="text-center text-gray-500 mt-2">
+              <h3 className="text-lg font-medium text-center dark:text-white">Payment Successful!</h3>
+              <p className="text-center text-gray-500 dark:text-gray-300 mt-2">
                 You have successfully subscribed to {selectedPlan?.name}. You can now enjoy all the features.
               </p>
               <Button
-                className="mt-6 bg-green-500 hover:bg-green-600"
+                className="mt-6 bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
                 onClick={() => {
                   setShowPaymentDialog(false);
                   setPaymentSuccess(false);

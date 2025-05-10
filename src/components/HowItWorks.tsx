@@ -65,40 +65,48 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="py-12 md:py-24 bg-gray-50">
+    <section className="py-12 md:py-24 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-start space-y-4">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
             className="space-y-2"
           >
-            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">How it Works</h2>
-            <p className="text-gray-500 md:text-xl/relaxed">
+            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl dark:text-white">How it Works</h2>
+            <p className="text-gray-500 dark:text-gray-300 md:text-xl/relaxed">
               Fueling made easy - follow these simple steps!
             </p>
           </motion.div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-          {steps.map((step, index) => (
-            <motion.div 
-              key={step.id} 
-              className={`${step.bgColor} p-6 rounded-3xl`}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -10, transition: { duration: 0.2 } }}
-            >
-              <div className="space-y-4">
-                {step.icon}
-                <h3 className="text-xl font-bold">{step.title}</h3>
-                <p className="text-gray-600">{step.description}</p>
-              </div>
-            </motion.div>
-          ))}
+          {steps.map((step, index) => {
+            // Define dark mode background colors
+            const darkBgColor = step.bgColor === "bg-cyan-50" ? "dark:bg-cyan-900/30" :
+                               step.bgColor === "bg-pink-50" ? "dark:bg-fuchsia-900/30" :
+                               step.bgColor === "bg-blue-50" ? "dark:bg-blue-900/30" :
+                               "dark:bg-green-900/30";
+
+            return (
+              <motion.div
+                key={step.id}
+                className={`${step.bgColor} ${darkBgColor} p-6 rounded-3xl transition-colors duration-300`}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10, transition: { duration: 0.2 } }}
+              >
+                <div className="space-y-4">
+                  {step.icon}
+                  <h3 className="text-xl font-bold dark:text-white">{step.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300">{step.description}</p>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
