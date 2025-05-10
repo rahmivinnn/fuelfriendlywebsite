@@ -1851,13 +1851,13 @@ const NearbyStations = () => {
 
       {/* Enhanced App Store Dialog */}
       <Dialog open={showAppStoreDialog} onOpenChange={setShowAppStoreDialog}>
-        <DialogContent className="sm:max-w-lg p-0 overflow-hidden bg-gradient-to-br from-green-50 to-blue-50 border-0">
+        <DialogContent className="sm:max-w-lg p-0 overflow-hidden bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 border-0">
           <div className="relative">
             {/* Background animation */}
             <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute -top-24 -left-24 w-64 h-64 bg-green-200 rounded-full opacity-20 animate-blob"></div>
-              <div className="absolute top-32 -right-24 w-72 h-72 bg-blue-200 rounded-full opacity-20 animate-blob animation-delay-2000"></div>
-              <div className="absolute -bottom-24 left-32 w-56 h-56 bg-yellow-200 rounded-full opacity-20 animate-blob animation-delay-4000"></div>
+              <div className="absolute -top-24 -left-24 w-64 h-64 bg-green-200 dark:bg-green-900 rounded-full opacity-20 animate-blob"></div>
+              <div className="absolute top-32 -right-24 w-72 h-72 bg-blue-200 dark:bg-blue-900 rounded-full opacity-20 animate-blob animation-delay-2000"></div>
+              <div className="absolute -bottom-24 left-32 w-56 h-56 bg-yellow-200 dark:bg-yellow-900 rounded-full opacity-20 animate-blob animation-delay-4000"></div>
             </div>
 
             {/* Content */}
@@ -1890,7 +1890,7 @@ const NearbyStations = () => {
                   <div className="absolute top-0 left-0 right-0 h-6 bg-black z-10 flex justify-center">
                     <div className="w-24 h-4 bg-black rounded-b-xl"></div>
                   </div>
-                  <div className="h-full w-full bg-gradient-to-b from-green-400 to-green-600 overflow-hidden">
+                  <div className="h-full w-full bg-gradient-to-b from-green-400 to-green-600 dark:from-green-600 dark:to-green-800 overflow-hidden">
                     <div className="animate-float">
                       <div className="pt-8 px-4 text-white">
                         <div className="flex justify-between items-center mb-6">
@@ -1898,7 +1898,7 @@ const NearbyStations = () => {
                             <div className="text-xs opacity-80">Welcome back</div>
                             <div className="font-bold">John Doe</div>
                           </div>
-                          <div className="w-8 h-8 bg-white rounded-full"></div>
+                          <div className="w-8 h-8 bg-white dark:bg-gray-200 rounded-full"></div>
                         </div>
 
                         <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 mb-4">
@@ -1906,18 +1906,18 @@ const NearbyStations = () => {
                           <div className="text-sm">10 Gallons Regular</div>
                           <div className="flex justify-between items-center mt-2">
                             <div className="text-xs opacity-80">Status</div>
-                            <div className="text-xs bg-green-500 px-2 py-0.5 rounded-full">On the way</div>
+                            <div className="text-xs bg-green-500 dark:bg-green-600 px-2 py-0.5 rounded-full">On the way</div>
                           </div>
                         </div>
 
-                        <div className="bg-white rounded-xl p-3 mb-4">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl p-3 mb-4">
                           <div className="flex items-center">
-                            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-2">
+                            <div className="w-8 h-8 bg-green-500 dark:bg-green-600 rounded-full flex items-center justify-center mr-2">
                               <Droplet size={16} className="text-white" />
                             </div>
                             <div>
-                              <div className="text-xs font-medium text-gray-800">Order Fuel</div>
-                              <div className="text-xs text-gray-500">Quick & easy delivery</div>
+                              <div className="text-xs font-medium text-gray-800 dark:text-gray-200">Order Fuel</div>
+                              <div className="text-xs text-gray-500 dark:text-gray-400">Quick & easy delivery</div>
                             </div>
                           </div>
                         </div>
@@ -1940,8 +1940,8 @@ const NearbyStations = () => {
                 {/* Download options */}
                 <div className="flex-1 flex flex-col justify-between">
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Download Our App</h2>
-                    <p className="text-gray-600 mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Download Our App</h2>
+                    <p className="text-gray-600 dark:text-gray-300 mb-6">
                       Get fuel delivered to your doorstep with our mobile app. Available for iOS and Android devices.
                     </p>
 
@@ -2003,13 +2003,13 @@ const NearbyStations = () => {
                         <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
                         <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
                       </div>
-                      <span className="text-sm text-gray-600">4.9 • 2.3k+ reviews</span>
+                      <span className="text-sm text-gray-600 dark:text-gray-300">4.9 • 2.3k+ reviews</span>
                     </div>
 
                     <div className="flex justify-center">
                       <Button
                         variant="outline"
-                        className="rounded-full px-6 border-green-500 text-green-600 hover:bg-green-50"
+                        className="rounded-full px-6 border-green-500 text-green-600 dark:text-green-400 dark:border-green-700 hover:bg-green-50 dark:hover:bg-green-900/30"
                         onClick={() => {
                           navigator.clipboard.writeText("https://fuelfriendlywebsite.vercel.app");
                           toast({
@@ -2027,19 +2027,19 @@ const NearbyStations = () => {
                 </div>
               </div>
 
-              <div className="mt-6 pt-6 border-t border-gray-200">
+              <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-center">
                     <div className="relative mr-4">
-                      <div className="w-16 h-16 bg-white p-1 rounded-xl shadow-md rotate-3 absolute -right-1 -top-1"></div>
-                      <div className="w-16 h-16 bg-white p-1 rounded-xl shadow-md -rotate-3 absolute -left-1 -bottom-1"></div>
-                      <div className="w-16 h-16 bg-white p-1 rounded-xl shadow-md relative z-10">
-                        <div className="w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMzAgMzMwIj48cGF0aCBkPSJNMCAwaDMzMHYzMzBIMHoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMzAgMzBoMzB2MzBIMzB6TTYwIDMwaDMwdjMwSDYwek05MCAzMGgzMHYzMEg5MHpNMTIwIDMwaDMwdjMwaC0zMHpNMTUwIDMwaDMwdjMwaC0zMHpNMjEwIDMwaDMwdjMwaC0zMHpNMjcwIDMwaDMwdjMwaC0zMHpNMzAgNjBoMzB2MzBIMzB6TTYwIDIxMGgzMHYzMEg5MHpNMTIwIDEyMGgzMHYzMGgtMzB6TTIxMCA2MGgzMHYzMGgtMzB6TTI3MCA2MGgzMHYzMGgtMzB6TTMwIDkwaDMwdjM0SDMwek05MCA5MGgzMHYzMEg5MHpNMTIwIDEyMGgzMHYzMGgtMzB6TTE1MCAxMjBoMzB2MzBoLTMwek0xODAgMTIwaDMwdjMwaC0zMHpNMjEwIDEyMGgzMHYzMGgtMzB6TTI3MCAxODBoMzB2MzBoLTMwek0zMCAyMTBoMzB2MzBIMzB6TTYwIDIxMGgzMHYzMEg2MHpNOTAgMjEwaDMwdjMwSDkwek0xMjAgMjEwaDMwdjMwaC0zMHpNMTUwIDIxMGgzMHYzMGgtMzB6TTE4MCAyMTBoMzB2MzBoLTMwek0yMTAgMjEwaDMwdjMwaC0zMHpNMjQwIDIxMGgzMHYzMGgtMzB6TTI3MCAyMTBoMzB2MzBoLTMwek0zMCAyNDBoMzB2MzBIMzB6TTYwIDI0MGgzMHYzMEg2MHpNOTAgMjQwaDMwdjMwSDkwek0xMjAgMjQwaDMwdjMwaC0zMHpNMTUwIDI0MGgzMHYzMGgtMzB6TTE4MCAyNDBoMzB2MzBoLTMwek0yMTAgMjQwaDMwdjMwaC0zMHpNMjQwIDI0MGgzMHYzMGgtMzB6TTI3MCAyNDBoMzB2MzBoLTMweiIvPjwvc3ZnPg==')] bg-center bg-contain rounded-lg"></div>
+                      <div className="w-16 h-16 bg-white dark:bg-gray-700 p-1 rounded-xl shadow-md rotate-3 absolute -right-1 -top-1"></div>
+                      <div className="w-16 h-16 bg-white dark:bg-gray-700 p-1 rounded-xl shadow-md -rotate-3 absolute -left-1 -bottom-1"></div>
+                      <div className="w-16 h-16 bg-white dark:bg-gray-700 p-1 rounded-xl shadow-md relative z-10">
+                        <div className="w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMzAgMzMwIj48cGF0aCBkPSJNMCAwaDMzMHYzMzBIMHoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMzAgMzBoMzB2MzBIMzB6TTYwIDMwaDMwdjMwSDYwek05MCAzMGgzMHYzMEg5MHpNMTIwIDMwaDMwdjMwaC0zMHpNMTUwIDMwaDMwdjMwaC0zMHpNMjEwIDMwaDMwdjMwaC0zMHpNMjcwIDMwaDMwdjMwaC0zMHpNMzAgNjBoMzB2MzBIMzB6TTYwIDIxMGgzMHYzMEg5MHpNMTIwIDEyMGgzMHYzMGgtMzB6TTIxMCA2MGgzMHYzMGgtMzB6TTI3MCA2MGgzMHYzMGgtMzB6TTMwIDkwaDMwdjM0SDMwek05MCA5MGgzMHYzMEg5MHpNMTIwIDEyMGgzMHYzMGgtMzB6TTE1MCAxMjBoMzB2MzBoLTMwek0xODAgMTIwaDMwdjMwaC0zMHpNMjEwIDEyMGgzMHYzMGgtMzB6TTI3MCAxODBoMzB2MzBoLTMwek0zMCAyMTBoMzB2MzBIMzB6TTYwIDIxMGgzMHYzMEg2MHpNOTAgMjEwaDMwdjMwSDkwek0xMjAgMjEwaDMwdjMwaC0zMHpNMTUwIDIxMGgzMHYzMGgtMzB6TTE4MCAyMTBoMzB2MzBoLTMwek0yMTAgMjEwaDMwdjMwaC0zMHpNMjQwIDIxMGgzMHYzMGgtMzB6TTI3MCAyMTBoMzB2MzBoLTMwek0zMCAyNDBoMzB2MzBIMzB6TTYwIDI0MGgzMHYzMEg2MHpNOTAgMjQwaDMwdjMwSDkwek0xMjAgMjQwaDMwdjMwaC0zMHpNMTUwIDI0MGgzMHYzMGgtMzB6TTE4MCAyNDBoMzB2MzBoLTMwek0yMTAgMjQwaDMwdjMwaC0zMHpNMjQwIDI0MGgzMHYzMGgtMzB6TTI3MCAyNDBoMzB2MzBoLTMweiIvPjwvc3ZnPg==')] dark:bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMzAgMzMwIj48cGF0aCBkPSJNMCAwaDMzMHYzMzBIMHoiIGZpbGw9IiMxZjI5MzciLz48cGF0aCBkPSJNMzAgMzBoMzB2MzBIMzB6TTYwIDMwaDMwdjMwSDYwek05MCAzMGgzMHYzMEg5MHpNMTIwIDMwaDMwdjMwaC0zMHpNMTUwIDMwaDMwdjMwaC0zMHpNMjEwIDMwaDMwdjMwaC0zMHpNMjcwIDMwaDMwdjMwaC0zMHpNMzAgNjBoMzB2MzBIMzB6TTYwIDIxMGgzMHYzMEg5MHpNMTIwIDEyMGgzMHYzMGgtMzB6TTIxMCA2MGgzMHYzMGgtMzB6TTI3MCA2MGgzMHYzMGgtMzB6TTMwIDkwaDMwdjM0SDMwek05MCA5MGgzMHYzMEg5MHpNMTIwIDEyMGgzMHYzMGgtMzB6TTE1MCAxMjBoMzB2MzBoLTMwek0xODAgMTIwaDMwdjMwaC0zMHpNMjEwIDEyMGgzMHYzMGgtMzB6TTI3MCAxODBoMzB2MzBoLTMwek0zMCAyMTBoMzB2MzBIMzB6TTYwIDIxMGgzMHYzMEg2MHpNOTAgMjEwaDMwdjMwSDkwek0xMjAgMjEwaDMwdjMwaC0zMHpNMTUwIDIxMGgzMHYzMGgtMzB6TTE4MCAyMTBoMzB2MzBoLTMwek0yMTAgMjEwaDMwdjMwaC0zMHpNMjQwIDIxMGgzMHYzMGgtMzB6TTI3MCAyMTBoMzB2MzBoLTMwek0zMCAyNDBoMzB2MzBIMzB6TTYwIDI0MGgzMHYzMEg2MHpNOTAgMjQwaDMwdjMwSDkwek0xMjAgMjQwaDMwdjMwaC0zMHpNMTUwIDI0MGgzMHYzMGgtMzB6TTE4MCAyNDBoMzB2MzBoLTMwek0yMTAgMjQwaDMwdjMwaC0zMHpNMjQwIDI0MGgzMHYzMGgtMzB6TTI3MCAyNDBoMzB2MzBoLTMweiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==')] bg-center bg-contain rounded-lg"></div>
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-900">Scan to Download</h4>
-                      <p className="text-sm text-gray-500">Use your phone's camera</p>
+                      <h4 className="font-medium text-gray-900 dark:text-gray-100">Scan to Download</h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Use your phone's camera</p>
                     </div>
                   </div>
 

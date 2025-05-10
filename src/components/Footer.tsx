@@ -43,8 +43,36 @@ const Footer = () => {
     });
   };
 
+  // Function to handle contact methods
+  const handleContactMethod = (method: string, value: string) => {
+    let action = '';
+
+    switch (method) {
+      case 'email':
+        action = `mailto:${value}`;
+        break;
+      case 'phone':
+        action = `tel:${value}`;
+        break;
+      case 'location':
+        action = `https://maps.google.com/?q=${encodeURIComponent(value)}`;
+        break;
+      default:
+        action = '';
+    }
+
+    if (action) {
+      window.open(action, '_blank');
+      toast({
+        title: `${method.charAt(0).toUpperCase() + method.slice(1)} Contact`,
+        description: `Opening ${method} contact method`,
+        duration: 2000,
+      });
+    }
+  };
+
   return (
-    <footer className="bg-green-600 text-white pt-12 pb-6">
+    <footer className="bg-green-600 dark:bg-gray-900 text-white pt-12 pb-6 transition-colors duration-300">
       <div className="container px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
@@ -54,9 +82,8 @@ const Footer = () => {
                   src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png"
                   alt="FuelFriendly Logo"
                   className="h-12 mr-2 brightness-0 invert transition-transform duration-300 group-hover:scale-110"
-                  style={{ filter: 'brightness(0) invert(1)' }}
                 />
-                <div className="absolute inset-0 bg-white rounded-full opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-white dark:bg-gray-700 rounded-full opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
               </div>
               <div className="ml-2">
                 <h3 className="text-white font-bold text-lg">FuelFriendly</h3>
@@ -69,21 +96,21 @@ const Footer = () => {
             <div className="flex space-x-4">
               <button
                 onClick={() => handleSocialClick('Facebook')}
-                className="text-white hover:bg-white hover:text-green-600 p-2 rounded-full transition-all duration-300 transform hover:scale-110"
+                className="text-white hover:bg-white hover:text-green-600 dark:hover:text-gray-900 p-2 rounded-full transition-all duration-300 transform hover:scale-110"
                 aria-label="Facebook"
               >
                 <Facebook size={20} />
               </button>
               <button
                 onClick={() => handleSocialClick('Instagram')}
-                className="text-white hover:bg-white hover:text-green-600 p-2 rounded-full transition-all duration-300 transform hover:scale-110"
+                className="text-white hover:bg-white hover:text-green-600 dark:hover:text-gray-900 p-2 rounded-full transition-all duration-300 transform hover:scale-110"
                 aria-label="Instagram"
               >
                 <Instagram size={20} />
               </button>
               <button
                 onClick={() => handleSocialClick('Twitter')}
-                className="text-white hover:bg-white hover:text-green-600 p-2 rounded-full transition-all duration-300 transform hover:scale-110"
+                className="text-white hover:bg-white hover:text-green-600 dark:hover:text-gray-900 p-2 rounded-full transition-all duration-300 transform hover:scale-110"
                 aria-label="Twitter"
               >
                 <Twitter size={20} />
@@ -104,7 +131,7 @@ const Footer = () => {
               </li>
               <li>
                 <button
-                  onClick={() => handleNavigation('/fuel-delivery')}
+                  onClick={() => handleNavigation('/nearby-stations')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
                   <span className="transform group-hover:translate-x-1 transition-transform duration-200">Fuel Delivery</span>
@@ -113,7 +140,7 @@ const Footer = () => {
               </li>
               <li>
                 <button
-                  onClick={() => handleNavigation('/price-tracking')}
+                  onClick={() => handleNavigation('/nearby-stations')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
                   <span className="transform group-hover:translate-x-1 transition-transform duration-200">Price Tracking</span>
@@ -122,7 +149,7 @@ const Footer = () => {
               </li>
               <li>
                 <button
-                  onClick={() => handleNavigation('/road-assistance')}
+                  onClick={() => handleNavigation('/nearby-stations')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
                   <span className="transform group-hover:translate-x-1 transition-transform duration-200">Road Assistance</span>
@@ -145,7 +172,7 @@ const Footer = () => {
               </li>
               <li>
                 <button
-                  onClick={() => handleNavigation('/careers')}
+                  onClick={() => handleNavigation('/about-us')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
                   <span className="transform group-hover:translate-x-1 transition-transform duration-200">Careers</span>
@@ -154,7 +181,7 @@ const Footer = () => {
               </li>
               <li>
                 <button
-                  onClick={() => handleNavigation('/partner-with-us')}
+                  onClick={() => handleNavigation('/about-us')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
                   <span className="transform group-hover:translate-x-1 transition-transform duration-200">Partners</span>
@@ -172,52 +199,84 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          <div>
-            <h4 className="text-sm font-semibold mb-4 text-white">Legal</h4>
-            <ul className="space-y-2 text-sm">
+          <div className="space-y-4">
+            <h4 className="text-sm font-semibold mb-4 text-white">Contact Us</h4>
+            <ul className="space-y-3 text-sm">
               <li>
                 <button
-                  onClick={() => handleNavigation('/privacy-policy')}
+                  onClick={() => handleContactMethod('email', 'info@fuelfriendly.com')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
-                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Privacy Policy</span>
-                  <span className="opacity-0 group-hover:opacity-100 ml-1 transition-opacity duration-200">→</span>
+                  <Mail size={16} className="mr-2" />
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">info@fuelfriendly.com</span>
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => handleNavigation('/terms-of-service')}
+                  onClick={() => handleContactMethod('phone', '+1-800-FUEL-NOW')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
-                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Terms of Service</span>
-                  <span className="opacity-0 group-hover:opacity-100 ml-1 transition-opacity duration-200">→</span>
+                  <Phone size={16} className="mr-2" />
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">+1-800-FUEL-NOW</span>
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => handleNavigation('/cookie-policy')}
+                  onClick={() => handleContactMethod('location', '123 Fuel Street, Gas City, FC 12345')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
-                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Cookie Policy</span>
-                  <span className="opacity-0 group-hover:opacity-100 ml-1 transition-opacity duration-200">→</span>
+                  <MapPin size={16} className="mr-2" />
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">123 Fuel Street, Gas City</span>
                 </button>
               </li>
             </ul>
+            <div className="pt-2">
+              <h4 className="text-sm font-semibold mb-2 text-white">Legal</h4>
+              <div className="flex flex-wrap gap-x-4 gap-y-2">
+                <button
+                  onClick={() => handleNavigation('/about-us')}
+                  className="text-white hover:text-white/80 transition-colors text-xs flex items-center group"
+                >
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Privacy Policy</span>
+                </button>
+                <button
+                  onClick={() => handleNavigation('/about-us')}
+                  className="text-white hover:text-white/80 transition-colors text-xs flex items-center group"
+                >
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Terms of Service</span>
+                </button>
+                <button
+                  onClick={() => handleNavigation('/about-us')}
+                  className="text-white hover:text-white/80 transition-colors text-xs flex items-center group"
+                >
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Cookie Policy</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="border-t border-white/20 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-white/20 dark:border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-white">
             © {new Date().getFullYear()} FuelFriendly. All rights reserved.
           </p>
-          <div className="mt-4 md:mt-0">
+          <div className="mt-4 md:mt-0 flex items-center gap-4">
             <select
-              className="text-sm bg-green-700 border border-green-400 rounded px-2 py-1 text-white cursor-pointer"
+              className="text-sm bg-green-700 dark:bg-gray-800 border border-green-400 dark:border-gray-600 rounded px-2 py-1 text-white cursor-pointer transition-colors duration-300"
               onChange={handleLanguageChange}
             >
               <option value="en">English</option>
               <option value="es">Español</option>
               <option value="fr">Français</option>
             </select>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="text-white bg-green-700 dark:bg-gray-800 hover:bg-green-800 dark:hover:bg-gray-700 rounded-full p-2 transition-colors duration-300"
+              aria-label="Back to top"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m18 15-6-6-6 6"/>
+              </svg>
+            </button>
           </div>
         </div>
       </div>
