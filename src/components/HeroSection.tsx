@@ -331,15 +331,25 @@ const HeroSection = () => {
               >
                 <Button
                   variant="outline"
-                  className="border-blue-200 text-blue-700 hover:bg-blue-50 w-full sm:w-auto"
+                  className="border-blue-200 text-blue-700 hover:bg-blue-50 hover:scale-105 hover:shadow-md transition-all duration-300 w-full sm:w-auto relative overflow-hidden group"
                   onClick={handleLiveDataClick}
                 >
-                  <motion.span
-                    animate={{ opacity: [0.5, 1, 0.5] }}
-                    transition={{ repeat: Infinity, duration: 2 }}
-                    className="mr-2 h-2 w-2 bg-blue-500 rounded-full inline-block"
-                  />
-                  Live Data
+                  <span className="absolute inset-0 w-0 bg-blue-50 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="relative flex items-center">
+                    <motion.span
+                      animate={{ opacity: [0.5, 1, 0.5] }}
+                      transition={{ repeat: Infinity, duration: 2 }}
+                      className="mr-2 h-2 w-2 bg-blue-500 rounded-full inline-block"
+                    />
+                    Live Data
+                    <motion.span
+                      className="ml-1 text-xs text-blue-500"
+                      animate={{ x: [0, 3, 0] }}
+                      transition={{ repeat: Infinity, duration: 1.5 }}
+                    >
+                      →
+                    </motion.span>
+                  </span>
                 </Button>
               </motion.div>
             </div>
