@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Search, MapPin, Star, ChevronDown, Filter, Navigation, Clock, Phone, Car, Shell, TrendingUp, AlertTriangle, Globe } from 'lucide-react';
+import { Search, MapPin, Star, ChevronDown, Filter, Navigation, Clock, Phone, Car, Shell, TrendingUp, AlertTriangle, Globe, Maximize, Minimize, Layers } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from "@/hooks/use-toast";
 import { countries, cities } from '@/data/countries';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import {
   Card,
   CardContent,
@@ -189,6 +191,9 @@ const generateStationsData = () => {
   return stationsArray;
 };
 
+// Set your Mapbox access token here
+mapboxgl.accessToken = 'pk.eyJ1IjoiZnVlbGZyaWVuZGx5IiwiYSI6ImNscXRqcWVxcjFnNGUya3BnZnRxZGJnbXQifQ.Ry9xQMKHWgTHDgYTlmBcKA';
+
 const NearbyStations = () => {
   const { toast } = useToast();
   const [searchInput, setSearchInput] = useState("");
@@ -200,6 +205,16 @@ const NearbyStations = () => {
   const [showStationDetails, setShowStationDetails] = useState(false);
   const [showContactDialog, setShowContactDialog] = useState(false);
   const [showAppStoreDialog, setShowAppStoreDialog] = useState(false);
+
+  // Map related states
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapFullscreen, setMapFullscreen] = useState(false);
+  const [mapStyle, setMapStyle] = useState('mapbox://styles/mapbox/streets-v12');
+  const [lng, setLng] = useState(19.8187); // Default to Albania
+  const [lat, setLat] = useState(41.3275);
+  const [zoom, setZoom] = useState(7);
 
   // Country and city selection
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -300,7 +315,121 @@ const NearbyStations = () => {
     return () => clearInterval(interval);
   }, [toast]);
 
-  // Update station addresses based on selected country and city
+  // Initialize map when component mounts
+  useEffect(() => {
+    if (map.current) return; // Initialize map only once
+
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: mapStyle,
+      center: [lng, lat],
+      zoom: zoom,
+      attributionControl: false
+    });
+
+    map.current.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+    map.current.addControl(new mapboxgl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      trackUserLocation: true,
+      showUserHeading: true
+    }), 'bottom-right');
+
+    map.current.on('load', () => {
+      setMapLoaded(true);
+    });
+
+    return () => map.current?.remove();
+  }, []);
+
+  // Update map when stations change
+  useEffect(() => {
+    if (!map.current || !mapLoaded || filteredStations.length === 0) return;
+
+    // Remove existing markers
+    const existingMarkers = document.querySelectorAll('.mapboxgl-marker');
+    existingMarkers.forEach(marker => marker.remove());
+
+    // Add markers for each station
+    filteredStations.forEach(station => {
+      // Generate random coordinates around the center for demo purposes
+      // In a real app, you would use actual coordinates from your data
+      const randomLng = lng + (Math.random() - 0.5) * 0.5;
+      const randomLat = lat + (Math.random() - 0.5) * 0.5;
+
+      // Create custom marker element
+      const el = document.createElement('div');
+      el.className = 'station-marker';
+      el.style.width = '30px';
+      el.style.height = '30px';
+      el.style.borderRadius = '50%';
+      el.style.backgroundColor = '#10b981';
+      el.style.border = '3px solid white';
+      el.style.boxShadow = '0 2px 4px rgba(0,0,0,0.3)';
+      el.style.cursor = 'pointer';
+      el.style.display = 'flex';
+      el.style.alignItems = 'center';
+      el.style.justifyContent = 'center';
+      el.style.color = 'white';
+      el.style.fontWeight = 'bold';
+      el.style.fontSize = '12px';
+      el.innerHTML = `$${station.priceRegular.toFixed(2)}`;
+
+      // Create popup
+      const popup = new mapboxgl.Popup({ offset: 25 })
+        .setHTML(`
+          <div style="padding: 8px;">
+            <div style="font-weight: bold; margin-bottom: 4px;">${station.name}</div>
+            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">${station.address}</div>
+            <div style="display: flex; gap: 8px; margin-top: 8px;">
+              <div style="text-align: center;">
+                <div style="font-size: 10px; color: #666;">Regular</div>
+                <div style="font-weight: bold;">$${station.priceRegular.toFixed(2)}</div>
+              </div>
+              <div style="text-align: center;">
+                <div style="font-size: 10px; color: #666;">Premium</div>
+                <div style="font-weight: bold;">$${station.pricePremium.toFixed(2)}</div>
+              </div>
+              <div style="text-align: center;">
+                <div style="font-size: 10px; color: #666;">Diesel</div>
+                <div style="font-weight: bold;">$${station.priceDiesel.toFixed(2)}</div>
+              </div>
+            </div>
+            <button
+              style="background-color: #10b981; color: white; border: none; padding: 4px 8px; border-radius: 4px; margin-top: 8px; width: 100%; cursor: pointer;"
+              onclick="window.viewStationDetails(${station.id})"
+            >
+              View Details
+            </button>
+          </div>
+        `);
+
+      // Add marker to map
+      new mapboxgl.Marker(el)
+        .setLngLat([randomLng, randomLat])
+        .setPopup(popup)
+        .addTo(map.current);
+    });
+
+    // Add global function to handle view details button click in popups
+    window.viewStationDetails = (stationId) => {
+      const station = filteredStations.find(s => s.id === stationId);
+      if (station) {
+        setSelectedStation(station);
+        setShowStationDetails(true);
+      }
+    };
+
+  }, [filteredStations, mapLoaded]);
+
+  // Update map style
+  useEffect(() => {
+    if (!map.current || !mapLoaded) return;
+    map.current.setStyle(mapStyle);
+  }, [mapStyle, mapLoaded]);
+
+  // Update map when country/city changes
   useEffect(() => {
     if (selectedCountry && selectedCity && allStations.length > 0) {
       const countryName = countries.find(c => c.code === selectedCountry)?.name;
@@ -312,6 +441,20 @@ const NearbyStations = () => {
       }));
 
       setAllStations(updatedStations);
+
+      // Update map center based on selected country
+      if (map.current && mapLoaded) {
+        // In a real app, you would use actual coordinates for the selected country/city
+        // For demo purposes, we'll just slightly adjust the coordinates
+        const newLng = lng + (Math.random() - 0.5) * 2;
+        const newLat = lat + (Math.random() - 0.5) * 2;
+
+        map.current.flyTo({
+          center: [newLng, newLat],
+          zoom: 9,
+          essential: true
+        });
+      }
     }
   }, [selectedCountry, selectedCity]);
 
@@ -426,6 +569,25 @@ const NearbyStations = () => {
   const handleViewDetails = (station) => {
     setSelectedStation(station);
     setShowStationDetails(true);
+  };
+
+  const toggleMapStyle = () => {
+    const styles = [
+      'mapbox://styles/mapbox/streets-v12',
+      'mapbox://styles/mapbox/satellite-streets-v12',
+      'mapbox://styles/mapbox/navigation-day-v1',
+      'mapbox://styles/mapbox/light-v11'
+    ];
+
+    const currentIndex = styles.indexOf(mapStyle);
+    const nextIndex = (currentIndex + 1) % styles.length;
+    setMapStyle(styles[nextIndex]);
+
+    toast({
+      title: "Map Style Changed",
+      description: `Switched to ${styles[nextIndex].split('/').pop().replace('-v', ' v')}`,
+      duration: 2000,
+    });
   };
 
   return (
@@ -928,13 +1090,49 @@ const NearbyStations = () => {
               </TabsContent>
 
               <TabsContent value="map">
-                <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden h-[700px] flex items-center justify-center text-center p-6">
-                  <div>
-                    <div className="text-7xl mb-4">🗺️</div>
-                    <h3 className="text-xl font-semibold mb-2">Map View Coming Soon</h3>
-                    <p className="text-gray-500 max-w-md mx-auto">
-                      We're working on a comprehensive map view for all stations. In the meantime, please use the list view to find the nearest stations.
-                    </p>
+                <div className={`bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden ${mapFullscreen ? 'fixed inset-0 z-50' : 'h-[700px]'}`}>
+                  <div className="absolute top-4 right-4 z-10 flex gap-2">
+                    <div className="bg-white rounded-md shadow-md p-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setMapFullscreen(!mapFullscreen)}
+                        className="h-8 w-8"
+                      >
+                        {mapFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
+                      </Button>
+                    </div>
+                    <div className="bg-white rounded-md shadow-md p-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={toggleMapStyle}
+                        className="h-8 w-8"
+                      >
+                        <Layers size={16} />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div
+                    ref={mapContainer}
+                    className="w-full h-full"
+                    style={{ minHeight: mapFullscreen ? '100vh' : '700px' }}
+                  />
+
+                  {mapFullscreen && (
+                    <div className="absolute bottom-4 left-4 z-10">
+                      <Button
+                        className="bg-white text-black hover:bg-gray-100"
+                        onClick={() => setMapFullscreen(false)}
+                      >
+                        Exit Fullscreen
+                      </Button>
+                    </div>
+                  )}
+
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 bg-white px-4 py-2 rounded-full shadow-md text-sm">
+                    Showing {filteredStations.length} stations {selectedCountry ? `in ${countries.find(c => c.code === selectedCountry)?.name}` : ''}
                   </div>
                 </div>
               </TabsContent>
