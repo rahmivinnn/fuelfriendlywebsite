@@ -11,6 +11,7 @@ import Index from "./pages/Index";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import NearbyStations from "./pages/NearbyStations";
+import NearbyStationsNew from "./pages/NearbyStationsNew";
 import StationRegistration from "./pages/StationRegistration";
 import StationDashboard from "./pages/StationDashboard";
 import IndependentContractorAgreement from "./pages/IndependentContractorAgreement";
@@ -72,7 +73,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/contact-us" element={<ContactUs />} />
-            <Route path="/nearby-stations" element={<NearbyStations />} />
+            <Route path="/nearby-stations" element={<NearbyStationsNew />} />
             <Route path="/station-registration" element={<StationRegistration />} />
             <Route path="/login" element={<Login />} />
             <Route path="/independent-contractor-agreement" element={<IndependentContractorAgreement />} />

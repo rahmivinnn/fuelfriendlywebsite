@@ -3,6 +3,40 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Map marker styles */
+.station-marker {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.station-marker:hover {
+  transform: scale(1.2);
+}
+
+.user-marker {
+  z-index: 10;
+}
+
+/* Mapbox popup customization */
+.mapboxgl-popup-content {
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mapboxgl-popup-close-button {
+  font-size: 16px;
+  color: #666;
+  right: 8px;
+  top: 8px;
+}
+
+.mapboxgl-popup-close-button:hover {
+  color: #000;
+  background: none;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
