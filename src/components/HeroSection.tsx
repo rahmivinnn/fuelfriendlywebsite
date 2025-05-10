@@ -318,11 +318,11 @@ const HeroSection = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <Button
-                  variant="outline"
-                  className="border-green-200 text-green-700 hover:bg-green-50 w-full sm:w-auto"
+                  className="bg-black hover:bg-gray-800 text-white w-full sm:w-auto flex items-center"
                   onClick={handleAppDownloadClick}
                 >
-                  Download App
+                  <Apple size={16} className="mr-2" />
+                  <span>Download App</span>
                 </Button>
               </motion.div>
               <motion.div

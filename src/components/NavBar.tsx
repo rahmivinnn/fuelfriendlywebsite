@@ -392,12 +392,6 @@ const NavBar = () => {
               >
                 Nearby Fuel Stations
               </button>
-              <button
-                onClick={() => handleNavClick('contact')}
-                className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
-              >
-                Contact Us
-              </button>
               {!isAuthenticated ? (
                 <div className="pt-2 pb-3 space-y-2">
                   <Button
