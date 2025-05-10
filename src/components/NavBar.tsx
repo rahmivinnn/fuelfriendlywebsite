@@ -156,7 +156,7 @@ const NavBar = () => {
               transition={{ duration: 0.3 }}
             >
               <img
-                src="/assets/logo.png"
+                src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png"
                 alt="FuelFriendly Logo"
                 className="h-10 md:h-12"
               />
@@ -171,12 +171,7 @@ const NavBar = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
-            <button
-              onClick={() => navigate('/')}
-              className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
-            >
-              Home
-            </button>
+
             <button
               onClick={() => handleNavClick('how-it-works')}
               className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
@@ -353,12 +348,7 @@ const NavBar = () => {
                 <span className="text-base font-medium text-gray-700 dark:text-gray-300">Theme</span>
                 <ThemeToggle />
               </div>
-              <button
-                onClick={() => navigate('/')}
-                className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
-              >
-                Home
-              </button>
+
               <button
                 onClick={() => handleNavClick('how-it-works')}
                 className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"

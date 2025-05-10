@@ -425,7 +425,7 @@ const HeroSection = () => {
                 }}
               >
                 <img
-                  src="/assets/app-preview.png"
+                  src="/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
                   alt="FuelFriendly App Preview with Map"
                   className="object-contain w-full h-full rounded-2xl shadow-xl"
                 />

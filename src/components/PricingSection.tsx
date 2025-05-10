@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   DialogDescription,
   DialogFooter
 } from '@/components/ui/dialog';
@@ -82,7 +82,7 @@ const PricingSection = () => {
       description: "Please wait while we process your payment...",
       duration: 2000,
     });
-    
+
     setTimeout(() => {
       setPaymentSuccess(true);
       toast({
@@ -108,8 +108,8 @@ const PricingSection = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
           {plans.map((plan, index) => (
-            <motion.div 
-              key={index} 
+            <motion.div
+              key={index}
               className={`pricing-card flex flex-col justify-between p-6 rounded-lg shadow-sm ${plan.highlighted ? "border-primary bg-primary/5 relative" : "border border-gray-200 bg-white"}`}
               initial={{ opacity: 0, y: 50, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -119,7 +119,7 @@ const PricingSection = () => {
               whileTap={{ scale: 0.98 }}
             >
               {plan.highlighted && (
-                <motion.div 
+                <motion.div
                   className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-white text-xs px-3 py-1 rounded-full"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -144,17 +144,17 @@ const PricingSection = () => {
                   ))}
                 </ul>
               </div>
-              <Button 
+              <Button
                 className={`mt-8 ${
-                  plan.highlighted 
-                    ? "bg-primary hover:bg-primary/90 text-white" 
+                  plan.highlighted
+                    ? "bg-primary hover:bg-primary/90 text-white"
                     : "bg-white text-primary border border-primary hover:bg-primary/5"
                 }`}
                 onClick={() => handlePaymentClick(plan)}
               >
                 {plan.buttonText}
               </Button>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -168,19 +168,19 @@ const PricingSection = () => {
               Complete your subscription by adding a payment method.
             </DialogDescription>
           </DialogHeader>
-          
+
           {!paymentSuccess ? (
             <div className="grid gap-4 py-4">
               <div className="space-y-2">
                 <h3 className="text-sm font-medium">Select Payment Method</h3>
                 <div className="grid grid-cols-2 gap-3">
-                  <div 
+                  <div
                     className={`flex items-center justify-center p-3 border rounded-md cursor-pointer ${paymentMethod === 'credit' ? 'bg-green-50 border-green-500' : 'hover:bg-gray-50'}`}
                     onClick={() => setPaymentMethod('credit')}
                   >
                     <span>Credit Card</span>
                   </div>
-                  <div 
+                  <div
                     className={`flex items-center justify-center p-3 border rounded-md cursor-pointer ${paymentMethod === 'debit' ? 'bg-green-50 border-green-500' : 'hover:bg-gray-50'}`}
                     onClick={() => setPaymentMethod('debit')}
                   >
@@ -188,38 +188,38 @@ const PricingSection = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="grid gap-2">
                 <label htmlFor="cardNumber" className="text-sm">Card Number</label>
-                <input 
-                  id="cardNumber" 
-                  type="text" 
-                  placeholder="1234 5678 9012 3456" 
+                <input
+                  id="cardNumber"
+                  type="text"
+                  placeholder="1234 5678 9012 3456"
                   className="w-full p-2 border rounded-md"
                 />
               </div>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
                   <label htmlFor="expiry" className="text-sm">Expiry Date</label>
-                  <input 
-                    id="expiry" 
-                    type="text" 
-                    placeholder="MM/YY" 
+                  <input
+                    id="expiry"
+                    type="text"
+                    placeholder="MM/YY"
                     className="w-full p-2 border rounded-md"
                   />
                 </div>
                 <div className="grid gap-2">
                   <label htmlFor="cvc" className="text-sm">CVC</label>
-                  <input 
-                    id="cvc" 
-                    type="text" 
-                    placeholder="123" 
+                  <input
+                    id="cvc"
+                    type="text"
+                    placeholder="123"
                     className="w-full p-2 border rounded-md"
                   />
                 </div>
               </div>
-              
+
               <DialogFooter>
                 <Button variant="outline" onClick={() => setShowPaymentDialog(false)}>
                   Cancel
@@ -238,8 +238,8 @@ const PricingSection = () => {
               <p className="text-center text-gray-500 mt-2">
                 You have successfully subscribed to {selectedPlan?.name}. You can now enjoy all the features.
               </p>
-              <Button 
-                className="mt-6 bg-green-500 hover:bg-green-600" 
+              <Button
+                className="mt-6 bg-green-500 hover:bg-green-600"
                 onClick={() => {
                   setShowPaymentDialog(false);
                   setPaymentSuccess(false);

@@ -51,7 +51,7 @@ const Footer = () => {
             <div className="flex items-center">
               <div className="relative group">
                 <img
-                  src="/assets/logo.png"
+                  src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png"
                   alt="FuelFriendly Logo"
                   className="h-12 mr-2 brightness-0 invert transition-transform duration-300 group-hover:scale-110"
                   style={{ filter: 'brightness(0) invert(1)' }}

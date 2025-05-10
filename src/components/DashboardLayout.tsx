@@ -135,7 +135,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
               >
                 <Link to="/" className="flex items-center">
                   <img
-                    src="/assets/logo.png"
+                    src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png"
                     alt="FuelFriendly Logo"
                     className="h-8"
                   />

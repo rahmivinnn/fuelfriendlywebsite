@@ -114,11 +114,11 @@ const PartnerWithUs = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    
+
     if (type === 'file') {
       const fileInput = e.target as HTMLInputElement;
       const file = fileInput.files?.[0] || null;
-      
+
       if (file && !file.type.match('application/pdf|application/msword|application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
         toast({
           title: "Invalid File Type",
@@ -128,7 +128,7 @@ const PartnerWithUs = () => {
         });
         return;
       }
-      
+
       if (file && file.size > 5 * 1024 * 1024) { // 5MB limit
         toast({
           title: "File Too Large",
@@ -138,14 +138,13 @@ const PartnerWithUs = () => {
         });
         return;
       }
-      
+
       setFormData(prev => ({
         ...prev,
         cv: file
       }));
       return;
     }
-    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -430,19 +429,6 @@ const PartnerWithUs = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2 col-span-2">
-                <Label htmlFor="cv">CV/Resume</Label>
-                <Input
-                  type="file"
-                  id="cv"
-                  name="cv"
-                  accept=".pdf,.doc,.docx"
-                  onChange={handleInputChange}
-                  className="cursor-pointer"
-                  required
-                />
-                <p className="text-xs text-gray-500">Upload your CV (PDF or Word, max 5MB)</p>
-              </div>
               <div className="space-y-2">
                 <Label htmlFor="city">City</Label>
                 <Input
