@@ -18,7 +18,7 @@ interface AppShowcaseProps {
 const AppShowcase: React.FC<AppShowcaseProps> = ({ handleAppStoreClick }) => {
   const { toast } = useToast();
   const [showDownloadDialog, setShowDownloadDialog] = useState(false);
-  
+
   const handleDownloadClick = () => {
     if (handleAppStoreClick) {
       handleAppStoreClick();
@@ -26,7 +26,7 @@ const AppShowcase: React.FC<AppShowcaseProps> = ({ handleAppStoreClick }) => {
       setShowDownloadDialog(true);
     }
   };
-  
+
   const initiateDownload = (platform: 'ios' | 'android') => {
     // In a real app, this would redirect to the app store or start a download
     toast({
@@ -34,7 +34,7 @@ const AppShowcase: React.FC<AppShowcaseProps> = ({ handleAppStoreClick }) => {
       description: "Thank you for downloading the FuelFriendly app!",
       duration: 3000,
     });
-    
+
     // Simulate download starting
     setTimeout(() => {
       toast({
@@ -43,16 +43,16 @@ const AppShowcase: React.FC<AppShowcaseProps> = ({ handleAppStoreClick }) => {
         duration: 5000,
       });
     }, 2000);
-    
+
     // Close dialog after download starts
     setShowDownloadDialog(false);
   };
 
   return (
-    <section className="py-12 md:py-24 bg-gray-50">
-      <div className="container px-4 md:px-6">
-        <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-          <motion.div 
+    <section className="py-12 md:py-24 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <div className="container px-4 md:px-6 mx-auto max-w-7xl">
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center mx-auto">
+          <motion.div
             className="flex flex-col justify-center space-y-4"
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -69,7 +69,7 @@ const AppShowcase: React.FC<AppShowcaseProps> = ({ handleAppStoreClick }) => {
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button 
+                <Button
                   className="bg-green-500 hover:bg-green-600 text-white"
                   onClick={handleDownloadClick}
                 >
@@ -78,7 +78,7 @@ const AppShowcase: React.FC<AppShowcaseProps> = ({ handleAppStoreClick }) => {
               </motion.div>
             </div>
           </motion.div>
-          <motion.div 
+          <motion.div
             className="flex justify-center lg:justify-end"
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -87,7 +87,7 @@ const AppShowcase: React.FC<AppShowcaseProps> = ({ handleAppStoreClick }) => {
           >
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-300/20 to-primary/20 rounded-3xl blur-xl opacity-30"></div>
-              <motion.div 
+              <motion.div
                 className="relative"
                 whileHover={{ y: -10, transition: { duration: 0.3 } }}
               >
@@ -101,7 +101,7 @@ const AppShowcase: React.FC<AppShowcaseProps> = ({ handleAppStoreClick }) => {
           </motion.div>
         </div>
       </div>
-      
+
       {/* Download Dialog */}
       <Dialog open={showDownloadDialog} onOpenChange={setShowDownloadDialog}>
         <DialogContent className="sm:max-w-md">
@@ -111,9 +111,9 @@ const AppShowcase: React.FC<AppShowcaseProps> = ({ handleAppStoreClick }) => {
               Choose your platform to download our mobile app
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="grid grid-cols-2 gap-4 py-6">
-            <motion.div 
+            <motion.div
               className="bg-gray-50 p-4 rounded-lg text-center cursor-pointer border border-transparent hover:border-green-500 transition-all"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -128,8 +128,8 @@ const AppShowcase: React.FC<AppShowcaseProps> = ({ handleAppStoreClick }) => {
               <h4 className="font-medium text-lg">iOS App</h4>
               <p className="text-sm text-gray-500 mt-1">Download on the App Store</p>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               className="bg-gray-50 p-4 rounded-lg text-center cursor-pointer border border-transparent hover:border-green-500 transition-all"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -147,7 +147,7 @@ const AppShowcase: React.FC<AppShowcaseProps> = ({ handleAppStoreClick }) => {
               <p className="text-sm text-gray-500 mt-1">Get it on Google Play</p>
             </motion.div>
           </div>
-          
+
           <div className="pb-4 pt-2">
             <div className="border-t border-gray-200 pt-4">
               <h5 className="font-medium text-center mb-3">Scan QR Code</h5>
@@ -156,9 +156,9 @@ const AppShowcase: React.FC<AppShowcaseProps> = ({ handleAppStoreClick }) => {
               </div>
             </div>
           </div>
-          
+
           <DialogFooter className="flex justify-center">
-            <Button 
+            <Button
               variant="outline"
               onClick={() => setShowDownloadDialog(false)}
             >

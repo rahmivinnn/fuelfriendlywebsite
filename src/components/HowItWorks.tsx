@@ -66,8 +66,8 @@ const HowItWorks = () => {
 
   return (
     <section className="py-12 md:py-24 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-start space-y-4">
+      <div className="container px-4 md:px-6 mx-auto">
+        <div className="flex flex-col items-center text-center space-y-4 max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -81,7 +81,7 @@ const HowItWorks = () => {
             </p>
           </motion.div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 max-w-7xl mx-auto">
           {steps.map((step, index) => {
             // Define dark mode background colors
             const darkBgColor = step.bgColor === "bg-cyan-50" ? "dark:bg-cyan-900/30" :

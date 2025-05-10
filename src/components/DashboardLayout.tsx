@@ -223,21 +223,21 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Nav */}
-        <header className="bg-white border-b border-gray-200 py-4 px-6 flex items-center justify-between">
+        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-6 flex items-center justify-between transition-colors duration-300">
           <div className="flex items-center">
             <motion.h1
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-2xl font-bold"
+              className="text-2xl font-bold dark:text-white"
             >
               {title}
             </motion.h1>
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              className="ml-3 px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full flex items-center"
+              className="ml-3 px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded-full flex items-center transition-colors duration-300"
             >
-              <div className="h-2 w-2 bg-green-500 rounded-full mr-1 animate-pulse"></div>
+              <div className="h-2 w-2 bg-green-500 dark:bg-green-400 rounded-full mr-1 animate-pulse"></div>
               Live Data
             </motion.div>
           </div>
@@ -273,8 +273,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
         </header>
 
         {/* Dashboard Content */}
-        <div className="flex-1 overflow-y-auto">
-          {children}
+        <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 p-6 transition-colors duration-300">
+          <div className="container mx-auto max-w-7xl">
+            {children}
+          </div>
         </div>
       </div>
     </div>

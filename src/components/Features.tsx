@@ -151,7 +151,7 @@ const Features = () => {
 
   return (
     <section className="py-12 md:py-24 bg-white dark:bg-gray-900 transition-colors duration-300">
-      <div className="container px-4 md:px-6">
+      <div className="container px-4 md:px-6 mx-auto max-w-7xl">
         <motion.div
           className="flex flex-col items-center justify-center space-y-4 text-center"
           initial={{ opacity: 0, y: 20 }}
@@ -159,14 +159,14 @@ const Features = () => {
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
-          <div className="space-y-2">
+          <div className="space-y-2 max-w-3xl mx-auto">
             <h2 className="text-3xl font-bold tracking-tighter md:text-4xl dark:text-white">Why Choose Us?</h2>
             <p className="text-gray-500 dark:text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               We're dedicated to making fueling up as easy as possible.
             </p>
           </div>
         </motion.div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 mx-auto">
           {features.map((feature, index) => {
             // Define dark mode colors
             const darkColor = feature.color === "bg-blue-500/10" ? "dark:bg-blue-500/30" :
