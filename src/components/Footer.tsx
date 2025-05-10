@@ -251,6 +251,12 @@ const Footer = () => {
                 >
                   <span className="transform group-hover:translate-x-1 transition-transform duration-200">Cookie Policy</span>
                 </button>
+                <button
+                  onClick={() => handleNavigation('/independent-contractor-agreement')}
+                  className="text-white hover:text-white/80 transition-colors text-xs flex items-center group"
+                >
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Independent Contractor Agreement</span>
+                </button>
               </div>
             </div>
           </div>

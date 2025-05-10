@@ -13,6 +13,8 @@ import ContactUs from "./pages/ContactUs";
 import NearbyStations from "./pages/NearbyStations";
 import StationRegistration from "./pages/StationRegistration";
 import StationDashboard from "./pages/StationDashboard";
+import IndependentContractorAgreement from "./pages/IndependentContractorAgreement";
+import IndependentContractorAgreementFull from "./pages/IndependentContractorAgreementFull";
 import ProductsManagement from "./pages/ProductsManagement";
 import StationManagement from "./pages/StationManagement";
 import OrdersManagement from "./pages/OrdersManagement";
@@ -73,6 +75,8 @@ const App = () => (
             <Route path="/nearby-stations" element={<NearbyStations />} />
             <Route path="/station-registration" element={<StationRegistration />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/independent-contractor-agreement" element={<IndependentContractorAgreement />} />
+            <Route path="/independent-contractor-agreement-full" element={<IndependentContractorAgreementFull />} />
 
             {/* Station Dashboard routes - require authentication */}
             <Route path="/station-dashboard" element={

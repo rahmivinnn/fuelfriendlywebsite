@@ -301,7 +301,7 @@ const MapSection = () => {
   };
 
   return (
-    <section className="py-12 md:py-24 bg-white">
+    <section className="py-12 md:py-24 bg-white dark:bg-gray-900 transition-colors duration-300">
       <motion.div
         className="container px-4 md:px-6"
         initial={{ opacity: 0 }}
@@ -312,7 +312,7 @@ const MapSection = () => {
         <div className="flex flex-col items-start space-y-4">
           <div className="space-y-2 max-w-3xl">
             <motion.h2
-              className="text-3xl font-bold tracking-tighter md:text-4xl"
+              className="text-3xl font-bold tracking-tighter md:text-4xl dark:text-white"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -321,7 +321,7 @@ const MapSection = () => {
               Explore Our Service Areas & Fuel Stations Near You!
             </motion.h2>
             <motion.p
-              className="text-gray-500 md:text-xl/relaxed"
+              className="text-gray-500 dark:text-gray-300 md:text-xl/relaxed"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -333,7 +333,7 @@ const MapSection = () => {
         </div>
 
         <motion.div
-          className={`mt-12 relative w-full rounded-lg overflow-hidden border border-gray-200 ${mapFullscreen ? 'fixed inset-0 z-50' : 'h-[500px]'}`}
+          className={`mt-12 relative w-full rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 ${mapFullscreen ? 'fixed inset-0 z-50' : 'h-[500px]'}`}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -388,8 +388,8 @@ const MapSection = () => {
             transition={{ duration: 0.4 }}
             viewport={{ once: true }}
           >
-            <span className="text-5xl font-bold text-gray-900">4.5k+</span>
-            <span className="text-gray-500">Registered Users</span>
+            <span className="text-5xl font-bold text-gray-900 dark:text-white">4.5k+</span>
+            <span className="text-gray-500 dark:text-gray-400">Registered Users</span>
           </motion.div>
           <motion.div
             className="flex flex-col items-center space-y-2"
@@ -398,8 +398,8 @@ const MapSection = () => {
             transition={{ duration: 0.4, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            <span className="text-5xl font-bold text-gray-900">1.5k+</span>
-            <span className="text-gray-500">Active Fuel Friends</span>
+            <span className="text-5xl font-bold text-gray-900 dark:text-white">1.5k+</span>
+            <span className="text-gray-500 dark:text-gray-400">Active Fuel Friends</span>
           </motion.div>
           <motion.div
             className="flex flex-col items-center space-y-2"
@@ -408,8 +408,8 @@ const MapSection = () => {
             transition={{ duration: 0.4, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <span className="text-5xl font-bold text-gray-900">1000+</span>
-            <span className="text-gray-500">Fuel Stations Onboard</span>
+            <span className="text-5xl font-bold text-gray-900 dark:text-white">1000+</span>
+            <span className="text-gray-500 dark:text-gray-400">Fuel Stations Onboard</span>
           </motion.div>
         </div>
       </motion.div>
