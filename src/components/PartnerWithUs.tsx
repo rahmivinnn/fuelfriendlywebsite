@@ -208,7 +208,7 @@ const PartnerWithUs = () => {
   ];
 
   return (
-    <section className="py-12 md:py-24 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-12 md:py-24 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 transition-colors duration-300">
       <div className="container px-4 md:px-6">
         <motion.div
           className="flex flex-col items-center justify-center space-y-4 text-center"
@@ -218,8 +218,8 @@ const PartnerWithUs = () => {
           viewport={{ once: true }}
         >
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Partner With Us</h2>
-            <p className="text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl dark:text-white">Partner With Us</h2>
+            <p className="text-gray-500 dark:text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed max-w-3xl mx-auto">
               Join our team of Fuel Friends and help us revolutionize the fuel delivery industry while earning competitive pay on your own schedule.
             </p>
           </div>
@@ -233,38 +233,46 @@ const PartnerWithUs = () => {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <h3 className="text-xl font-bold mb-4 flex items-center">
-                <CheckCircle2 className="mr-2 h-5 w-5 text-green-500" />
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+              <h3 className="text-xl font-bold mb-4 flex items-center dark:text-white">
+                <CheckCircle2 className="mr-2 h-5 w-5 text-green-500 dark:text-green-400" />
                 Partner Benefits
               </h3>
 
               <div className="space-y-4">
-                {benefits.map((benefit, index) => (
-                  <div key={index} className="flex">
-                    <div className={`p-2 rounded-full ${benefit.bgColor} mr-3 flex-shrink-0`}>
-                      <div className={benefit.color}>{benefit.icon}</div>
+                {benefits.map((benefit, index) => {
+                  // Define dark mode colors
+                  const darkBgColor = benefit.bgColor === "bg-blue-100" ? "dark:bg-blue-900/30" :
+                                     benefit.bgColor === "bg-green-100" ? "dark:bg-green-900/30" :
+                                     benefit.bgColor === "bg-purple-100" ? "dark:bg-purple-900/30" :
+                                     "dark:bg-orange-900/30";
+
+                  return (
+                    <div key={index} className="flex">
+                      <div className={`p-2 rounded-full ${benefit.bgColor} ${darkBgColor} mr-3 flex-shrink-0 transition-colors duration-300`}>
+                        <div className={benefit.color}>{benefit.icon}</div>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold dark:text-white">{benefit.title}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">{benefit.description}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-semibold">{benefit.title}</h4>
-                      <p className="text-sm text-gray-600">{benefit.description}</p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <h3 className="text-xl font-bold mb-4">Requirements</h3>
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+              <h3 className="text-xl font-bold mb-4 dark:text-white">Requirements</h3>
               <ul className="space-y-2">
                 {requirements.map((requirement, index) => (
                   <li key={index} className="flex items-start">
-                    <div className="bg-green-100 p-1 rounded-full mr-2 mt-0.5">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-600">
+                    <div className="bg-green-100 dark:bg-green-900/30 p-1 rounded-full mr-2 mt-0.5 transition-colors duration-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-600 dark:text-green-400">
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
                     </div>
-                    <span className="text-gray-700">{requirement}</span>
+                    <span className="text-gray-700 dark:text-gray-200">{requirement}</span>
                   </li>
                 ))}
               </ul>
@@ -272,7 +280,7 @@ const PartnerWithUs = () => {
           </motion.div>
 
           <motion.div
-            className="bg-white p-8 rounded-xl shadow-md border border-gray-100 flex flex-col justify-between"
+            className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex flex-col justify-between transition-colors duration-300"
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             whileHover={{ scale: 1.02, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
@@ -280,39 +288,39 @@ const PartnerWithUs = () => {
             viewport={{ once: true }}
           >
             <div>
-              <h3 className="text-2xl font-bold mb-2">Ready to Join?</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className="text-2xl font-bold mb-2 dark:text-white">Ready to Join?</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Become a Fuel Friend today and start earning on your own schedule while providing an essential service to your community.
               </p>
 
               <div className="space-y-4">
                 <div className="flex items-start">
-                  <div className="bg-blue-100 p-2 rounded-full mr-3 flex-shrink-0">
-                    <Truck className="h-5 w-5 text-blue-600" />
+                  <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-full mr-3 flex-shrink-0 transition-colors duration-300">
+                    <Truck className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
-                    <h4 className="font-semibold">Deliver Fuel & Convenience</h4>
-                    <p className="text-sm text-gray-600">Help customers get fuel and convenience store items delivered right to their location.</p>
+                    <h4 className="font-semibold dark:text-white">Deliver Fuel & Convenience</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Help customers get fuel and convenience store items delivered right to their location.</p>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <div className="bg-green-100 p-2 rounded-full mr-3 flex-shrink-0">
-                    <DollarSign className="h-5 w-5 text-green-600" />
+                  <div className="bg-green-100 dark:bg-green-900/30 p-2 rounded-full mr-3 flex-shrink-0 transition-colors duration-300">
+                    <DollarSign className="h-5 w-5 text-green-600 dark:text-green-400" />
                   </div>
                   <div>
-                    <h4 className="font-semibold">Earn More</h4>
-                    <p className="text-sm text-gray-600">Competitive base pay plus tips and incentives for top performers.</p>
+                    <h4 className="font-semibold dark:text-white">Earn More</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Competitive base pay plus tips and incentives for top performers.</p>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <div className="bg-purple-100 p-2 rounded-full mr-3 flex-shrink-0">
-                    <FileText className="h-5 w-5 text-purple-600" />
+                  <div className="bg-purple-100 dark:bg-purple-900/30 p-2 rounded-full mr-3 flex-shrink-0 transition-colors duration-300">
+                    <FileText className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                   </div>
                   <div>
-                    <h4 className="font-semibold">Simple Onboarding</h4>
-                    <p className="text-sm text-gray-600">Easy application process with quick approval for qualified applicants.</p>
+                    <h4 className="font-semibold dark:text-white">Simple Onboarding</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Easy application process with quick approval for qualified applicants.</p>
                   </div>
                 </div>
               </div>
@@ -339,7 +347,7 @@ const PartnerWithUs = () => {
               >
                 <Button
                   variant="outline"
-                  className="w-full border-green-200 text-green-700 hover:bg-green-50"
+                  className="w-full border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"
                   onClick={handleViewAgreement}
                 >
                   View Partner Agreement
@@ -352,10 +360,10 @@ const PartnerWithUs = () => {
 
       {/* Partner Application Dialog */}
       <Dialog open={showPartnerDialog} onOpenChange={setShowPartnerDialog}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md dark:bg-gray-800 dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle>Partner Application</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="dark:text-white">Partner Application</DialogTitle>
+            <DialogDescription className="dark:text-gray-300">
               Fill out the form below to apply as a Fuel Friend partner.
             </DialogDescription>
           </DialogHeader>
@@ -370,95 +378,101 @@ const PartnerWithUs = () => {
           >
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2 col-span-2">
-                <Label htmlFor="cv">CV/Resume</Label>
+                <Label htmlFor="cv" className="dark:text-white">CV/Resume</Label>
                 <Input
                   type="file"
                   id="cv"
                   name="cv"
                   accept=".pdf,.doc,.docx"
                   onChange={handleInputChange}
-                  className="cursor-pointer"
+                  className="cursor-pointer dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   required
                 />
-                <p className="text-xs text-gray-500">Upload your CV (PDF or Word, max 5MB)</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Upload your CV (PDF or Word, max 5MB)</p>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
+                <Label htmlFor="firstName" className="dark:text-white">First Name</Label>
                 <Input
                   id="firstName"
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleInputChange}
+                  className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
+                <Label htmlFor="lastName" className="dark:text-white">Last Name</Label>
                 <Input
                   id="lastName"
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleInputChange}
+                  className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   required
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="dark:text-white">Email</Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
                 value={formData.email}
                 onChange={handleInputChange}
+                className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label htmlFor="phone" className="dark:text-white">Phone Number</Label>
               <Input
                 id="phone"
                 name="phone"
                 type="tel"
                 value={formData.phone}
                 onChange={handleInputChange}
+                className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 required
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="city">City</Label>
+                <Label htmlFor="city" className="dark:text-white">City</Label>
                 <Input
                   id="city"
                   name="city"
                   value={formData.city}
                   onChange={handleInputChange}
+                  className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="state">State</Label>
+                <Label htmlFor="state" className="dark:text-white">State</Label>
                 <Input
                   id="state"
                   name="state"
                   value={formData.state}
                   onChange={handleInputChange}
+                  className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   required
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="vehicleType">Vehicle Type</Label>
+              <Label htmlFor="vehicleType" className="dark:text-white">Vehicle Type</Label>
               <select
                 id="vehicleType"
                 name="vehicleType"
                 value={formData.vehicleType}
                 onChange={handleInputChange}
-                className="w-full rounded-md border border-gray-300 p-2"
+                className="w-full rounded-md border border-gray-300 dark:border-gray-600 p-2 dark:bg-gray-700 dark:text-white"
                 required
               >
                 <option value="">Select Vehicle Type</option>
@@ -471,13 +485,13 @@ const PartnerWithUs = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="experience">Delivery Experience</Label>
+              <Label htmlFor="experience" className="dark:text-white">Delivery Experience</Label>
               <select
                 id="experience"
                 name="experience"
                 value={formData.experience}
                 onChange={handleInputChange}
-                className="w-full rounded-md border border-gray-300 p-2"
+                className="w-full rounded-md border border-gray-300 dark:border-gray-600 p-2 dark:bg-gray-700 dark:text-white"
                 required
               >
                 <option value="">Select Experience Level</option>
@@ -489,13 +503,14 @@ const PartnerWithUs = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="message">Additional Information</Label>
+              <Label htmlFor="message" className="dark:text-white">Additional Information</Label>
               <Textarea
                 id="message"
                 name="message"
                 value={formData.message}
                 onChange={handleInputChange}
                 placeholder="Tell us why you'd like to partner with us"
+                className="dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
               />
             </div>
 
@@ -504,11 +519,12 @@ const PartnerWithUs = () => {
                 id="agreeToTerms"
                 checked={formData.agreeToTerms}
                 onCheckedChange={handleCheckboxChange}
+                className="dark:border-gray-600"
               />
-              <Label htmlFor="agreeToTerms" className="text-sm">
+              <Label htmlFor="agreeToTerms" className="text-sm dark:text-gray-300">
                 I agree to the <button
                   type="button"
-                  className="text-blue-600 hover:underline"
+                  className="text-blue-600 dark:text-blue-400 hover:underline"
                   onClick={(e) => {
                     e.preventDefault();
                     handleViewAgreement();
@@ -525,7 +541,7 @@ const PartnerWithUs = () => {
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                <Button type="submit" className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white">
+                <Button type="submit" className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 dark:from-green-700 dark:to-green-800 dark:hover:from-green-800 dark:hover:to-green-900 text-white">
                   Submit Application
                 </Button>
               </motion.div>

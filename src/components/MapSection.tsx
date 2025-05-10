@@ -43,6 +43,9 @@ const MapSection = () => {
 
       // Create map with error handling
       try {
+        // Force the map to be created even if there are issues
+        mapboxgl.clearStorage();
+
         map.current = new mapboxgl.Map({
           container: mapContainer.current,
           style: mapStyle,
@@ -50,7 +53,8 @@ const MapSection = () => {
           zoom: zoom,
           attributionControl: false,
           projection: 'globe',
-          failIfMajorPerformanceCaveat: false // Allow map to render even if performance might be poor
+          failIfMajorPerformanceCaveat: false, // Allow map to render even if performance might be poor
+          preserveDrawingBuffer: true // Helps with rendering issues
         });
       } catch (error) {
         console.error("Error initializing Mapbox map:", error);
@@ -340,22 +344,22 @@ const MapSection = () => {
           viewport={{ once: true }}
         >
           <div className="absolute top-4 right-4 z-10 flex gap-2">
-            <div className="bg-white rounded-md shadow-md p-2">
+            <div className="bg-white dark:bg-gray-800 rounded-md shadow-md p-2 transition-colors duration-300">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setMapFullscreen(!mapFullscreen)}
-                className="h-8 w-8"
+                className="h-8 w-8 dark:text-gray-300 dark:hover:bg-gray-700"
               >
                 {mapFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
               </Button>
             </div>
-            <div className="bg-white rounded-md shadow-md p-2">
+            <div className="bg-white dark:bg-gray-800 rounded-md shadow-md p-2 transition-colors duration-300">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleMapStyle}
-                className="h-8 w-8"
+                className="h-8 w-8 dark:text-gray-300 dark:hover:bg-gray-700"
               >
                 <Layers size={16} />
               </Button>
@@ -371,7 +375,7 @@ const MapSection = () => {
           {mapFullscreen && (
             <div className="absolute bottom-4 left-4 z-10">
               <Button
-                className="bg-white text-black hover:bg-gray-100"
+                className="bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 transition-colors duration-300"
                 onClick={() => setMapFullscreen(false)}
               >
                 Exit Fullscreen
