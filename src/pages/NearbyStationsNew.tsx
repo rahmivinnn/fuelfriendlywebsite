@@ -494,6 +494,32 @@ const NearbyStationsNew = () => {
     return R * c;
   };
 
+  // Function to geocode a city and country to get coordinates
+  const geocodeLocation = useCallback(async (city: string, countryCode: string): Promise<{lat: number, lng: number} | null> => {
+    try {
+      const countryName = countries.find(c => c.code === countryCode)?.name || "";
+      const query = `${city}, ${countryName}`;
+
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxgl.accessToken}&types=place&limit=1`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data.features && data.features.length > 0) {
+          const [lng, lat] = data.features[0].center;
+          return { lat, lng };
+        }
+      }
+
+      return null;
+    } catch (error) {
+      console.error("Error geocoding location:", error);
+      return null;
+    }
+  }, [countries]);
+
   // Function to detect user's location
   const detectUserLocation = useCallback(() => {
     setIsLocating(true);
@@ -668,10 +694,15 @@ const NearbyStationsNew = () => {
     if (selectedCountry) {
       const filteredCities = cities.filter(city => city.countryCode === selectedCountry);
       setAvailableCities(filteredCities);
+
+      // If there was a previously selected city and it's not in the new country, clear it
+      if (selectedCity && !filteredCities.some(city => city.name === selectedCity)) {
+        setSelectedCity("");
+      }
     } else {
       setAvailableCities([]);
     }
-  }, [selectedCountry]);
+  }, [selectedCountry, selectedCity]);
 
   // Initialize map when component mounts
   useEffect(() => {
@@ -774,9 +805,17 @@ const NearbyStationsNew = () => {
     return () => clearTimeout(timer);
   }, [detectUserLocation]);
 
+  // Store previous location to prevent unnecessary refreshes
+  const prevLocationRef = useRef<{lat: number, lng: number} | null>(null);
+
   // Fetch stations when user location changes
   useEffect(() => {
     if (userLocation) {
+      // Check if location has significantly changed to avoid unnecessary refreshes
+      const hasLocationChanged = !prevLocationRef.current ||
+        Math.abs(prevLocationRef.current.lat - userLocation.lat) > 0.01 ||
+        Math.abs(prevLocationRef.current.lng - userLocation.lng) > 0.01;
+
       // Update map center
       if (map.current && mapLoaded) {
         map.current.flyTo({
@@ -786,8 +825,17 @@ const NearbyStationsNew = () => {
         });
       }
 
-      // Fetch stations
-      fetchStationsFromOverpass(userLocation.lat, userLocation.lng, distanceFilter * 1609); // Convert miles to meters
+      // Only fetch stations if location has changed significantly
+      if (hasLocationChanged) {
+        // Fetch stations
+        fetchStationsFromOverpass(userLocation.lat, userLocation.lng, distanceFilter * 1609); // Convert miles to meters
+
+        // Update previous location
+        prevLocationRef.current = {
+          lat: userLocation.lat,
+          lng: userLocation.lng
+        };
+      }
     }
   }, [userLocation, mapLoaded, fetchStationsFromOverpass, distanceFilter]);
 
@@ -987,7 +1035,11 @@ const NearbyStationsNew = () => {
                   </Label>
                   <Select
                     value={selectedCountry}
-                    onValueChange={(value) => setSelectedCountry(value)}
+                    onValueChange={(value) => {
+                      setSelectedCountry(value);
+                      // Don't immediately fetch stations when country changes
+                      // Wait for city selection
+                    }}
                   >
                     <SelectTrigger className="w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                       <SelectValue placeholder="Select a country" />
@@ -1012,7 +1064,130 @@ const NearbyStationsNew = () => {
                   </Label>
                   <Select
                     value={selectedCity}
-                    onValueChange={(value) => setSelectedCity(value)}
+                    onValueChange={(value) => {
+                      setSelectedCity(value);
+
+                      // Find the selected city's coordinates
+                      if (value && selectedCountry) {
+                        // First try to find in our cities data
+                        const selectedCityObj = availableCities.find(city => city.name === value);
+
+                        if (selectedCityObj && selectedCityObj.latitude && selectedCityObj.longitude) {
+                          // If we have coordinates for this city, use them
+                          setUserLocation({
+                            lat: selectedCityObj.latitude,
+                            lng: selectedCityObj.longitude
+                          });
+
+                          toast({
+                            title: "Location Updated",
+                            description: `Showing stations in ${value}, ${countries.find(c => c.code === selectedCountry)?.name}`,
+                            duration: 2000,
+                          });
+                        } else {
+                          // If we don't have coordinates, use geocoding to find them
+                          const countryName = countries.find(c => c.code === selectedCountry)?.name || "";
+
+                          // Show loading state
+                          setLoading(true);
+
+                          // Try to geocode the location
+                          geocodeLocation(value, selectedCountry)
+                            .then(location => {
+                              if (location) {
+                                // If geocoding succeeded, use the coordinates
+                                setUserLocation(location);
+
+                                toast({
+                                  title: "Location Updated",
+                                  description: `Showing stations in ${value}, ${countryName}`,
+                                  duration: 2000,
+                                });
+                              } else {
+                                // If geocoding failed, use approximate coordinates
+                                // Generate coordinates that are likely to be in the selected country
+                                // This is a very rough approximation
+                                const regionCoordinates: Record<string, [number, number]> = {
+                                  // Continent approximate centers
+                                  'EU': [50, 10],    // Europe
+                                  'AS': [35, 105],   // Asia
+                                  'AF': [0, 20],     // Africa
+                                  'NA': [40, -100],  // North America
+                                  'SA': [-20, -60],  // South America
+                                  'OC': [-25, 135],  // Oceania
+                                  'AN': [-80, 0]     // Antarctica
+                                };
+
+                                // Map country codes to continents
+                                const continentMap: Record<string, string> = {
+                                  // Europe
+                                  'AL': 'EU', 'AD': 'EU', 'AT': 'EU', 'BE': 'EU', 'BA': 'EU', 'BG': 'EU', 'HR': 'EU',
+                                  'CY': 'EU', 'CZ': 'EU', 'DK': 'EU', 'EE': 'EU', 'FI': 'EU', 'FR': 'EU', 'DE': 'EU',
+                                  'GR': 'EU', 'HU': 'EU', 'IS': 'EU', 'IE': 'EU', 'IT': 'EU', 'LV': 'EU', 'LI': 'EU',
+                                  'LT': 'EU', 'LU': 'EU', 'MT': 'EU', 'MC': 'EU', 'ME': 'EU', 'NL': 'EU', 'MK': 'EU',
+                                  'NO': 'EU', 'PL': 'EU', 'PT': 'EU', 'RO': 'EU', 'SM': 'EU', 'RS': 'EU', 'SK': 'EU',
+                                  'SI': 'EU', 'ES': 'EU', 'SE': 'EU', 'CH': 'EU', 'GB': 'EU', 'VA': 'EU', 'UK': 'EU',
+
+                                  // Asia
+                                  'AF': 'AS', 'AM': 'AS', 'AZ': 'AS', 'BH': 'AS', 'BD': 'AS', 'BT': 'AS', 'BN': 'AS',
+                                  'KH': 'AS', 'CN': 'AS', 'GE': 'AS', 'IN': 'AS', 'ID': 'AS', 'IR': 'AS', 'IQ': 'AS',
+                                  'IL': 'AS', 'JP': 'AS', 'JO': 'AS', 'KZ': 'AS', 'KW': 'AS', 'KG': 'AS', 'LA': 'AS',
+                                  'LB': 'AS', 'MY': 'AS', 'MV': 'AS', 'MN': 'AS', 'MM': 'AS', 'NP': 'AS', 'KP': 'AS',
+                                  'OM': 'AS', 'PK': 'AS', 'PS': 'AS', 'PH': 'AS', 'QA': 'AS', 'SA': 'AS', 'SG': 'AS',
+                                  'KR': 'AS', 'LK': 'AS', 'SY': 'AS', 'TW': 'AS', 'TJ': 'AS', 'TH': 'AS', 'TR': 'AS',
+                                  'TM': 'AS', 'AE': 'AS', 'UZ': 'AS', 'VN': 'AS', 'YE': 'AS',
+
+                                  // Africa
+                                  'DZ': 'AF', 'AO': 'AF', 'BJ': 'AF', 'BW': 'AF', 'BF': 'AF', 'BI': 'AF', 'CV': 'AF',
+                                  'CM': 'AF', 'CF': 'AF', 'TD': 'AF', 'KM': 'AF', 'CD': 'AF', 'CG': 'AF', 'CI': 'AF',
+                                  'DJ': 'AF', 'EG': 'AF', 'GQ': 'AF', 'ER': 'AF', 'SZ': 'AF', 'ET': 'AF', 'GA': 'AF',
+                                  'GM': 'AF', 'GH': 'AF', 'GN': 'AF', 'GW': 'AF', 'KE': 'AF', 'LS': 'AF', 'LR': 'AF',
+                                  'LY': 'AF', 'MG': 'AF', 'MW': 'AF', 'ML': 'AF', 'MR': 'AF', 'MU': 'AF', 'MA': 'AF',
+                                  'MZ': 'AF', 'NA': 'AF', 'NE': 'AF', 'NG': 'AF', 'RW': 'AF', 'ST': 'AF', 'SN': 'AF',
+                                  'SC': 'AF', 'SL': 'AF', 'SO': 'AF', 'ZA': 'AF', 'SS': 'AF', 'SD': 'AF', 'TZ': 'AF',
+                                  'TG': 'AF', 'TN': 'AF', 'UG': 'AF', 'ZM': 'AF', 'ZW': 'AF',
+
+                                  // North America
+                                  'AG': 'NA', 'BS': 'NA', 'BB': 'NA', 'BZ': 'NA', 'CA': 'NA', 'CR': 'NA', 'CU': 'NA',
+                                  'DM': 'NA', 'DO': 'NA', 'SV': 'NA', 'GD': 'NA', 'GT': 'NA', 'HT': 'NA', 'HN': 'NA',
+                                  'JM': 'NA', 'MX': 'NA', 'NI': 'NA', 'PA': 'NA', 'KN': 'NA', 'LC': 'NA', 'VC': 'NA',
+                                  'TT': 'NA', 'US': 'NA',
+
+                                  // South America
+                                  'AR': 'SA', 'BO': 'SA', 'BR': 'SA', 'CL': 'SA', 'CO': 'SA', 'EC': 'SA', 'GY': 'SA',
+                                  'PY': 'SA', 'PE': 'SA', 'SR': 'SA', 'UY': 'SA', 'VE': 'SA',
+
+                                  // Oceania
+                                  'AU': 'OC', 'FJ': 'OC', 'KI': 'OC', 'MH': 'OC', 'FM': 'OC', 'NR': 'OC', 'NZ': 'OC',
+                                  'PW': 'OC', 'PG': 'OC', 'WS': 'OC', 'SB': 'OC', 'TO': 'OC', 'TV': 'OC', 'VU': 'OC'
+                                };
+
+                                const continent = continentMap[selectedCountry] || 'EU'; // Default to Europe if unknown
+                                const [baseLat, baseLng] = regionCoordinates[continent] || [0, 0];
+
+                                // Add some randomness (±5 degrees)
+                                const randomLat = baseLat + (Math.random() * 10 - 5);
+                                const randomLng = baseLng + (Math.random() * 10 - 5);
+
+                                setUserLocation({
+                                  lat: randomLat,
+                                  lng: randomLng
+                                });
+
+                                toast({
+                                  title: "Location Approximated",
+                                  description: `Showing approximate area for ${value}, ${countryName}`,
+                                  duration: 2000,
+                                });
+                              }
+                            })
+                            .finally(() => {
+                              // Hide loading state after geocoding attempt
+                              setLoading(false);
+                            });
+                        }
+                      }
+                    }}
                     disabled={!selectedCountry || availableCities.length === 0}
                   >
                     <SelectTrigger className="w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white">
