@@ -16,6 +16,8 @@ import StationRegistration from "./pages/StationRegistration";
 import StationDashboard from "./pages/StationDashboard";
 import IndependentContractorAgreement from "./pages/IndependentContractorAgreement";
 import IndependentContractorAgreementFull from "./pages/IndependentContractorAgreementFull";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ShopperTerms from "./pages/ShopperTerms";
 import ProductsManagement from "./pages/ProductsManagement";
 import StationManagement from "./pages/StationManagement";
 import OrdersManagement from "./pages/OrdersManagement";
@@ -78,6 +80,8 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/independent-contractor-agreement" element={<IndependentContractorAgreement />} />
             <Route path="/independent-contractor-agreement-full" element={<IndependentContractorAgreementFull />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/shopper-terms" element={<ShopperTerms />} />
 
             {/* Station Dashboard routes - require authentication */}
             <Route path="/station-dashboard" element={

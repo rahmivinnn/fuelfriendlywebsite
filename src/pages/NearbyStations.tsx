@@ -192,7 +192,7 @@ const generateStationsData = () => {
 };
 
 // Set your Mapbox access token here
-mapboxgl.accessToken = 'pk.eyJ1IjoiZnVlbGZyaWVuZGx5IiwiYSI6ImNscXRqcWVxcjFnNGUya3BnZnRxZGJnbXQifQ.Ry9xQMKHWgTHDgYTlmBcKA';
+mapboxgl.accessToken = 'pk.eyJ1IjoiZnVlbGZyaWVuZGx5MjAyNSIsImEiOiJjbTlzZGZsOHowMW00Mm1xNGEzcHhzYnQ4In0.5K8rY561eFLN2hy0U7QPdw';
 
 // Fix for Mapbox GL JS in environments where the bundler doesn't properly handle browser-specific dependencies
 if (!mapboxgl.supported()) {

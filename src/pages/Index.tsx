@@ -10,6 +10,8 @@ import MapSection from '@/components/MapSection';
 import PricingSection from '@/components/PricingSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import CtaSection from '@/components/CtaSection';
+import RequirementsBanner from '@/components/RequirementsBanner';
+import PerfectPlan from '@/components/PerfectPlan';
 import Footer from '@/components/Footer';
 import WhyItWorks from '@/components/WhyItWorks';
 import PartnerWithUs from '@/components/PartnerWithUs';
@@ -115,32 +117,10 @@ const Index = () => {
           <div id="partner-with-us">
             <PartnerWithUs />
           </div>
-          <div id="contact" className="py-12 flex justify-center">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link to="/nearby-stations">
-                <motion.div
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ duration: 0.1 }}
-                >
-                  <button className="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-md font-medium shadow-lg transition-all duration-200">
-                    Find Nearby Stations
-                  </button>
-                </motion.div>
-              </Link>
-              <Link to="/station-registration">
-                <motion.div
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ duration: 0.1 }}
-                >
-                  <button className="bg-white border-2 border-green-500 text-green-500 hover:bg-green-50 px-8 py-3 rounded-md font-medium shadow-lg transition-all duration-200">
-                    Register Your Station
-                  </button>
-                </motion.div>
-              </Link>
-            </div>
+          <div className="container mx-auto px-4 py-12">
+            <RequirementsBanner />
           </div>
+          <PerfectPlan />
           <CtaSection />
         </main>
       )}
