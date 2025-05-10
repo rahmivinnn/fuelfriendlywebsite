@@ -92,17 +92,17 @@ const HowItWorks = () => {
             return (
               <motion.div
                 key={step.id}
-                className={`${step.bgColor} ${darkBgColor} p-6 rounded-3xl transition-colors duration-300`}
+                className={`${step.bgColor} ${darkBgColor} p-6 rounded-3xl transition-colors duration-300 h-full flex flex-col`}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 whileHover={{ y: -10, transition: { duration: 0.2 } }}
               >
-                <div className="space-y-4">
+                <div className="space-y-4 flex-1 flex flex-col">
                   {step.icon}
                   <h3 className="text-xl font-bold dark:text-white">{step.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300">{step.description}</p>
+                  <p className="text-gray-600 dark:text-gray-300 flex-grow">{step.description}</p>
                 </div>
               </motion.div>
             );

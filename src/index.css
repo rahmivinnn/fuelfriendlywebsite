@@ -240,15 +240,24 @@ button, a, input, select, textarea {
 
 /* Component styles */
 .feature-card {
-  @apply p-6 rounded-lg border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 hover:shadow-md transition-all duration-300;
+  @apply p-6 rounded-lg border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 hover:shadow-md transition-all duration-300 h-full flex flex-col;
 }
 
 .pricing-card {
-  @apply p-6 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 hover:shadow-lg transition-all duration-300;
+  @apply p-6 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 hover:shadow-lg transition-all duration-300 h-full flex flex-col;
 }
 
 .testimonial-card {
-  @apply p-6 rounded-lg border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 hover:shadow-md transition-all duration-300;
+  @apply p-6 rounded-lg border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 hover:shadow-md transition-all duration-300 h-full flex flex-col;
+}
+
+/* Ensure all cards have proper sizing */
+.grid > div {
+  @apply h-full;
+}
+
+.card, .Card {
+  @apply h-full flex flex-col;
 }
 
 /* Dark mode specific overrides */

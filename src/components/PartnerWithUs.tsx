@@ -218,7 +218,7 @@ const PartnerWithUs = () => {
           viewport={{ once: true }}
         >
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl dark:text-white">Partner With Us</h2>
+            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl dark:text-white">Become a Fuel Friend</h2>
             <p className="text-gray-500 dark:text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed max-w-3xl mx-auto">
               Join our team of Fuel Friends and help us revolutionize the fuel delivery industry while earning competitive pay on your own schedule.
             </p>
@@ -233,7 +233,7 @@ const PartnerWithUs = () => {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition-colors duration-300 h-full flex flex-col">
               <h3 className="text-xl font-bold mb-4 flex items-center dark:text-white">
                 <CheckCircle2 className="mr-2 h-5 w-5 text-green-500 dark:text-green-400" />
                 Partner Benefits
@@ -262,7 +262,7 @@ const PartnerWithUs = () => {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition-colors duration-300 h-full flex flex-col">
               <h3 className="text-xl font-bold mb-4 dark:text-white">Requirements</h3>
               <ul className="space-y-2">
                 {requirements.map((requirement, index) => (
@@ -280,7 +280,7 @@ const PartnerWithUs = () => {
           </motion.div>
 
           <motion.div
-            className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex flex-col justify-between transition-colors duration-300"
+            className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 flex flex-col justify-between transition-colors duration-300 h-full"
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             whileHover={{ scale: 1.02, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}

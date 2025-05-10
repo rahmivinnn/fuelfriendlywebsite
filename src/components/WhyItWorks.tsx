@@ -105,7 +105,7 @@ const WhyItWorks = () => {
             return (
               <motion.div
                 key={index}
-                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all duration-300"
+                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all duration-300 h-full flex flex-col"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -118,7 +118,7 @@ const WhyItWorks = () => {
                   </div>
                 </div>
                 <h3 className="text-xl font-bold mb-2 dark:text-white">{reason.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{reason.description}</p>
+                <p className="text-gray-600 dark:text-gray-300 flex-grow">{reason.description}</p>
               </motion.div>
             );
           })}

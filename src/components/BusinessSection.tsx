@@ -46,7 +46,7 @@ const BusinessSection = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <Button className="bg-primary hover:bg-primary/90 text-white">
-                  Partner With Us
+                  Become a Fuel Friend
                 </Button>
               </motion.div>
             </div>

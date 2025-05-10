@@ -177,7 +177,7 @@ const Features = () => {
             return (
               <motion.div
                 key={index}
-                className="feature-card flex flex-col space-y-4 rounded-xl hover:shadow-lg transition-all duration-300 border border-gray-100 dark:border-gray-700 p-6 cursor-pointer relative overflow-hidden bg-white dark:bg-gray-800"
+                className="feature-card flex flex-col space-y-4 rounded-xl hover:shadow-lg transition-all duration-300 border border-gray-100 dark:border-gray-700 p-6 cursor-pointer relative overflow-visible bg-white dark:bg-gray-800 h-full"
                 initial={{ opacity: 0, y: 30, scale: 0.95 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.1, type: "spring", stiffness: 100 }}

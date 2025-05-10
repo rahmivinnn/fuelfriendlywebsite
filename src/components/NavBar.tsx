@@ -207,7 +207,7 @@ const NavBar = () => {
               onClick={() => handleNavClick('partner-with-us')}
               className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
-              Partner With Us
+              Become a Fuel Friend
             </button>
             <button
               onClick={() => navigate('/nearby-stations')}
