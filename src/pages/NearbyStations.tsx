@@ -194,6 +194,11 @@ const generateStationsData = () => {
 // Set your Mapbox access token here
 mapboxgl.accessToken = 'pk.eyJ1IjoiZnVlbGZyaWVuZGx5IiwiYSI6ImNscXRqcWVxcjFnNGUya3BnZnRxZGJnbXQifQ.Ry9xQMKHWgTHDgYTlmBcKA';
 
+// Fix for Mapbox GL JS in environments where the bundler doesn't properly handle browser-specific dependencies
+if (!mapboxgl.supported()) {
+  console.warn('Your browser does not support Mapbox GL');
+}
+
 const NearbyStations = () => {
   const { toast } = useToast();
   const [searchInput, setSearchInput] = useState("");
@@ -327,21 +332,48 @@ const NearbyStations = () => {
     setIsLocating(true);
     setLocationError("");
 
+    // Check if geolocation is supported
     if (!navigator.geolocation) {
       setLocationError("Geolocation is not supported by your browser");
       setIsLocating(false);
+
+      toast({
+        title: "Location Not Supported",
+        description: "Your browser does not support geolocation. Please select your country and city manually.",
+        variant: "destructive",
+        duration: 5000,
+      });
       return;
     }
 
+    // Set a timeout to handle cases where geolocation hangs
+    const timeoutId = setTimeout(() => {
+      if (isLocating) {
+        setLocationError("Location detection timed out. Please try again or select your location manually.");
+        setIsLocating(false);
+
+        toast({
+          title: "Location Timeout",
+          description: "Location detection is taking too long. Please try again or select your location manually.",
+          variant: "destructive",
+          duration: 5000,
+        });
+      }
+    }, 15000);
+
+    // Get current position with error handling
     navigator.geolocation.getCurrentPosition(
       async (position) => {
+        clearTimeout(timeoutId);
         const { latitude, longitude } = position.coords;
+
+        // Update user location state
         setUserLocation({ lat: latitude, lng: longitude });
 
         try {
-          // Reverse geocode to get country and city
+          // Reverse geocode to get country and city using Mapbox API
           const response = await fetch(
-            `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${mapboxgl.accessToken}&types=country,place`
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${mapboxgl.accessToken}&types=country,place&limit=5`
           );
 
           if (response.ok) {
@@ -349,19 +381,29 @@ const NearbyStations = () => {
 
             // Extract country and city from response
             let country = "";
+            let countryCode = "";
             let city = "";
 
+            // Process features to find country and city
             data.features.forEach(feature => {
-              if (feature.place_type.includes('country')) {
+              if (feature.place_type.includes('country') && !country) {
                 country = feature.text;
-                // Find country code
-                const countryObj = countries.find(c => c.name === country);
+
+                // Try to find country code in our list
+                const countryObj = countries.find(c =>
+                  c.name.toLowerCase() === country.toLowerCase() ||
+                  c.name.toLowerCase().includes(country.toLowerCase()) ||
+                  country.toLowerCase().includes(c.name.toLowerCase())
+                );
+
                 if (countryObj) {
+                  countryCode = countryObj.code;
                   setUserCountry(countryObj.code);
                   setSelectedCountry(countryObj.code);
                 }
               }
-              if (feature.place_type.includes('place')) {
+
+              if (feature.place_type.includes('place') && !city) {
                 city = feature.text;
                 setUserCity(city);
               }
@@ -369,84 +411,239 @@ const NearbyStations = () => {
 
             // If we found both country and city
             if (country && city) {
-              // Wait for cities to be loaded based on country
+              console.log(`Detected location: ${city}, ${country} (${countryCode})`);
+
+              // Wait for cities to be loaded based on country before setting selected city
               setTimeout(() => {
-                if (availableCities.find(c => c.name === city)) {
-                  setSelectedCity(city);
+                // Find the closest matching city name
+                const cityMatch = availableCities.find(c =>
+                  c.name.toLowerCase() === city.toLowerCase() ||
+                  c.name.toLowerCase().includes(city.toLowerCase()) ||
+                  city.toLowerCase().includes(c.name.toLowerCase())
+                );
+
+                if (cityMatch) {
+                  setSelectedCity(cityMatch.name);
+                } else if (availableCities.length > 0) {
+                  // If no match found but we have cities, select the first one
+                  setSelectedCity(availableCities[0].name);
                 }
-              }, 500);
+              }, 800);
 
               toast({
                 title: "Location Detected",
                 description: `You are in ${city}, ${country}`,
                 duration: 3000,
               });
+            } else if (country) {
+              // If we only found country
+              toast({
+                title: "Country Detected",
+                description: `You are in ${country}`,
+                duration: 3000,
+              });
+            } else {
+              // If we couldn't determine location details
+              toast({
+                title: "Location Detected",
+                description: "Your location was detected, but we couldn't determine your country and city. Please select them manually.",
+                duration: 5000,
+              });
             }
+          } else {
+            // Handle API error
+            console.error("Mapbox geocoding API error:", await response.text());
+            toast({
+              title: "Location Error",
+              description: "Could not determine your location details. Please select your country and city manually.",
+              variant: "destructive",
+              duration: 5000,
+            });
           }
         } catch (error) {
           console.error("Error reverse geocoding:", error);
+          toast({
+            title: "Location Error",
+            description: "An error occurred while determining your location details. Please select your country and city manually.",
+            variant: "destructive",
+            duration: 5000,
+          });
         }
 
         setIsLocating(false);
       },
       (error) => {
-        setLocationError(`Error getting location: ${error.message}`);
+        clearTimeout(timeoutId);
+        console.error("Geolocation error:", error);
+
+        // Handle specific error codes
+        let errorMessage = "Unknown error getting your location.";
+
+        switch (error.code) {
+          case 1: // PERMISSION_DENIED
+            errorMessage = "Location access was denied. Please enable location services in your browser settings.";
+            break;
+          case 2: // POSITION_UNAVAILABLE
+            errorMessage = "Your location information is unavailable. Please try again later.";
+            break;
+          case 3: // TIMEOUT
+            errorMessage = "Location request timed out. Please try again.";
+            break;
+        }
+
+        setLocationError(errorMessage);
         setIsLocating(false);
 
         toast({
           title: "Location Error",
-          description: error.message,
+          description: errorMessage,
           variant: "destructive",
           duration: 5000,
         });
       },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      {
+        enableHighAccuracy: true,
+        timeout: 12000,  // Increased timeout for slower connections
+        maximumAge: 0    // Always get fresh position
+      }
     );
-  }, [availableCities, toast]);
+  }, [availableCities, toast, isLocating]);
 
   // Initialize map when component mounts
   useEffect(() => {
     if (map.current) return; // Initialize map only once
 
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: mapStyle,
-      center: [lng, lat],
-      zoom: zoom,
-      attributionControl: false
-    });
+    try {
+      // Check if mapboxgl is supported
+      if (!mapboxgl.supported()) {
+        toast({
+          title: "Browser Not Supported",
+          description: "Your browser does not support Mapbox GL. Some features may not work correctly.",
+          variant: "destructive",
+          duration: 5000,
+        });
+        return;
+      }
 
-    map.current.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+      // Check if container exists
+      if (!mapContainer.current) {
+        console.error("Map container not found");
+        return;
+      }
 
-    // Custom geolocate control with callback
-    const geolocateControl = new mapboxgl.GeolocateControl({
-      positionOptions: {
-        enableHighAccuracy: true
-      },
-      trackUserLocation: true,
-      showUserHeading: true
-    });
+      // Create map with error handling
+      try {
+        map.current = new mapboxgl.Map({
+          container: mapContainer.current,
+          style: mapStyle,
+          center: [lng, lat],
+          zoom: zoom,
+          attributionControl: false,
+          failIfMajorPerformanceCaveat: false // Allow map to render even if performance might be poor
+        });
+      } catch (error) {
+        console.error("Error initializing Mapbox map:", error);
+        toast({
+          title: "Map Error",
+          description: "There was an error loading the map. Please try again later.",
+          variant: "destructive",
+          duration: 5000,
+        });
+        return;
+      }
 
-    map.current.addControl(geolocateControl, 'bottom-right');
+      // Add error handling for map
+      map.current.on('error', (e) => {
+        console.error('Mapbox GL error:', e.error);
+      });
 
-    // When user clicks the geolocate button
-    geolocateControl.on('geolocate', (e) => {
-      const { latitude, longitude } = e.coords;
-      setUserLocation({ lat: latitude, lng: longitude });
+      // Add navigation controls
+      try {
+        map.current.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
+      } catch (error) {
+        console.error("Error adding navigation control:", error);
+      }
 
-      // Trigger our custom location detection
-      detectUserLocation();
-    });
+      // Add geolocate control with error handling
+      try {
+        // Custom geolocate control with callback
+        const geolocateControl = new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true
+          },
+          trackUserLocation: true,
+          showUserHeading: true
+        });
 
-    map.current.on('load', () => {
-      setMapLoaded(true);
+        map.current.addControl(geolocateControl, 'bottom-right');
 
-      // Try to detect user location on initial load
-      detectUserLocation();
-    });
+        // When user clicks the geolocate button
+        geolocateControl.on('geolocate', (e) => {
+          try {
+            const { latitude, longitude } = e.coords;
+            setUserLocation({ lat: latitude, lng: longitude });
 
-    return () => map.current?.remove();
-  }, [detectUserLocation]);
+            // Trigger our custom location detection
+            detectUserLocation();
+          } catch (error) {
+            console.error("Error handling geolocate event:", error);
+          }
+        });
+
+        // Handle geolocate errors
+        geolocateControl.on('error', (e) => {
+          console.error("Geolocate control error:", e.error);
+          setLocationError("Error getting your location. Please try again.");
+          setIsLocating(false);
+
+          toast({
+            title: "Location Error",
+            description: "Could not determine your location. Please try again.",
+            variant: "destructive",
+            duration: 3000,
+          });
+        });
+      } catch (error) {
+        console.error("Error setting up geolocate control:", error);
+      }
+
+      // Set up map load event
+      map.current.on('load', () => {
+        setMapLoaded(true);
+
+        // Try to detect user location on initial load, but don't force it
+        // This makes it more reliable across different browsers and countries
+        setTimeout(() => {
+          try {
+            // Only attempt to get location if the user hasn't manually selected a country/city
+            if (!selectedCountry && !selectedCity) {
+              detectUserLocation();
+            }
+          } catch (error) {
+            console.error("Error detecting location on load:", error);
+          }
+        }, 1000);
+      });
+
+      return () => {
+        try {
+          if (map.current) {
+            map.current.remove();
+          }
+        } catch (error) {
+          console.error("Error removing map:", error);
+        }
+      };
+    } catch (error) {
+      console.error("Critical error in map initialization:", error);
+      toast({
+        title: "Map Error",
+        description: "There was a critical error loading the map. Please try refreshing the page.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
+  }, [detectUserLocation, mapStyle, lng, lat, zoom, toast, selectedCountry, selectedCity]);
 
   // Calculate distance between two coordinates in miles
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
