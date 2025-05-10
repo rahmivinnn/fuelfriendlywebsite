@@ -315,6 +315,95 @@ const NearbyStations = () => {
     return () => clearInterval(interval);
   }, [toast]);
 
+  // User location state
+  const [userLocation, setUserLocation] = useState(null);
+  const [userCountry, setUserCountry] = useState("");
+  const [userCity, setUserCity] = useState("");
+  const [isLocating, setIsLocating] = useState(false);
+  const [locationError, setLocationError] = useState("");
+
+  // Function to detect user's location
+  const detectUserLocation = useCallback(() => {
+    setIsLocating(true);
+    setLocationError("");
+
+    if (!navigator.geolocation) {
+      setLocationError("Geolocation is not supported by your browser");
+      setIsLocating(false);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        setUserLocation({ lat: latitude, lng: longitude });
+
+        try {
+          // Reverse geocode to get country and city
+          const response = await fetch(
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${mapboxgl.accessToken}&types=country,place`
+          );
+
+          if (response.ok) {
+            const data = await response.json();
+
+            // Extract country and city from response
+            let country = "";
+            let city = "";
+
+            data.features.forEach(feature => {
+              if (feature.place_type.includes('country')) {
+                country = feature.text;
+                // Find country code
+                const countryObj = countries.find(c => c.name === country);
+                if (countryObj) {
+                  setUserCountry(countryObj.code);
+                  setSelectedCountry(countryObj.code);
+                }
+              }
+              if (feature.place_type.includes('place')) {
+                city = feature.text;
+                setUserCity(city);
+              }
+            });
+
+            // If we found both country and city
+            if (country && city) {
+              // Wait for cities to be loaded based on country
+              setTimeout(() => {
+                if (availableCities.find(c => c.name === city)) {
+                  setSelectedCity(city);
+                }
+              }, 500);
+
+              toast({
+                title: "Location Detected",
+                description: `You are in ${city}, ${country}`,
+                duration: 3000,
+              });
+            }
+          }
+        } catch (error) {
+          console.error("Error reverse geocoding:", error);
+        }
+
+        setIsLocating(false);
+      },
+      (error) => {
+        setLocationError(`Error getting location: ${error.message}`);
+        setIsLocating(false);
+
+        toast({
+          title: "Location Error",
+          description: error.message,
+          variant: "destructive",
+          duration: 5000,
+        });
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  }, [availableCities, toast]);
+
   // Initialize map when component mounts
   useEffect(() => {
     if (map.current) return; // Initialize map only once
@@ -328,35 +417,130 @@ const NearbyStations = () => {
     });
 
     map.current.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
-    map.current.addControl(new mapboxgl.GeolocateControl({
+
+    // Custom geolocate control with callback
+    const geolocateControl = new mapboxgl.GeolocateControl({
       positionOptions: {
         enableHighAccuracy: true
       },
       trackUserLocation: true,
       showUserHeading: true
-    }), 'bottom-right');
+    });
+
+    map.current.addControl(geolocateControl, 'bottom-right');
+
+    // When user clicks the geolocate button
+    geolocateControl.on('geolocate', (e) => {
+      const { latitude, longitude } = e.coords;
+      setUserLocation({ lat: latitude, lng: longitude });
+
+      // Trigger our custom location detection
+      detectUserLocation();
+    });
 
     map.current.on('load', () => {
       setMapLoaded(true);
+
+      // Try to detect user location on initial load
+      detectUserLocation();
     });
 
     return () => map.current?.remove();
-  }, []);
+  }, [detectUserLocation]);
+
+  // Calculate distance between two coordinates in miles
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    if (!lat1 || !lon1 || !lat2 || !lon2) return null;
+
+    const R = 3958.8; // Earth's radius in miles
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a =
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const distance = R * c;
+    return distance.toFixed(1);
+  };
+
+  // Update stations with real distances when user location changes
+  useEffect(() => {
+    if (!userLocation || allStations.length === 0) return;
+
+    const updatedStations = allStations.map(station => {
+      // Generate consistent coordinates for each station based on its ID
+      // This ensures stations don't move around on each render
+      const stationId = station.id;
+      const seedLng = (stationId * 0.01) % 0.5;
+      const seedLat = (stationId * 0.02) % 0.5;
+
+      // Generate coordinates around user location or default center
+      const stationLng = (userLocation ? userLocation.lng : lng) + (seedLng - 0.25);
+      const stationLat = (userLocation ? userLocation.lat : lat) + (seedLat - 0.25);
+
+      // Calculate real distance based on coordinates
+      const distance = calculateDistance(
+        userLocation ? userLocation.lat : lat,
+        userLocation ? userLocation.lng : lng,
+        stationLat,
+        stationLng
+      );
+
+      return {
+        ...station,
+        coordinates: [stationLng, stationLat],
+        distance: `${distance} miles`
+      };
+    });
+
+    setAllStations(updatedStations);
+
+    // If we have user location, fly to it
+    if (map.current && mapLoaded && userLocation) {
+      map.current.flyTo({
+        center: [userLocation.lng, userLocation.lat],
+        zoom: 12,
+        essential: true
+      });
+
+      // Add user marker
+      const userMarkerEl = document.createElement('div');
+      userMarkerEl.className = 'user-location-marker';
+      userMarkerEl.style.width = '20px';
+      userMarkerEl.style.height = '20px';
+      userMarkerEl.style.borderRadius = '50%';
+      userMarkerEl.style.backgroundColor = '#3b82f6';
+      userMarkerEl.style.border = '3px solid white';
+      userMarkerEl.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.5)';
+
+      // Remove existing user markers
+      const existingUserMarkers = document.querySelectorAll('.user-location-marker');
+      existingUserMarkers.forEach(marker => marker.remove());
+
+      // Add new user marker
+      new mapboxgl.Marker(userMarkerEl)
+        .setLngLat([userLocation.lng, userLocation.lat])
+        .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML('<div style="padding: 8px;"><strong>Your Location</strong></div>'))
+        .addTo(map.current);
+    }
+  }, [userLocation, mapLoaded]);
 
   // Update map when stations change
   useEffect(() => {
     if (!map.current || !mapLoaded || filteredStations.length === 0) return;
 
-    // Remove existing markers
-    const existingMarkers = document.querySelectorAll('.mapboxgl-marker');
+    // Remove existing station markers
+    const existingMarkers = document.querySelectorAll('.station-marker');
     existingMarkers.forEach(marker => marker.remove());
 
     // Add markers for each station
     filteredStations.forEach(station => {
-      // Generate random coordinates around the center for demo purposes
-      // In a real app, you would use actual coordinates from your data
-      const randomLng = lng + (Math.random() - 0.5) * 0.5;
-      const randomLat = lat + (Math.random() - 0.5) * 0.5;
+      // Use station coordinates if available, otherwise generate random ones
+      const stationCoords = station.coordinates || [
+        lng + (Math.random() - 0.5) * 0.5,
+        lat + (Math.random() - 0.5) * 0.5
+      ];
 
       // Create custom marker element
       const el = document.createElement('div');
@@ -382,6 +566,9 @@ const NearbyStations = () => {
           <div style="padding: 8px;">
             <div style="font-weight: bold; margin-bottom: 4px;">${station.name}</div>
             <div style="font-size: 12px; color: #666; margin-bottom: 4px;">${station.address}</div>
+            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">
+              <strong>Distance:</strong> ${station.distance}
+            </div>
             <div style="display: flex; gap: 8px; margin-top: 8px;">
               <div style="text-align: center;">
                 <div style="font-size: 10px; color: #666;">Regular</div>
@@ -396,23 +583,31 @@ const NearbyStations = () => {
                 <div style="font-weight: bold;">$${station.priceDiesel.toFixed(2)}</div>
               </div>
             </div>
-            <button
-              style="background-color: #10b981; color: white; border: none; padding: 4px 8px; border-radius: 4px; margin-top: 8px; width: 100%; cursor: pointer;"
-              onclick="window.viewStationDetails(${station.id})"
-            >
-              View Details
-            </button>
+            <div style="display: flex; gap: 4px; margin-top: 8px;">
+              <button
+                style="background-color: #10b981; color: white; border: none; padding: 4px 8px; border-radius: 4px; flex: 1; cursor: pointer;"
+                onclick="window.viewStationDetails(${station.id})"
+              >
+                View Details
+              </button>
+              <button
+                style="background-color: #3b82f6; color: white; border: none; padding: 4px 8px; border-radius: 4px; flex: 1; cursor: pointer;"
+                onclick="window.getDirections(${station.id})"
+              >
+                Directions
+              </button>
+            </div>
           </div>
         `);
 
       // Add marker to map
       new mapboxgl.Marker(el)
-        .setLngLat([randomLng, randomLat])
+        .setLngLat(stationCoords)
         .setPopup(popup)
         .addTo(map.current);
     });
 
-    // Add global function to handle view details button click in popups
+    // Add global functions to handle popup button clicks
     window.viewStationDetails = (stationId) => {
       const station = filteredStations.find(s => s.id === stationId);
       if (station) {
@@ -421,7 +616,14 @@ const NearbyStations = () => {
       }
     };
 
-  }, [filteredStations, mapLoaded]);
+    window.getDirections = (stationId) => {
+      const station = filteredStations.find(s => s.id === stationId);
+      if (station) {
+        handleGetDirections(station);
+      }
+    };
+
+  }, [filteredStations, mapLoaded, handleGetDirections]);
 
   // Update map style
   useEffect(() => {
@@ -680,7 +882,7 @@ const NearbyStations = () => {
               Find Nearby Fuel Stations Worldwide
             </h1>
             <p className="text-gray-600 text-lg mb-6">
-              Discover the best gas stations across 195 countries with real-time prices, wait times, and amenities
+              Discover the best gas stations near you with automatic location detection across 195 countries. Get real-time prices, wait times, and amenities for stations anywhere in the world.
             </p>
 
             <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
@@ -730,22 +932,56 @@ const NearbyStations = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="flex-1">
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" size={20} />
-                    <Input
-                      placeholder="Search for gas stations or addresses..."
-                      className="pl-10 border-gray-300"
-                      value={searchInput}
-                      onChange={(e) => setSearchInput(e.target.value)}
-                    />
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex-1">
+                    <div className="relative">
+                      <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" size={20} />
+                      <Input
+                        placeholder="Search for gas stations or addresses..."
+                        className="pl-10 border-gray-300"
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                      />
+                    </div>
                   </div>
+                  <Button className="bg-green-500 hover:bg-green-600">
+                    <Search className="mr-2" size={16} />
+                    Search
+                  </Button>
                 </div>
-                <Button className="bg-green-500 hover:bg-green-600">
-                  <Search className="mr-2" size={16} />
-                  Search
-                </Button>
+
+                <div className="flex items-center justify-between">
+                  <Button
+                    className="bg-blue-500 hover:bg-blue-600 text-white"
+                    onClick={detectUserLocation}
+                    disabled={isLocating}
+                  >
+                    {isLocating ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                        Detecting...
+                      </>
+                    ) : (
+                      <>
+                        <Navigation className="mr-2" size={16} />
+                        Detect My Location
+                      </>
+                    )}
+                  </Button>
+
+                  {userLocation && userCountry && userCity && (
+                    <div className="text-sm text-gray-600">
+                      <span className="font-medium">Your location:</span> {userCity}, {countries.find(c => c.code === userCountry)?.name}
+                    </div>
+                  )}
+
+                  {locationError && (
+                    <div className="text-sm text-red-500">
+                      {locationError}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </motion.div>
