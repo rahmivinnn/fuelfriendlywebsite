@@ -156,7 +156,7 @@ const NavBar = () => {
               transition={{ duration: 0.3 }}
             >
               <img
-                src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png"
+                src="/assets/logo.png"
                 alt="FuelFriendly Logo"
                 className="h-10 md:h-12"
               />

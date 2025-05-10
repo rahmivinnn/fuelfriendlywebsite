@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Grid, ShoppingBag, Package, Building2, 
+import {
+  Grid, ShoppingBag, Package, Building2,
   PieChart, Bell as BellIcon, HelpCircle, Settings,
   LogOut, MapPin, LayoutDashboard, Activity, FileText,
   MessageCircle, Users
@@ -45,7 +45,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
   const [notificationCount, setNotificationCount] = useState<number>(4);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [userName, setUserName] = useState('Station Owner');
-  
+
   // Get user name from localStorage if available
   useEffect(() => {
     const storedName = localStorage.getItem('stationOwnerName');
@@ -65,18 +65,18 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
         "Price change detected in competitors",
         "Customer feedback received"
       ];
-      
+
       const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-      
+
       setNotificationCount(prev => prev + 1);
-      
+
       toast({
         title: "Real-time Update",
         description: randomMessage,
         duration: 3000,
       });
     }, 45000); // Random update every 45 seconds
-    
+
     return () => clearInterval(interval);
   }, [toast]);
 
@@ -91,10 +91,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
 
   const handleSidebarItemClick = (item: SidebarItem) => {
     if (!item.path.includes('/station-dashboard/')) return;
-    
+
     // Navigate to the path
     navigate(item.path);
-    
+
     // For any item without a proper page yet, show a toast
     if (!['/station-dashboard', '/station-dashboard/orders', '/station-dashboard/products', '/station-dashboard/station'].includes(item.path)) {
       toast({
@@ -119,7 +119,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
   return (
     <div className="h-screen flex bg-gray-50">
       {/* Sidebar */}
-      <motion.div 
+      <motion.div
         initial={{ x: -300 }}
         animate={{ x: 0, width: isSidebarCollapsed ? 80 : 256 }}
         transition={{ type: "spring", stiffness: 100 }}
@@ -134,30 +134,30 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
                 exit={{ opacity: 0 }}
               >
                 <Link to="/" className="flex items-center">
-                  <img 
-                    src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" 
-                    alt="FuelFriendly Logo" 
+                  <img
+                    src="/assets/logo.png"
+                    alt="FuelFriendly Logo"
                     className="h-8"
                   />
                 </Link>
               </motion.div>
             )}
           </AnimatePresence>
-          
-          <Button 
-            variant="ghost" 
-            size="sm" 
+
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={toggleSidebar}
             className="hover:bg-gray-100"
           >
             <Grid size={20} className="text-gray-500" />
           </Button>
         </div>
-        
+
         <div className="flex-1 p-4 space-y-2 overflow-y-auto">
           {sidebarItems.map((item, index) => {
             const isActive = location.pathname === item.path;
-            
+
             return (
               <motion.div
                 key={item.label}
@@ -165,14 +165,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <div 
+                <div
                   onClick={() => handleSidebarItemClick(item)}
                   className={`flex items-center p-3 rounded-lg transition-colors hover:bg-gray-100 cursor-pointer ${isActive ? 'bg-green-50 text-green-500' : 'text-gray-600'}`}
                 >
                   <item.icon size={20} className={isActive ? 'text-green-500' : 'text-gray-500'} />
                   <AnimatePresence>
                     {!isSidebarCollapsed && (
-                      <motion.span 
+                      <motion.span
                         initial={{ opacity: 0, width: 0 }}
                         animate={{ opacity: 1, width: 'auto' }}
                         exit={{ opacity: 0, width: 0 }}
@@ -183,7 +183,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
                     )}
                   </AnimatePresence>
                   {item.realtime && (
-                    <motion.div 
+                    <motion.div
                       className="ml-auto"
                       initial={{ scale: 0 }}
                       animate={{ scale: [0, 1.2, 1] }}
@@ -197,10 +197,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
             );
           })}
         </div>
-        
+
         <div className="p-4 border-t border-gray-200">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             className={`${isSidebarCollapsed ? 'justify-center' : 'w-full justify-start'} text-gray-600 hover:text-gray-900 hover:bg-gray-100`}
             onClick={handleLogout}
           >
@@ -219,20 +219,20 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
           </Button>
         </div>
       </motion.div>
-      
+
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Nav */}
         <header className="bg-white border-b border-gray-200 py-4 px-6 flex items-center justify-between">
           <div className="flex items-center">
-            <motion.h1 
+            <motion.h1
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               className="text-2xl font-bold"
             >
               {title}
             </motion.h1>
-            <motion.div 
+            <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               className="ml-3 px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full flex items-center"
@@ -241,7 +241,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
               Live Data
             </motion.div>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <div className="relative">
               <Button variant="ghost" className="relative" onClick={() => {
@@ -254,7 +254,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
               }}>
                 <BellIcon />
                 {notificationCount > 0 && (
-                  <motion.span 
+                  <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center"
@@ -264,14 +264,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
                 )}
               </Button>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <DefaultAvatar className="w-8 h-8" />
               <span className="font-medium text-sm hidden md:block">{userName}</span>
             </div>
           </div>
         </header>
-        
+
         {/* Dashboard Content */}
         <div className="flex-1 overflow-y-auto">
           {children}

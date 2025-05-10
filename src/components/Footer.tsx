@@ -43,7 +43,7 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center">
               <img
-                src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png"
+                src="/assets/logo.png"
                 alt="FuelFriendly Logo"
                 className="h-12 mr-2 brightness-0 invert" // Make logo white
               />

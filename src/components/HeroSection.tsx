@@ -6,7 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   Check, X, Apple, ArrowRight, Fuel,
   TrendingUp, TrendingDown, Clock, MapPin,
-  DollarSign, Droplet, Truck, AlertTriangle
+  DollarSign, Droplet, Truck, AlertTriangle,
+  Maximize2, BarChart3, Bell
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from '@/components/ui/badge';
@@ -87,7 +88,7 @@ const HeroSection = () => {
         stationsOnline: prev.stationsOnline + Math.floor(Math.random() * 3) - 1,
         totalSavings: prev.totalSavings + Math.floor(Math.random() * 1000)
       }));
-    }, 5000); // Update every 5 seconds
+    }, 1000); // Update every second for more real-time feel
 
     // Add new alerts occasionally
     const alertInterval = setInterval(() => {
@@ -229,14 +230,24 @@ const HeroSection = () => {
 
             {/* Live fuel prices */}
             <motion.div
-              className="grid grid-cols-3 gap-3 bg-white p-4 rounded-xl shadow-sm border border-gray-100"
+              className="grid grid-cols-3 gap-3 bg-white p-4 rounded-xl shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-all duration-300"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
+              whileHover={{ scale: 1.02 }}
+              onClick={handleLiveDataClick}
             >
               <div className="text-center">
                 <div className="text-sm text-gray-500 mb-1">Regular</div>
-                <div className="text-2xl font-bold text-green-600">${fuelPrices.regular.toFixed(2)}</div>
+                <motion.div
+                  className="text-2xl font-bold text-green-600"
+                  key={fuelPrices.regular}
+                  initial={{ scale: 1.1 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  ${fuelPrices.regular.toFixed(2)}
+                </motion.div>
                 <motion.div
                   className="text-xs text-green-500 flex items-center justify-center"
                   animate={{ opacity: [0.5, 1, 0.5] }}
@@ -249,7 +260,15 @@ const HeroSection = () => {
 
               <div className="text-center">
                 <div className="text-sm text-gray-500 mb-1">Premium</div>
-                <div className="text-2xl font-bold text-green-600">${fuelPrices.premium.toFixed(2)}</div>
+                <motion.div
+                  className="text-2xl font-bold text-green-600"
+                  key={fuelPrices.premium}
+                  initial={{ scale: 1.1 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  ${fuelPrices.premium.toFixed(2)}
+                </motion.div>
                 <div className="text-xs text-amber-500 flex items-center justify-center">
                   <TrendingUp size={12} className="mr-1" />
                   <span>+0.5%</span>
@@ -258,7 +277,15 @@ const HeroSection = () => {
 
               <div className="text-center">
                 <div className="text-sm text-gray-500 mb-1">Diesel</div>
-                <div className="text-2xl font-bold text-green-600">${fuelPrices.diesel.toFixed(2)}</div>
+                <motion.div
+                  className="text-2xl font-bold text-green-600"
+                  key={fuelPrices.diesel}
+                  initial={{ scale: 1.1 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  ${fuelPrices.diesel.toFixed(2)}
+                </motion.div>
                 <div className="text-xs text-green-500 flex items-center justify-center">
                   <TrendingDown size={12} className="mr-1" />
                   <span>-1.2%</span>
@@ -270,6 +297,7 @@ const HeroSection = () => {
                   <Clock size={10} className="mr-1" />
                   <span>Last updated: {fuelPrices.lastUpdated}</span>
                 </div>
+                <div className="text-xs text-blue-500 mt-1">Click for more details</div>
               </div>
             </motion.div>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -387,28 +415,42 @@ const HeroSection = () => {
                 }}
               >
                 <img
-                  src="/lovable-uploads/7b1b63ff-133e-4806-a870-d769ebf3fd94.png"
+                  src="/assets/app-preview.png"
                   alt="FuelFriendly App Preview with Map"
                   className="object-contain w-full h-full rounded-2xl shadow-xl"
                 />
 
                 {/* Live stats overlay */}
                 <motion.div
-                  className="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg p-3 text-white"
+                  className="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg p-3 text-white cursor-pointer"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
+                  whileHover={{ scale: 1.02 }}
+                  onClick={handleLiveDataClick}
                 >
-                  <div className="text-xs uppercase tracking-wider mb-2 flex items-center">
+                  <div className="text-xs uppercase tracking-wider mb-2 flex items-center justify-between">
+                    <div className="flex items-center">
+                      <motion.div
+                        animate={{ opacity: [0.5, 1, 0.5] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
+                        className="w-2 h-2 bg-green-500 rounded-full mr-2"
+                      />
+                      Live Platform Statistics
+                    </div>
                     <motion.div
-                      animate={{ opacity: [0.5, 1, 0.5] }}
-                      transition={{ repeat: Infinity, duration: 2 }}
-                      className="w-2 h-2 bg-green-500 rounded-full mr-2"
-                    />
-                    Live Platform Statistics
+                      whileHover={{ rotate: 180 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-xs text-green-400"
+                    >
+                      <Maximize2 size={14} />
+                    </motion.div>
                   </div>
-                  <div className="grid grid-cols-4 gap-3 text-center">
-                    <div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                    <motion.div
+                      whileHover={{ y: -2 }}
+                      className="bg-black/30 p-2 rounded-lg"
+                    >
                       <motion.div
                         key={liveStats.activeUsers}
                         initial={{ scale: 1.2 }}
@@ -418,8 +460,11 @@ const HeroSection = () => {
                         {liveStats.activeUsers.toLocaleString()}
                       </motion.div>
                       <div className="text-xs text-gray-300">Active Users</div>
-                    </div>
-                    <div>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ y: -2 }}
+                      className="bg-black/30 p-2 rounded-lg"
+                    >
                       <motion.div
                         key={liveStats.deliveriesInProgress}
                         initial={{ scale: 1.2 }}
@@ -429,8 +474,11 @@ const HeroSection = () => {
                         {liveStats.deliveriesInProgress}
                       </motion.div>
                       <div className="text-xs text-gray-300">Deliveries</div>
-                    </div>
-                    <div>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ y: -2 }}
+                      className="bg-black/30 p-2 rounded-lg"
+                    >
                       <motion.div
                         key={liveStats.stationsOnline}
                         initial={{ scale: 1.2 }}
@@ -440,8 +488,11 @@ const HeroSection = () => {
                         {liveStats.stationsOnline.toLocaleString()}
                       </motion.div>
                       <div className="text-xs text-gray-300">Stations</div>
-                    </div>
-                    <div>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ y: -2 }}
+                      className="bg-black/30 p-2 rounded-lg"
+                    >
                       <motion.div
                         key={liveStats.totalSavings}
                         initial={{ scale: 1.2 }}
@@ -451,7 +502,7 @@ const HeroSection = () => {
                         ${Math.floor(liveStats.totalSavings/1000)}k
                       </motion.div>
                       <div className="text-xs text-gray-300">Saved</div>
-                    </div>
+                    </motion.div>
                   </div>
                 </motion.div>
               </motion.div>
@@ -547,14 +598,14 @@ const HeroSection = () => {
 
       {/* Live Data Modal */}
       {showLiveDataModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <motion.div
-            className="bg-white p-6 rounded-lg max-w-3xl w-full max-h-[80vh] overflow-y-auto mx-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            className="bg-white p-4 sm:p-6 rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-4 sticky top-0 bg-white pt-2 pb-3 border-b">
               <div className="flex items-center">
                 <motion.div
                   animate={{ opacity: [0.5, 1, 0.5] }}
@@ -567,91 +618,212 @@ const HeroSection = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowLiveDataModal(false)}
+                className="hover:bg-red-50 hover:text-red-500 transition-colors"
               >
                 <X size={20} />
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               {/* Fuel Prices */}
-              <div className="bg-gray-50 rounded-lg p-4">
+              <motion.div
+                className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-all duration-300"
+                whileHover={{ y: -2 }}
+              >
                 <h3 className="text-lg font-semibold mb-3 flex items-center">
                   <Fuel className="mr-2 h-5 w-5 text-green-600" />
                   Current Fuel Prices
                 </h3>
 
                 <div className="space-y-3">
-                  <div className="flex justify-between items-center">
+                  <motion.div
+                    className="flex justify-between items-center p-2 bg-white rounded-lg hover:bg-green-50 transition-colors cursor-pointer"
+                    whileHover={{ x: 3 }}
+                    onClick={() => {
+                      toast({
+                        title: "Regular Unleaded",
+                        description: `Current price: $${fuelPrices.regular.toFixed(2)}/gal`,
+                        duration: 2000,
+                      });
+                    }}
+                  >
                     <div className="flex items-center">
                       <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
                       <span>Regular Unleaded</span>
                     </div>
-                    <div className="font-bold">${fuelPrices.regular.toFixed(2)}/gal</div>
-                  </div>
+                    <motion.div
+                      className="font-bold"
+                      key={fuelPrices.regular}
+                      initial={{ scale: 1.1 }}
+                      animate={{ scale: 1 }}
+                    >
+                      ${fuelPrices.regular.toFixed(2)}/gal
+                    </motion.div>
+                  </motion.div>
 
-                  <div className="flex justify-between items-center">
+                  <motion.div
+                    className="flex justify-between items-center p-2 bg-white rounded-lg hover:bg-blue-50 transition-colors cursor-pointer"
+                    whileHover={{ x: 3 }}
+                    onClick={() => {
+                      toast({
+                        title: "Premium Unleaded",
+                        description: `Current price: $${fuelPrices.premium.toFixed(2)}/gal`,
+                        duration: 2000,
+                      });
+                    }}
+                  >
                     <div className="flex items-center">
                       <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
                       <span>Premium Unleaded</span>
                     </div>
-                    <div className="font-bold">${fuelPrices.premium.toFixed(2)}/gal</div>
-                  </div>
+                    <motion.div
+                      className="font-bold"
+                      key={fuelPrices.premium}
+                      initial={{ scale: 1.1 }}
+                      animate={{ scale: 1 }}
+                    >
+                      ${fuelPrices.premium.toFixed(2)}/gal
+                    </motion.div>
+                  </motion.div>
 
-                  <div className="flex justify-between items-center">
+                  <motion.div
+                    className="flex justify-between items-center p-2 bg-white rounded-lg hover:bg-yellow-50 transition-colors cursor-pointer"
+                    whileHover={{ x: 3 }}
+                    onClick={() => {
+                      toast({
+                        title: "Diesel",
+                        description: `Current price: $${fuelPrices.diesel.toFixed(2)}/gal`,
+                        duration: 2000,
+                      });
+                    }}
+                  >
                     <div className="flex items-center">
                       <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
                       <span>Diesel</span>
                     </div>
-                    <div className="font-bold">${fuelPrices.diesel.toFixed(2)}/gal</div>
-                  </div>
+                    <motion.div
+                      className="font-bold"
+                      key={fuelPrices.diesel}
+                      initial={{ scale: 1.1 }}
+                      animate={{ scale: 1 }}
+                    >
+                      ${fuelPrices.diesel.toFixed(2)}/gal
+                    </motion.div>
+                  </motion.div>
                 </div>
 
                 <div className="mt-4 text-xs text-gray-500 flex items-center justify-end">
                   <Clock size={12} className="mr-1" />
                   <span>Updated: {fuelPrices.lastUpdated}</span>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Platform Stats */}
-              <div className="bg-gray-50 rounded-lg p-4">
+              <motion.div
+                className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-all duration-300"
+                whileHover={{ y: -2 }}
+              >
                 <h3 className="text-lg font-semibold mb-3 flex items-center">
                   <BarChart3 className="mr-2 h-5 w-5 text-blue-600" />
                   Platform Statistics
                 </h3>
 
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-white p-3 rounded-lg">
+                  <motion.div
+                    className="bg-white p-3 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors"
+                    whileHover={{ y: -2 }}
+                    onClick={() => {
+                      toast({
+                        title: "Active Users",
+                        description: `${liveStats.activeUsers.toLocaleString()} users currently online`,
+                        duration: 2000,
+                      });
+                    }}
+                  >
                     <div className="text-sm text-gray-500">Active Users</div>
-                    <div className="text-2xl font-bold text-blue-600">
+                    <motion.div
+                      className="text-2xl font-bold text-blue-600"
+                      key={liveStats.activeUsers}
+                      initial={{ scale: 1.1 }}
+                      animate={{ scale: 1 }}
+                    >
                       {liveStats.activeUsers.toLocaleString()}
-                    </div>
-                  </div>
+                    </motion.div>
+                  </motion.div>
 
-                  <div className="bg-white p-3 rounded-lg">
+                  <motion.div
+                    className="bg-white p-3 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors"
+                    whileHover={{ y: -2 }}
+                    onClick={() => {
+                      toast({
+                        title: "Deliveries in Progress",
+                        description: `${liveStats.deliveriesInProgress} deliveries currently in progress`,
+                        duration: 2000,
+                      });
+                    }}
+                  >
                     <div className="text-sm text-gray-500">Deliveries</div>
-                    <div className="text-2xl font-bold text-blue-600">
+                    <motion.div
+                      className="text-2xl font-bold text-blue-600"
+                      key={liveStats.deliveriesInProgress}
+                      initial={{ scale: 1.1 }}
+                      animate={{ scale: 1 }}
+                    >
                       {liveStats.deliveriesInProgress}
-                    </div>
-                  </div>
+                    </motion.div>
+                  </motion.div>
 
-                  <div className="bg-white p-3 rounded-lg">
+                  <motion.div
+                    className="bg-white p-3 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors"
+                    whileHover={{ y: -2 }}
+                    onClick={() => {
+                      toast({
+                        title: "Stations Online",
+                        description: `${liveStats.stationsOnline.toLocaleString()} stations currently online`,
+                        duration: 2000,
+                      });
+                    }}
+                  >
                     <div className="text-sm text-gray-500">Stations Online</div>
-                    <div className="text-2xl font-bold text-blue-600">
+                    <motion.div
+                      className="text-2xl font-bold text-blue-600"
+                      key={liveStats.stationsOnline}
+                      initial={{ scale: 1.1 }}
+                      animate={{ scale: 1 }}
+                    >
                       {liveStats.stationsOnline.toLocaleString()}
-                    </div>
-                  </div>
+                    </motion.div>
+                  </motion.div>
 
-                  <div className="bg-white p-3 rounded-lg">
+                  <motion.div
+                    className="bg-white p-3 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors"
+                    whileHover={{ y: -2 }}
+                    onClick={() => {
+                      toast({
+                        title: "Total Savings",
+                        description: `Users have saved $${(liveStats.totalSavings/1000).toFixed(1)}k in total`,
+                        duration: 2000,
+                      });
+                    }}
+                  >
                     <div className="text-sm text-gray-500">Total Savings</div>
-                    <div className="text-2xl font-bold text-blue-600">
+                    <motion.div
+                      className="text-2xl font-bold text-blue-600"
+                      key={liveStats.totalSavings}
+                      initial={{ scale: 1.1 }}
+                      animate={{ scale: 1 }}
+                    >
                       ${(liveStats.totalSavings/1000).toFixed(1)}k
-                    </div>
-                  </div>
+                    </motion.div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Recent Alerts */}
-              <div className="bg-gray-50 rounded-lg p-4 md:col-span-2">
+              <motion.div
+                className="bg-gray-50 rounded-lg p-4 md:col-span-2 hover:shadow-md transition-all duration-300"
+                whileHover={{ y: -2 }}
+              >
                 <h3 className="text-lg font-semibold mb-3 flex items-center">
                   <Bell className="mr-2 h-5 w-5 text-amber-600" />
                   Recent Alerts
@@ -663,7 +835,15 @@ const HeroSection = () => {
                       key={alert.id}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      className="flex items-center bg-white p-3 rounded-lg"
+                      whileHover={{ x: 3, backgroundColor: "#f9fafb" }}
+                      className="flex items-center bg-white p-3 rounded-lg cursor-pointer"
+                      onClick={() => {
+                        toast({
+                          title: alert.message,
+                          description: `Location: ${alert.location} • Time: ${alert.time}`,
+                          duration: 2000,
+                        });
+                      }}
                     >
                       <div className={`${alert.color} p-2 rounded-full mr-3`}>
                         {React.createElement(alert.icon, { size: 16 })}
@@ -681,12 +861,13 @@ const HeroSection = () => {
                     </motion.div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             </div>
 
-            <div className="mt-6 flex justify-end">
+            <div className="mt-6 flex justify-end sticky bottom-0 bg-white pt-3 border-t">
               <Button
                 onClick={() => setShowLiveDataModal(false)}
+                className="bg-green-500 hover:bg-green-600 text-white"
               >
                 Close
               </Button>
