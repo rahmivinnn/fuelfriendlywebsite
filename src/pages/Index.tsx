@@ -10,7 +10,7 @@ import MapSection from '@/components/MapSection';
 import PricingSection from '@/components/PricingSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import CtaSection from '@/components/CtaSection';
-import StationRegistrationBanner from '@/components/StationRegistrationBanner';
+
 import PerfectPlan from '@/components/PerfectPlan';
 import Footer from '@/components/Footer';
 import WhyItWorks from '@/components/WhyItWorks';
@@ -117,7 +117,6 @@ const Index = () => {
           <div id="partner-with-us">
             <PartnerWithUs />
           </div>
-          <StationRegistrationBanner />
           <PerfectPlan />
           <CtaSection />
         </main>
