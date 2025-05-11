@@ -50,7 +50,7 @@ const PerfectPlan = () => {
     <section className="py-12 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <motion.h2 
+          <motion.h2
             className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -59,7 +59,7 @@ const PerfectPlan = () => {
           >
             Choose the Perfect Plan
           </motion.h2>
-          <motion.p 
+          <motion.p
             className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -70,13 +70,13 @@ const PerfectPlan = () => {
           </motion.p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mt-8">
           {plans.map((plan, index) => (
             <motion.div
               key={plan.name}
               className={`rounded-xl overflow-hidden shadow-lg ${
-                plan.highlighted 
-                  ? 'border-2 border-green-500 dark:border-green-400 bg-white dark:bg-gray-800' 
+                plan.highlighted
+                  ? 'border-2 border-green-500 dark:border-green-400 bg-white dark:bg-gray-800'
                   : 'bg-white dark:bg-gray-800'
               }`}
               initial={{ opacity: 0, y: 30 }}
@@ -95,7 +95,7 @@ const PerfectPlan = () => {
                   <span className="text-3xl font-bold text-green-600 dark:text-green-400">{plan.price}</span>
                 </div>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">{plan.description}</p>
-                
+
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-start">
@@ -104,16 +104,16 @@ const PerfectPlan = () => {
                     </li>
                   ))}
                 </ul>
-                
+
                 <motion.div
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <Button 
+                  <Button
                     onClick={plan.action}
                     className={`w-full ${
-                      plan.highlighted 
-                        ? 'bg-green-600 hover:bg-green-700 text-white' 
+                      plan.highlighted
+                        ? 'bg-green-600 hover:bg-green-700 text-white'
                         : 'bg-white border-2 border-green-600 text-green-600 hover:bg-green-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-green-500 dark:text-green-500'
                     }`}
                   >
