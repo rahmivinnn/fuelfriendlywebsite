@@ -197,15 +197,7 @@ const PartnerWithUs = () => {
     }
   ];
 
-  const requirements = [
-    "Valid driver's license",
-    "Vehicle insurance",
-    "Smartphone with data plan",
-    "Clean driving record",
-    "Background check approval",
-    "21 years or older",
-    "Ability to lift up to 30 pounds"
-  ];
+  // Requirements removed as requested
 
   return (
     <section className="py-12 md:py-24 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 transition-colors duration-300">
@@ -262,21 +254,7 @@ const PartnerWithUs = () => {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition-colors duration-300 h-full flex flex-col">
-              <h3 className="text-xl font-bold mb-4 dark:text-white">Requirements</h3>
-              <ul className="space-y-2">
-                {requirements.map((requirement, index) => (
-                  <li key={index} className="flex items-start">
-                    <div className="bg-green-100 dark:bg-green-900/30 p-1 rounded-full mr-2 mt-0.5 transition-colors duration-300">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-600 dark:text-green-400">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </div>
-                    <span className="text-gray-700 dark:text-gray-200">{requirement}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+
           </motion.div>
 
           <motion.div
