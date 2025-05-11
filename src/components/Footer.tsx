@@ -97,17 +97,7 @@ const Footer = () => {
       <div className="container px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <div className="flex items-center">
-              <div className="relative group">
-                <img
-                  src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png"
-                  alt="FuelFriendly Logo"
-                  className="h-12 mr-2 brightness-0 invert transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-white dark:bg-gray-700 rounded-full opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-              </div>
 
-            </div>
             <p className="text-white text-sm">
               Making fuel accessible anywhere, anytime.
             </p>
