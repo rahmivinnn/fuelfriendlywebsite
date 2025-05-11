@@ -106,10 +106,7 @@ const Footer = () => {
                 />
                 <div className="absolute inset-0 bg-white dark:bg-gray-700 rounded-full opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
               </div>
-              <div className="ml-2">
-                <h3 className="text-white font-bold text-lg">FuelFriendly</h3>
-                <p className="text-white/80 text-xs">Your Fuel Delivery Partner</p>
-              </div>
+
             </div>
             <p className="text-white text-sm">
               Making fuel accessible anywhere, anytime.
