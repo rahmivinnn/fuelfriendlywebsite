@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, X, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -57,7 +57,7 @@ const PerfectPlan = () => {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            Choose the Perfect Plan
+            Join the FuelFriendly Network
           </motion.h2>
           <motion.p
             className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
@@ -66,7 +66,7 @@ const PerfectPlan = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            Join our platform as a station owner for free or become a delivery driver and earn money
+            Register your station for free or become a delivery driver and earn money
           </motion.p>
         </div>
 
@@ -86,7 +86,7 @@ const PerfectPlan = () => {
             >
               {plan.highlighted && (
                 <div className="bg-green-500 text-white text-center py-1 text-sm font-medium">
-                  RECOMMENDED
+                  ALWAYS FREE
                 </div>
               )}
               <div className="p-6 md:p-8">
