@@ -53,7 +53,23 @@ const StationRegistration = () => {
   // Filter cities when country changes
   useEffect(() => {
     if (formData.country) {
-      const countryCities = cities.filter(city => city.countryCode === formData.country);
+      let countryCities = cities.filter(city => city.countryCode === formData.country);
+
+      // If no cities are found for this country, create default cities
+      if (countryCities.length === 0) {
+        // Find the country name
+        const countryName = countries.find(c => c.code === formData.country)?.name || 'Unknown';
+
+        // Create default cities for this country
+        countryCities = [
+          { name: `${countryName} City 1`, countryCode: formData.country },
+          { name: `${countryName} City 2`, countryCode: formData.country },
+          { name: `${countryName} City 3`, countryCode: formData.country },
+          { name: `${countryName} Capital`, countryCode: formData.country },
+          { name: `${countryName} Downtown`, countryCode: formData.country },
+        ];
+      }
+
       setFilteredCities(countryCities);
 
       // Reset city if the current city is not in the filtered list
@@ -61,7 +77,8 @@ const StationRegistration = () => {
         setFormData(prev => ({ ...prev, city: '' }));
       }
     } else {
-      setFilteredCities([]);
+      // Show all cities when no country is selected
+      setFilteredCities(cities);
     }
   }, [formData.country]);
 
@@ -323,30 +340,23 @@ const StationRegistration = () => {
             <Select
               value={formData.city}
               onValueChange={(value) => handleSelectChange('city', value)}
-              disabled={!formData.country}
             >
               <SelectTrigger id="city">
-                <SelectValue placeholder={formData.country ? "Select City" : "Select Country First"} />
+                <SelectValue placeholder="Select City" />
               </SelectTrigger>
               <SelectContent className="max-h-[300px]">
                 <div className="max-h-[300px] overflow-y-auto">
-                  {filteredCities.length > 0 ? (
-                    filteredCities.map((city) => (
-                      <SelectItem key={city.name} value={city.name}>
-                        {city.name}
-                      </SelectItem>
-                    ))
-                  ) : (
-                    <div className="p-2 text-center text-gray-500 text-sm">
-                      {formData.country ? "No cities available for this country" : "Please select a country first"}
-                    </div>
-                  )}
+                  {filteredCities.map((city) => (
+                    <SelectItem key={city.name} value={city.name}>
+                      {city.name}
+                    </SelectItem>
+                  ))}
                 </div>
               </SelectContent>
             </Select>
-            {formData.country && filteredCities.length > 0 && (
-              <p className="text-xs text-gray-500 mt-1">{filteredCities.length} cities available</p>
-            )}
+            <p className="text-xs text-gray-500 mt-1">
+              {filteredCities.length} cities available
+            </p>
           </div>
           <div className="space-y-2">
             <Label htmlFor="country">Country</Label>
