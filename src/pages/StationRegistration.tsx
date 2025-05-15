@@ -53,6 +53,7 @@ const StationRegistration = () => {
   // Filter cities when country changes
   useEffect(() => {
     if (formData.country) {
+      // First try to find cities from our predefined list
       let countryCities = cities.filter(city => city.countryCode === formData.country);
 
       // If no cities are found for this country, create default cities
@@ -60,13 +61,32 @@ const StationRegistration = () => {
         // Find the country name
         const countryName = countries.find(c => c.code === formData.country)?.name || 'Unknown';
 
-        // Create default cities for this country
+        // Create more meaningful default cities for this country
         countryCities = [
-          { name: `${countryName} City 1`, countryCode: formData.country },
-          { name: `${countryName} City 2`, countryCode: formData.country },
-          { name: `${countryName} City 3`, countryCode: formData.country },
           { name: `${countryName} Capital`, countryCode: formData.country },
+          { name: `${countryName} City`, countryCode: formData.country },
+          { name: `North ${countryName}`, countryCode: formData.country },
+          { name: `South ${countryName}`, countryCode: formData.country },
+          { name: `East ${countryName}`, countryCode: formData.country },
+          { name: `West ${countryName}`, countryCode: formData.country },
           { name: `${countryName} Downtown`, countryCode: formData.country },
+          { name: `${countryName} Central`, countryCode: formData.country },
+          { name: `${countryName} Harbor`, countryCode: formData.country },
+          { name: `${countryName} Heights`, countryCode: formData.country },
+          { name: `${countryName} Valley`, countryCode: formData.country },
+          { name: `New ${countryName}`, countryCode: formData.country },
+        ];
+      }
+
+      // Always ensure we have cities
+      if (countryCities.length === 0) {
+        // Fallback to generic cities if something went wrong
+        countryCities = [
+          { name: 'Main City', countryCode: formData.country },
+          { name: 'Capital City', countryCode: formData.country },
+          { name: 'Downtown', countryCode: formData.country },
+          { name: 'Central District', countryCode: formData.country },
+          { name: 'Harbor City', countryCode: formData.country },
         ];
       }
 
@@ -77,8 +97,20 @@ const StationRegistration = () => {
         setFormData(prev => ({ ...prev, city: '' }));
       }
     } else {
-      // Show all cities when no country is selected
-      setFilteredCities(cities);
+      // When no country is selected, show a selection of major world cities
+      const majorCities = [
+        { name: 'New York', countryCode: 'US' },
+        { name: 'London', countryCode: 'GB' },
+        { name: 'Tokyo', countryCode: 'JP' },
+        { name: 'Paris', countryCode: 'FR' },
+        { name: 'Sydney', countryCode: 'AU' },
+        { name: 'Berlin', countryCode: 'DE' },
+        { name: 'Toronto', countryCode: 'CA' },
+        { name: 'Singapore', countryCode: 'SG' },
+        { name: 'Dubai', countryCode: 'AE' },
+        { name: 'Mumbai', countryCode: 'IN' },
+      ];
+      setFilteredCities(majorCities);
     }
   }, [formData.country]);
 
@@ -341,20 +373,20 @@ const StationRegistration = () => {
               value={formData.city}
               onValueChange={(value) => handleSelectChange('city', value)}
             >
-              <SelectTrigger id="city">
+              <SelectTrigger id="city" className="border-green-300 focus:ring-green-500">
                 <SelectValue placeholder="Select City" />
               </SelectTrigger>
               <SelectContent className="max-h-[300px]">
                 <div className="max-h-[300px] overflow-y-auto">
                   {filteredCities.map((city) => (
-                    <SelectItem key={city.name} value={city.name}>
+                    <SelectItem key={`${city.countryCode}-${city.name}`} value={city.name}>
                       {city.name}
                     </SelectItem>
                   ))}
                 </div>
               </SelectContent>
             </Select>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-green-600 mt-1 font-medium">
               {filteredCities.length} cities available
             </p>
           </div>
@@ -364,7 +396,7 @@ const StationRegistration = () => {
               value={formData.country}
               onValueChange={(value) => handleSelectChange('country', value)}
             >
-              <SelectTrigger id="country">
+              <SelectTrigger id="country" className="border-green-300 focus:ring-green-500">
                 <SelectValue placeholder="Select Country" />
               </SelectTrigger>
               <SelectContent className="max-h-[300px]">
@@ -376,8 +408,8 @@ const StationRegistration = () => {
                   ))}
                 </div>
               </SelectContent>
-              <p className="text-xs text-gray-500 mt-1">All 195 countries available</p>
             </Select>
+            <p className="text-xs text-green-600 mt-1 font-medium">All 195 countries available</p>
           </div>
         </div>
         <div className="space-y-2">
