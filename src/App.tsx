@@ -38,13 +38,11 @@ const queryClient = new QueryClient();
 
 // Protected route component
 const ProtectedRoute = ({
-  children,
-  requiredRole = UserRole.Guest
+  children
 }: {
-  children: React.ReactNode,
-  requiredRole?: UserRole
+  children: React.ReactNode
 }) => {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
@@ -52,10 +50,6 @@ const ProtectedRoute = ({
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
-  }
-
-  if (user && user.role < requiredRole) {
-    return <Navigate to="/access-denied" replace />;
   }
 
   return <>{children}</>;
@@ -140,36 +134,7 @@ const App = () => (
               </ProtectedRoute>
             } />
 
-            {/* Admin Dashboard routes - require admin role */}
-            <Route path="/admin-dashboard" element={
-              <ProtectedRoute requiredRole={UserRole.Level1}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin-dashboard/users" element={
-              <ProtectedRoute requiredRole={UserRole.Level2}>
-                <UserManagement />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin-dashboard/access-control" element={
-              <ProtectedRoute requiredRole={UserRole.SuperiorAdmin}>
-                <AccessControl />
-              </ProtectedRoute>
-            } />
 
-            {/* Access Denied route */}
-            <Route path="/access-denied" element={
-              <div className="flex h-screen flex-col items-center justify-center">
-                <h1 className="text-2xl font-bold text-red-600">Access Denied</h1>
-                <p className="mt-2 text-gray-600">You don't have permission to access this page.</p>
-                <button
-                  onClick={() => window.history.back()}
-                  className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-                >
-                  Go Back
-                </button>
-              </div>
-            } />
 
             {/* Catch-all route */}
             <Route path="*" element={<NotFound />} />

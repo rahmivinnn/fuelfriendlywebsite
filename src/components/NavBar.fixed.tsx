@@ -66,44 +66,8 @@ const NavBar = () => {
     navigate('/');
   };
 
-  const handleAdminDashboard = () => {
-    navigate('/admin-dashboard');
-  };
-
   const handleStationDashboard = () => {
     navigate('/station-dashboard');
-  };
-
-  // Get role badge color
-  const getRoleBadgeColor = (role: UserRole) => {
-    switch (role) {
-      case UserRole.Level1:
-        return "bg-blue-100 text-blue-800";
-      case UserRole.Level2:
-        return "bg-purple-100 text-purple-800";
-      case UserRole.Level3:
-        return "bg-amber-100 text-amber-800";
-      case UserRole.SuperiorAdmin:
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
-  // Get role icon
-  const getRoleIcon = (role: UserRole) => {
-    switch (role) {
-      case UserRole.Level1:
-        return <Shield size={14} className="mr-1" />;
-      case UserRole.Level2:
-        return <ShieldCheck size={14} className="mr-1" />;
-      case UserRole.Level3:
-        return <ShieldAlert size={14} className="mr-1" />;
-      case UserRole.SuperiorAdmin:
-        return <UserCog size={14} className="mr-1" />;
-      default:
-        return null;
-    }
   };
 
   const handleNavClick = (sectionId: string) => {
@@ -279,22 +243,9 @@ const NavBar = () => {
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">{user?.name}</p>
                       <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
-                      {user && (
-                        <div className={`text-xs px-2 py-0.5 mt-1 rounded-full flex items-center ${getRoleBadgeColor(user.role)}`}>
-                          {getRoleIcon(user.role)}
-                          {UserRole[user.role]}
-                        </div>
-                      )}
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-
-                  {user && user.role >= UserRole.Level1 && (
-                    <DropdownMenuItem onClick={handleAdminDashboard}>
-                      <Shield className="mr-2 h-4 w-4" />
-                      <span>Admin Dashboard</span>
-                    </DropdownMenuItem>
-                  )}
 
                   <DropdownMenuItem onClick={handleStationDashboard}>
                     <User className="mr-2 h-4 w-4" />
@@ -397,16 +348,6 @@ const NavBar = () => {
                 </div>
               ) : (
                 <div className="pt-2 pb-3 space-y-2">
-                  {user && user.role >= UserRole.Level1 && (
-                    <Button
-                      variant="outline"
-                      className="w-full border-blue-500 text-blue-600"
-                      onClick={handleAdminDashboard}
-                    >
-                      <Shield size={16} className="mr-2" />
-                      Admin Dashboard
-                    </Button>
-                  )}
                   <Button
                     variant="outline"
                     className="w-full border-gray-500 text-gray-600"
@@ -423,14 +364,7 @@ const NavBar = () => {
                     <LogOut size={16} className="mr-2" />
                     Logout
                   </Button>
-                  {user && (
-                    <div className={`mt-2 p-2 rounded-md flex items-center justify-center ${getRoleBadgeColor(user.role)}`}>
-                      {getRoleIcon(user.role)}
-                      <span className="text-sm font-medium">
-                        {UserRole[user.role]} Access
-                      </span>
-                    </div>
-                  )}
+
                 </div>
               )}
             </div>

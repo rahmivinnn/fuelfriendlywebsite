@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import VerificationStep from "@/components/verification/VerificationStep";
+import { countries } from "@/data/countries";
 
 const StationRegistration = () => {
   const { toast } = useToast();
@@ -32,8 +33,8 @@ const StationRegistration = () => {
     stationName: '',
     address: '',
     city: '',
-    state: '',
-    zipCode: '',
+    country: '',
+    postalCode: '',
     phoneNumber: '',
     fuelTypes: [],
     amenities: [],
@@ -270,9 +271,15 @@ const StationRegistration = () => {
     <Card className="max-w-md mx-auto">
       <CardHeader>
         <CardTitle>Station Registration</CardTitle>
-        <CardDescription>Enter your station details</CardDescription>
+        <CardDescription>Enter your station details - we support stations worldwide!</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+          <h3 className="font-medium text-blue-800 mb-1">Global Station Network</h3>
+          <p className="text-sm text-blue-700">
+            FuelFriendly is a global platform. Register your station from any country around the world and join our international network of fuel providers.
+          </p>
+        </div>
         <div className="space-y-2">
           <Label htmlFor="stationName">Station Name</Label>
           <Input
@@ -305,32 +312,34 @@ const StationRegistration = () => {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="state">State</Label>
+            <Label htmlFor="country">Country</Label>
             <Select
-              value={formData.state}
-              onValueChange={(value) => handleSelectChange('state', value)}
+              value={formData.country}
+              onValueChange={(value) => handleSelectChange('country', value)}
             >
-              <SelectTrigger id="state">
-                <SelectValue placeholder="State" />
+              <SelectTrigger id="country">
+                <SelectValue placeholder="Select Country" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="AL">Alabama</SelectItem>
-                <SelectItem value="AK">Alaska</SelectItem>
-                <SelectItem value="AZ">Arizona</SelectItem>
-                <SelectItem value="TN">Tennessee</SelectItem>
-                <SelectItem value="TX">Texas</SelectItem>
-                {/* Add other states */}
+              <SelectContent className="max-h-[300px]">
+                <div className="max-h-[300px] overflow-y-auto">
+                  {countries.map((country) => (
+                    <SelectItem key={country.code} value={country.code}>
+                      {country.name}
+                    </SelectItem>
+                  ))}
+                </div>
               </SelectContent>
+              <p className="text-xs text-gray-500 mt-1">All 195 countries available</p>
             </Select>
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="zipCode">Zip Code</Label>
+          <Label htmlFor="postalCode">Postal/Zip Code</Label>
           <Input
-            id="zipCode"
-            name="zipCode"
-            placeholder="12345"
-            value={formData.zipCode}
+            id="postalCode"
+            name="postalCode"
+            placeholder="Postal Code"
+            value={formData.postalCode}
             onChange={handleChange}
           />
         </div>
@@ -688,7 +697,7 @@ const StationRegistration = () => {
         <div className="rounded-lg bg-green-50 p-4 border border-green-100">
           <h3 className="font-medium text-green-800 mb-2">Registration Summary</h3>
           <p className="text-sm text-green-700 mb-1"><strong>Station:</strong> {formData.stationName || "Not provided"}</p>
-          <p className="text-sm text-green-700 mb-1"><strong>Address:</strong> {formData.address || "Not provided"}, {formData.city || ""}, {formData.state || ""} {formData.zipCode || ""}</p>
+          <p className="text-sm text-green-700 mb-1"><strong>Address:</strong> {formData.address || "Not provided"}, {formData.city || ""}, {formData.country ? countries.find(c => c.code === formData.country)?.name || formData.country : ""} {formData.postalCode || ""}</p>
           <p className="text-sm text-green-700 mb-1"><strong>Contact:</strong> {formData.phoneNumber || "Not provided"}</p>
           <p className="text-sm text-green-700 mb-1"><strong>Owner:</strong> {formData.ownerName || "Not provided"}</p>
           <p className="text-sm text-green-700 mb-1"><strong>Payment Methods:</strong> {formData.paymentMethods.length} added</p>
