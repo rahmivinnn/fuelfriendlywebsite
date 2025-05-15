@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -21,12 +21,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import VerificationStep from "@/components/verification/VerificationStep";
-import { countries } from "@/data/countries";
+import { countries, cities } from "@/data/countries";
 
 const StationRegistration = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
+  const [filteredCities, setFilteredCities] = useState([]);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -47,6 +49,21 @@ const StationRegistration = () => {
     licenseVerified: false,
     faceVerified: false
   });
+
+  // Filter cities when country changes
+  useEffect(() => {
+    if (formData.country) {
+      const countryCities = cities.filter(city => city.countryCode === formData.country);
+      setFilteredCities(countryCities);
+
+      // Reset city if the current city is not in the filtered list
+      if (formData.city && !countryCities.some(city => city.name === formData.city)) {
+        setFormData(prev => ({ ...prev, city: '' }));
+      }
+    } else {
+      setFilteredCities([]);
+    }
+  }, [formData.country]);
 
   const [paymentMethod, setPaymentMethod] = useState({
     type: '',
@@ -303,13 +320,33 @@ const StationRegistration = () => {
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="city">City</Label>
-            <Input
-              id="city"
-              name="city"
-              placeholder="City"
+            <Select
               value={formData.city}
-              onChange={handleChange}
-            />
+              onValueChange={(value) => handleSelectChange('city', value)}
+              disabled={!formData.country}
+            >
+              <SelectTrigger id="city">
+                <SelectValue placeholder={formData.country ? "Select City" : "Select Country First"} />
+              </SelectTrigger>
+              <SelectContent className="max-h-[300px]">
+                <div className="max-h-[300px] overflow-y-auto">
+                  {filteredCities.length > 0 ? (
+                    filteredCities.map((city) => (
+                      <SelectItem key={city.name} value={city.name}>
+                        {city.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <div className="p-2 text-center text-gray-500 text-sm">
+                      {formData.country ? "No cities available for this country" : "Please select a country first"}
+                    </div>
+                  )}
+                </div>
+              </SelectContent>
+            </Select>
+            {formData.country && filteredCities.length > 0 && (
+              <p className="text-xs text-gray-500 mt-1">{filteredCities.length} cities available</p>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="country">Country</Label>
