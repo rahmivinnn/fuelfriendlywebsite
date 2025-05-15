@@ -432,7 +432,7 @@ const HeroSection = () => {
 
                 {/* Live stats overlay */}
                 <motion.div
-                  className="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg p-3 text-white cursor-pointer"
+                  className="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg p-2 sm:p-3 text-white cursor-pointer overflow-hidden"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
@@ -456,30 +456,30 @@ const HeroSection = () => {
                       <Maximize2 size={14} />
                     </motion.div>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3 text-center">
                     <motion.div
                       whileHover={{ y: -2 }}
-                      className="bg-black/30 p-2 rounded-lg"
+                      className="bg-black/30 p-1.5 sm:p-2 rounded-lg overflow-hidden"
                     >
                       <motion.div
                         key={liveStats.activeUsers}
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
-                        className="text-lg font-bold"
+                        className="text-sm sm:text-base font-bold truncate w-full"
                       >
-                        {liveStats.activeUsers.toLocaleString()}
+                        {(liveStats.activeUsers / 1000).toFixed(1)}k
                       </motion.div>
                       <div className="text-xs text-gray-300">Active Users</div>
                     </motion.div>
                     <motion.div
                       whileHover={{ y: -2 }}
-                      className="bg-black/30 p-2 rounded-lg"
+                      className="bg-black/30 p-1.5 sm:p-2 rounded-lg overflow-hidden"
                     >
                       <motion.div
                         key={liveStats.deliveriesInProgress}
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
-                        className="text-lg font-bold"
+                        className="text-sm sm:text-base font-bold truncate w-full"
                       >
                         {liveStats.deliveriesInProgress}
                       </motion.div>
@@ -487,13 +487,13 @@ const HeroSection = () => {
                     </motion.div>
                     <motion.div
                       whileHover={{ y: -2 }}
-                      className="bg-black/30 p-2 rounded-lg"
+                      className="bg-black/30 p-1.5 sm:p-2 rounded-lg overflow-hidden"
                     >
                       <motion.div
                         key={liveStats.stationsOnline}
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
-                        className="text-lg font-bold"
+                        className="text-sm sm:text-base font-bold truncate w-full"
                       >
                         {liveStats.stationsOnline.toLocaleString()}
                       </motion.div>
@@ -501,13 +501,13 @@ const HeroSection = () => {
                     </motion.div>
                     <motion.div
                       whileHover={{ y: -2 }}
-                      className="bg-black/30 p-2 rounded-lg"
+                      className="bg-black/30 p-1.5 sm:p-2 rounded-lg overflow-hidden"
                     >
                       <motion.div
                         key={liveStats.totalSavings}
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
-                        className="text-lg font-bold"
+                        className="text-sm sm:text-base font-bold truncate w-full"
                       >
                         ${Math.floor(liveStats.totalSavings/1000)}k
                       </motion.div>
@@ -752,7 +752,7 @@ const HeroSection = () => {
                   >
                     <div className="text-sm text-gray-500">Active Users</div>
                     <motion.div
-                      className="text-2xl font-bold text-blue-600"
+                      className="text-xl sm:text-2xl font-bold text-blue-600 truncate min-w-0 overflow-hidden"
                       key={liveStats.activeUsers}
                       initial={{ scale: 1.1 }}
                       animate={{ scale: 1 }}
@@ -774,7 +774,7 @@ const HeroSection = () => {
                   >
                     <div className="text-sm text-gray-500">Deliveries</div>
                     <motion.div
-                      className="text-2xl font-bold text-blue-600"
+                      className="text-xl sm:text-2xl font-bold text-blue-600 truncate min-w-0 overflow-hidden"
                       key={liveStats.deliveriesInProgress}
                       initial={{ scale: 1.1 }}
                       animate={{ scale: 1 }}
@@ -796,7 +796,7 @@ const HeroSection = () => {
                   >
                     <div className="text-sm text-gray-500">Stations Online</div>
                     <motion.div
-                      className="text-2xl font-bold text-blue-600"
+                      className="text-xl sm:text-2xl font-bold text-blue-600 truncate min-w-0 overflow-hidden"
                       key={liveStats.stationsOnline}
                       initial={{ scale: 1.1 }}
                       animate={{ scale: 1 }}
@@ -818,7 +818,7 @@ const HeroSection = () => {
                   >
                     <div className="text-sm text-gray-500">Total Savings</div>
                     <motion.div
-                      className="text-2xl font-bold text-blue-600"
+                      className="text-xl sm:text-2xl font-bold text-blue-600 truncate min-w-0 overflow-hidden"
                       key={liveStats.totalSavings}
                       initial={{ scale: 1.1 }}
                       animate={{ scale: 1 }}
