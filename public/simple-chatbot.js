@@ -17,11 +17,15 @@
   button.style.justifyContent = 'center';
   button.style.overflow = 'hidden';
 
-  // Add logo
+  // Add logo - only green circular background with subtle glow effect
   button.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="width: 70%; height: 70%;">
-      <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="white"/>
-      <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="#3ECF8E"/>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+      <!-- Subtle glow effect -->
+      <circle cx="50" cy="50" r="45" fill="#3ECF8E" opacity="0.6" filter="blur(5px)"/>
+      <!-- Main circle -->
+      <circle cx="50" cy="50" r="40" fill="#3ECF8E"/>
+      <!-- Inner highlight -->
+      <circle cx="40" cy="40" r="15" fill="#4FDFA0" opacity="0.5"/>
     </svg>
   `;
 
@@ -53,8 +57,12 @@
     <div style="display: flex; align-items: center;">
       <div style="width: 24px; height: 24px; margin-right: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-          <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="white"/>
-          <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="#3ECF8E"/>
+          <!-- Subtle glow effect -->
+          <circle cx="50" cy="50" r="45" fill="#3ECF8E" opacity="0.6" filter="blur(3px)"/>
+          <!-- Main circle -->
+          <circle cx="50" cy="50" r="40" fill="#3ECF8E"/>
+          <!-- Inner highlight -->
+          <circle cx="40" cy="40" r="15" fill="#4FDFA0" opacity="0.5"/>
         </svg>
       </div>
       <span>FuelBot Assistant</span>
@@ -75,9 +83,13 @@
   messagesArea.innerHTML = `
     <div style="margin-bottom: 16px; display: flex; justify-content: flex-start;">
       <div style="width: 32px; height: 32px; margin-right: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="width: 70%; height: 70%;">
-          <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="white"/>
-          <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="#3ECF8E"/>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+          <!-- Subtle glow effect -->
+          <circle cx="50" cy="50" r="45" fill="#3ECF8E" opacity="0.6" filter="blur(3px)"/>
+          <!-- Main circle -->
+          <circle cx="50" cy="50" r="40" fill="#3ECF8E"/>
+          <!-- Inner highlight -->
+          <circle cx="40" cy="40" r="15" fill="#4FDFA0" opacity="0.5"/>
         </svg>
       </div>
       <div style="max-width: 80%; padding: 12px; border-radius: 8px; background-color: #f5f5f5; border: 1px solid #e0e0e0;">
