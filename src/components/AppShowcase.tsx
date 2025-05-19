@@ -64,7 +64,7 @@ const AppShowcase: React.FC<AppShowcaseProps> = ({ handleAppStoreClick }) => {
                 Find, Refuel, Service - One App for Everything!
               </h2>
               <p className="text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Our all-in-one solution puts everything you need for fueling at your fingertips. Monitor prices, schedule pump side service, and even get emergency assistance.
+                Our all-in-one solution puts everything you need for fueling at your fingertips. Monitor prices, Schedule Pump-Side service, and even get Traffic update.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">

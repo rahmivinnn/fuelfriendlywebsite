@@ -27,21 +27,21 @@ const PerfectPlan = () => {
       action: () => navigate('/station-registration')
     },
     {
-      name: "Fuel Friend",
+      name: "Pump-Side Service Provider",
       price: "EARN MONEY",
-      description: "Become a delivery driver and earn money on your schedule",
+      description: "Become a Pump-Side service provider and earn money on your schedule",
       features: [
         "Flexible working hours",
         "Keep 100% of your tips",
         "Weekly payments",
         "In-app navigation",
         "Customer support",
-        "Delivery tracking",
+        "Pump-Side service tracking",
         "Rating system",
         "Bonus opportunities"
       ],
       highlighted: false,
-      buttonText: "Become a Fuel Friend",
+      buttonText: "Become a Service Provider",
       action: () => navigate('/independent-contractor-agreement')
     }
   ];
@@ -66,7 +66,7 @@ const PerfectPlan = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            Register your station for free or become a delivery driver and earn money
+            Register your station for free or become a Pump-Side service provider and earn money
           </motion.p>
         </div>
 

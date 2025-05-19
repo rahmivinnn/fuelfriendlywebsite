@@ -343,7 +343,7 @@ const StationRegistration = () => {
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
           <h3 className="font-medium text-blue-800 mb-1">Global Station Network</h3>
           <p className="text-sm text-blue-700">
-            FuelFriendly is a global platform. Register your station from any country around the world and join our international network of fuel providers.
+            FuelFriendly is a global platform. Register your station from any country around the world and join our international network of Pump-Side service providers.
           </p>
         </div>
         <div className="space-y-2">

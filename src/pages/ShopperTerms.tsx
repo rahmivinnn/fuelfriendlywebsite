@@ -41,11 +41,11 @@ const ShopperTerms = () => {
 
               <div className="prose dark:prose-invert max-w-none">
                 <p className="text-gray-700 dark:text-gray-300">
-                  These Terms and Conditions ("Terms") govern your use of the Fuel Friendly LLC Shopper Application ("Shopper App"), platform, and affiliated content, which are copyrighted works belonging or licensed to Fuel Friendly LLC, a Tennessee corporation ("Fuel Friendly LLC"), to sign up as a personal shopper or delivery provider and/or provide such services through the Fuel Friendly LLC Platform (as defined herein).
+                  These Terms and Conditions ("Terms") govern your use of the Fuel Friendly LLC Shopper Application ("Shopper App"), platform, and affiliated content, which are copyrighted works belonging or licensed to Fuel Friendly LLC, a Tennessee corporation ("Fuel Friendly LLC"), to sign up as a personal shopper or pump side service provider and/or provide such services through the Fuel Friendly LLC Platform (as defined herein).
                 </p>
 
                 <p className="text-gray-700 dark:text-gray-300 mt-4">
-                  Your provision of any personal shopping and/or delivery services are subject to the Independent Contractor Agreement between you and Fuel Friendly LLC, including its subsidiaries or affiliates; or, if you are using the Shopper App in the course of your employment, the provision of any personal shopping and/or delivery services are subject to your employment agreement or your employer's agreement with Fuel Friendly LLC, including its subsidiaries or affiliates (each agreement may be referenced in these Terms as the "Agreement" and such terms regarding the Agreement are only applicable if you or your employer have entered into one).
+                  Your provision of any personal shopping and/or pump side services are subject to the Independent Contractor Agreement between you and Fuel Friendly LLC, including its subsidiaries or affiliates; or, if you are using the Shopper App in the course of your employment, the provision of any personal shopping and/or pump side services are subject to your employment agreement or your employer's agreement with Fuel Friendly LLC, including its subsidiaries or affiliates (each agreement may be referenced in these Terms as the "Agreement" and such terms regarding the Agreement are only applicable if you or your employer have entered into one).
                 </p>
 
                 <p className="text-gray-700 dark:text-gray-300 mt-4">
@@ -56,7 +56,7 @@ const ShopperTerms = () => {
 
                 <h3 className="text-lg font-medium mt-4 mb-2 text-gray-800 dark:text-gray-200">1.1. The "Shopper App"</h3>
                 <p className="text-gray-700 dark:text-gray-300">
-                  The "Shopper App" shall mean the software provided by Fuel Friendly LLC, to be used on Apple iOS and Android OS devices and any upgrades from time to time and any other software or documentation which enables the use of the Shopper App. The Shopper App allows you to submit your information to sign up to provide services through the Fuel Friendly LLC Platform and to receive information to enable your performance of "Services" which shall mean personal shopping, delivery services, and gas pumping services through the Fuel Friendly LLC Platform pursuant to the Agreement.
+                  The "Shopper App" shall mean the software provided by Fuel Friendly LLC, to be used on Apple iOS and Android OS devices and any upgrades from time to time and any other software or documentation which enables the use of the Shopper App. The Shopper App allows you to submit your information to sign up to provide services through the Fuel Friendly LLC Platform and to receive information to enable your performance of "Services" which shall mean personal shopping, pump side services, and gas pumping services through the Fuel Friendly LLC Platform pursuant to the Agreement.
                 </p>
 
                 <h3 className="text-lg font-medium mt-4 mb-2 text-gray-800 dark:text-gray-200">1.2. The "Fuel Friendly LLC Platform"</h3>

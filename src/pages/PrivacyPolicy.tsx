@@ -41,7 +41,7 @@ const PrivacyPolicy = () => {
 
               <div className="prose dark:prose-invert max-w-none">
                 <p className="text-gray-700 dark:text-gray-300">
-                  Thank you for using Fuel Friendly! We are committed to providing you the best online shopping and delivery experience possible. This Privacy Policy explains how Fuel Friendly LLC("Fuel Friendly", "we", or "us") collect, use, and share your Personal Information. "Personal Information" is information about you that we collect when you browse or place orders for goods or services on the Fuel Friendly platform, including any websites, mobile application, device, or API where this Privacy Policy is linked (the "Services").
+                  Thank you for using Fuel Friendly! We are committed to providing you the best online shopping and pump side service experience possible. This Privacy Policy explains how Fuel Friendly LLC("Fuel Friendly", "we", or "us") collect, use, and share your Personal Information. "Personal Information" is information about you that we collect when you browse or place orders for goods or services on the Fuel Friendly platform, including any websites, mobile application, device, or API where this Privacy Policy is linked (the "Services").
                 </p>
 
                 <h2 className="text-xl font-semibold mt-6 mb-3 text-gray-900 dark:text-white">1. Information We Collect</h2>

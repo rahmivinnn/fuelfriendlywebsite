@@ -22,14 +22,14 @@ const WhyItWorks = () => {
   const reasons = [
     {
       title: "Innovative Technology",
-      description: "Our platform connects customers, fuel stations, and delivery partners in real-time for seamless service.",
+      description: "Our platform connects customers, fuel stations, and pump side service providers in real-time for seamless service.",
       icon: <Zap className="h-6 w-6" />,
       color: "text-purple-600",
       bgColor: "bg-purple-100"
     },
     {
       title: "Verified Partners",
-      description: "All fuel stations and delivery partners undergo thorough verification for quality assurance.",
+      description: "All fuel stations and pump side service providers undergo thorough verification for quality assurance.",
       icon: <Shield className="h-6 w-6" />,
       color: "text-blue-600",
       bgColor: "bg-blue-100"

@@ -182,18 +182,11 @@ const PartnerWithUs = () => {
       bgColor: "bg-green-100"
     },
     {
-      title: "Weekly Payments",
-      description: "Get paid weekly with direct deposit to your bank account.",
+      title: "Daily Payments",
+      description: "Get paid daily with direct deposit to your bank account.",
       icon: <Calendar className="h-5 w-5" />,
       color: "text-purple-600",
       bgColor: "bg-purple-100"
-    },
-    {
-      title: "Use Your Own Vehicle",
-      description: "No special vehicle requirements. Use your car, truck, or SUV.",
-      icon: <Car className="h-5 w-5" />,
-      color: "text-orange-600",
-      bgColor: "bg-orange-100"
     }
   ];
 
@@ -210,9 +203,9 @@ const PartnerWithUs = () => {
           viewport={{ once: true }}
         >
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl dark:text-white">Become a Fuel Friend</h2>
+            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl dark:text-white">Become a Pump-Side Service Provider</h2>
             <p className="text-gray-500 dark:text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed max-w-3xl mx-auto">
-              Join our team of Fuel Friends and help us revolutionize the fuel delivery industry while earning competitive pay on your own schedule.
+              Join our team of Pump-Side service providers and help us revolutionize the fuel service industry while earning competitive pay on your own schedule.
             </p>
           </div>
         </motion.div>
@@ -268,7 +261,7 @@ const PartnerWithUs = () => {
             <div>
               <h3 className="text-2xl font-bold mb-2 dark:text-white">Ready to Join?</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Become a Fuel Friend today and start earning on your own schedule while providing an essential service to your community.
+                Become a Pump-Side service provider today and start earning on your own schedule while providing an essential service to your community.
               </p>
 
               <div className="space-y-4">
@@ -277,8 +270,8 @@ const PartnerWithUs = () => {
                     <Truck className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
-                    <h4 className="font-semibold dark:text-white">Deliver Fuel & Convenience</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">Help customers get fuel and convenience store items delivered right to their location.</p>
+                    <h4 className="font-semibold dark:text-white">Offer Pump-Side service</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Help customers get fuel and convenience store items at their selected location.</p>
                   </div>
                 </div>
 
@@ -314,7 +307,7 @@ const PartnerWithUs = () => {
                   className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-6 text-lg"
                   onClick={handlePartnerClick}
                 >
-                  Become a Fuel Friend
+                  Become a Pump-Side Service Provider
                 </Button>
               </motion.div>
 
@@ -342,7 +335,7 @@ const PartnerWithUs = () => {
           <DialogHeader>
             <DialogTitle className="dark:text-white">Partner Application</DialogTitle>
             <DialogDescription className="dark:text-gray-300">
-              Fill out the form below to apply as a Fuel Friend partner.
+              Fill out the form below to apply as a Pump-Side service provider.
             </DialogDescription>
           </DialogHeader>
 
@@ -463,7 +456,7 @@ const PartnerWithUs = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="experience" className="dark:text-white">Delivery Experience</Label>
+              <Label htmlFor="experience" className="dark:text-white">Pump Side Service Experience</Label>
               <select
                 id="experience"
                 name="experience"

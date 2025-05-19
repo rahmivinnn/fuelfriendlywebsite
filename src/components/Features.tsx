@@ -65,7 +65,7 @@ const Features = () => {
     },
     {
       title: "Real-Time Tracking",
-      description: "Track your pump side service in real-time and get notifications when your order is ready.",
+      description: "Track your Pump-Side service in real-time and get notifications when it's ready.",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10"/>
@@ -108,7 +108,7 @@ const Features = () => {
       "Fast & Convenient": {
         benefits: [
           "Skip lines with mobile ordering",
-          "Pre-schedule fuel deliveries",
+          "Pre-schedule pump side service",
           "Save favorite stations and orders",
           "Quick reordering of previous purchases"
         ],
@@ -120,7 +120,7 @@ const Features = () => {
       },
       "Real-Time Tracking": {
         benefits: [
-          "Live status tracking of your pump side service",
+          "Live status tracking of your Pump-Side service",
           "Accurate time predictions",
           "Instant notifications on order status changes",
           "Track your service status in real-time"
@@ -133,7 +133,7 @@ const Features = () => {
       },
       "24/7 Pump-Side Service Assistance": {
         benefits: [
-          "Emergency pump side service anytime",
+          "Traffic update anytime",
           "Pump-side assistance integration",
           "Priority service for subscribers",
           "Nationwide coverage with local partners"

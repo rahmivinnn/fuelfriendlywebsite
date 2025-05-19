@@ -124,7 +124,7 @@ const HeroSection = () => {
                 The Best Way To Fuel - Anytime, Anywhere!
               </h1>
               <p className="text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                The ultimate solution for modern fuel needs. Find and order fuel, schedule pump side service, and pay with ease - all from one convenient app.
+                The ultimate solution for modern fuel needs. Find and order fuel, Schedule Pump-Side service, and pay with ease - all from one convenient app.
               </p>
             </div>
 
@@ -376,14 +376,14 @@ const HeroSection = () => {
                       className="bg-black/30 p-1.5 sm:p-2 rounded-lg overflow-hidden"
                     >
                       <motion.div
-                        key={liveStats.deliveriesInProgress}
+                        key={liveStats.servicesInProgress}
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
                         className="text-sm sm:text-base font-bold truncate w-full"
                       >
-                        {liveStats.deliveriesInProgress}
+                        {liveStats.servicesInProgress}
                       </motion.div>
-                      <div className="text-xs text-gray-300">Deliveries</div>
+                      <div className="text-xs text-gray-300">Services</div>
                     </motion.div>
                     <motion.div
                       whileHover={{ y: -2 }}
@@ -468,7 +468,7 @@ const HeroSection = () => {
             </div>
 
             <p className="text-gray-600 mb-6">
-              Choose your platform to download the FuelFriendly app and start enjoying convenient fuel services.
+              Choose your platform to download the FuelFriendly app and start enjoying convenient pump side services.
             </p>
 
             <div className="space-y-3">

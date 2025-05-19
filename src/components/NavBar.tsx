@@ -163,13 +163,13 @@ const NavBar = () => {
               onClick={handleAppDownloadClick}
               className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
-              User & Fuel Friend App
+              User & Pump-Side Service App
             </button>
             <button
               onClick={() => handleNavClick('partner-with-us')}
               className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
-              Become a Fuel Friend
+              Become a Service Provider
             </button>
             <button
               onClick={() => navigate('/nearby-stations')}
@@ -319,13 +319,13 @@ const NavBar = () => {
                 onClick={handleAppDownloadClick}
                 className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
-                User & Fuel Friend App
+                User & Pump-Side Service App
               </button>
               <button
                 onClick={() => handleNavClick('partner-with-us')}
                 className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
-                Become a FuelFriend
+                Become a Service Provider
               </button>
               <button
                 onClick={() => navigate('/nearby-stations')}
@@ -403,7 +403,7 @@ const NavBar = () => {
                     />
                     <div>
                       <h3 className="text-xl font-bold text-gray-900">FuelFriendly</h3>
-                      <p className="text-sm text-gray-500">Fuel delivery at your fingertips</p>
+                      <p className="text-sm text-gray-500">Pump-Side service at your fingertips</p>
                     </div>
                   </div>
                   <Button
@@ -449,7 +449,7 @@ const NavBar = () => {
                               </div>
                               <div>
                                 <div className="text-xs font-medium text-gray-800 dark:text-gray-200">Order Fuel</div>
-                                <div className="text-xs text-gray-500 dark:text-gray-400">Quick & easy delivery</div>
+                                <div className="text-xs text-gray-500 dark:text-gray-400">Quick & easy pump side</div>
                               </div>
                             </div>
                           </div>
@@ -474,7 +474,7 @@ const NavBar = () => {
                     <div>
                       <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Download Our App</h2>
                       <p className="text-gray-600 dark:text-gray-300 mb-6">
-                        Get fuel delivered to your doorstep with our mobile app. Available for iOS and Android devices.
+                        Get pump side service with our mobile app. Available for iOS and Android devices.
                       </p>
 
                       <div className="space-y-4">

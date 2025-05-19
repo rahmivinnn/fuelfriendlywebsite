@@ -377,7 +377,7 @@ const Footer = () => {
 
           <div className="mt-6 text-center">
             <p className="text-xs text-white/50">
-              FuelFriendly is committed to providing convenient fuel delivery services worldwide. Our platform connects customers with verified fuel stations and delivery partners.
+              FuelFriendly is committed to providing convenient pump side services worldwide. Our platform connects customers with verified fuel stations and pump side service providers.
             </p>
           </div>
         </div>
