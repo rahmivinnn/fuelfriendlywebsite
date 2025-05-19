@@ -290,12 +290,6 @@ button, a, input, select, textarea {
     padding: 0.75rem !important;
   }
 
-  @media (min-width: 640px) {
-    .p-6 {
-      padding: 1.5rem !important;
-    }
-  }
-
   /* Ensure buttons don't overflow */
   button {
     white-space: nowrap;
@@ -306,6 +300,32 @@ button, a, input, select, textarea {
     display: block;
     width: 100%;
     overflow-x: auto;
+  }
+
+  /* Improve card layouts on mobile */
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Fix form layouts on mobile */
+  .form-control {
+    width: 100% !important;
+  }
+
+  /* Improve text readability on mobile */
+  h1, h2, h3 {
+    word-break: break-word;
+  }
+
+  /* Fix modal positioning on mobile */
+  [data-radix-popper-content-wrapper] {
+    max-width: 95vw !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .p-6 {
+    padding: 1.5rem !important;
   }
 }
 
