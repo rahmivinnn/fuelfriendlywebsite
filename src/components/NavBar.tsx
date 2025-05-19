@@ -236,13 +236,13 @@ const NavBar = () => {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="relative h-8 w-8 rounded-full focus:ring-2 focus:ring-green-500 focus:outline-none"
+                    className="relative h-8 w-8 rounded-full focus:ring-2 focus:ring-green-500 focus:outline-none cursor-pointer"
                     aria-label="User menu"
                   >
                     <DefaultAvatar className="h-8 w-8" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="z-50 w-56">
+                <DropdownMenuContent align="end" className="z-[9999] w-56">
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">{user?.name}</p>

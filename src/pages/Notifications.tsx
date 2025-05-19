@@ -254,13 +254,13 @@ const Notifications = () => {
 
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 cursor-pointer">
                                 <ChevronDown size={16} />
                               </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-40">
+                            <DropdownMenuContent align="end" className="w-40 z-[9999]">
                               {!notification.read && (
-                                <DropdownMenuItem onClick={() => markAsRead(notification.id)}>
+                                <DropdownMenuItem onClick={() => markAsRead(notification.id)} className="cursor-pointer">
                                   <Check size={14} className="mr-2" />
                                   Mark as read
                                 </DropdownMenuItem>
@@ -268,7 +268,7 @@ const Notifications = () => {
                               <DropdownMenuSeparator />
                               <DropdownMenuItem
                                 onClick={() => deleteNotification(notification.id)}
-                                className="text-red-600"
+                                className="text-red-600 cursor-pointer"
                               >
                                 <Trash2 size={14} className="mr-2" />
                                 Delete

@@ -222,12 +222,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
             <div className="relative z-10">
               <Button
                 variant="ghost"
-                className="relative focus:ring-2 focus:ring-green-500 focus:outline-none"
+                className="relative focus:ring-2 focus:ring-green-500 focus:outline-none cursor-pointer"
                 onClick={() => {
                   setNotificationCount(0);
                   navigate('/station-dashboard/notifications');
                   toast({
-                    title: "Notifications Cleared",
+                    title: "Notifications Viewed",
                     description: "All notifications have been marked as read",
                     duration: 3000,
                   });
@@ -239,6 +239,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
+                    whileHover={{ scale: 1.2 }}
                     className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center"
                   >
                     {notificationCount}
@@ -250,7 +251,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
             <div className="flex items-center space-x-2">
               <Button
                 variant="ghost"
-                className="p-0 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                className="p-0 focus:ring-2 focus:ring-green-500 focus:outline-none cursor-pointer"
                 onClick={() => navigate('/station-dashboard/settings')}
                 aria-label="Profile Settings"
               >
