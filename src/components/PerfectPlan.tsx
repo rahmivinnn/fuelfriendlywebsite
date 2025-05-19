@@ -41,7 +41,7 @@ const PerfectPlan = () => {
         "Bonus opportunities"
       ],
       highlighted: false,
-      buttonText: "Become a Service Provider",
+      buttonText: "Become a Fuel Friend",
       action: () => navigate('/independent-contractor-agreement')
     }
   ];
