@@ -451,3 +451,32 @@ a {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   @apply bg-green-500/70;
 }
+
+/* ChatBot styles to ensure visibility */
+.chatbot-button {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 99999 !important;
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  overflow: visible !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  border: 2px solid #3ECF8E !important;
+  background-color: white !important;
+}
+
+.chatbot-window {
+  position: fixed !important;
+  bottom: 90px !important;
+  right: 24px !important;
+  z-index: 99999 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}

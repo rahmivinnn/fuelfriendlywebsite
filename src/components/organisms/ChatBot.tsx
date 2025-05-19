@@ -6,6 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 
+// Import the SVG directly
+const FUEL_LOGO = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="45" fill="none" stroke="#3ECF8E" stroke-width="3"/>
+  <path d="M50 20 L65 45 L50 70 C45 65 40 60 45 50 C50 40 45 35 40 30 Z" fill="#3ECF8E"/>
+</svg>
+`;
+
 type Message = {
   id: string;
   content: string;
@@ -130,47 +138,80 @@ const ChatBot: React.FC = () => {
 
   return (
     <>
-      {/* Chat Button - Only show if isVisible is true */}
-      {isVisible && (
-        <motion.div
-          className="fixed bottom-6 right-6 z-[9999]"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-        >
-          <Button
-            onClick={toggleChat}
-            className="h-14 w-14 rounded-full bg-white hover:bg-gray-100 shadow-lg p-0 overflow-hidden border-2 border-green-500"
-          >
-            <img src="./fuel-logo.svg" alt="FuelBot" className="w-full h-full" />
-          </Button>
-        </motion.div>
-      )}
+      {/* Chat Button - Direct implementation with inline SVG */}
+      <div
+        onClick={toggleChat}
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          width: '60px',
+          height: '60px',
+          borderRadius: '50%',
+          backgroundColor: 'white',
+          border: '2px solid #3ECF8E',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          zIndex: 99999,
+          padding: '8px'
+        }}
+        dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
+      />
 
       {/* Chat Window */}
-      <AnimatePresence>
-        {isVisible && isOpen && (
-          <motion.div
-            className="fixed bottom-24 right-6 z-[9999] w-80 md:w-96 bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden flex flex-col"
-            style={{ height: isMinimized ? '60px' : '500px' }}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-          >
+      {isOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '90px',
+            right: '24px',
+            width: '350px',
+            height: isMinimized ? '60px' : '500px',
+            backgroundColor: 'white',
+            borderRadius: '12px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+            zIndex: 99999
+          }}
+        >
             {/* Chat Header */}
-            <div className="bg-green-500 text-white p-3 flex justify-between items-center">
-              <div className="flex items-center">
-                <div className="w-6 h-6 mr-2 bg-white rounded-full overflow-hidden">
-                  <img src="./fuel-logo.svg" alt="FuelBot" className="w-full h-full" />
-                </div>
-                <h3 className="font-medium">FuelBot Assistant</h3>
+            <div style={{
+              backgroundColor: '#3ECF8E',
+              color: 'white',
+              padding: '12px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{
+                  width: '24px',
+                  height: '24px',
+                  marginRight: '8px',
+                  backgroundColor: 'white',
+                  borderRadius: '50%',
+                  padding: '2px'
+                }}
+                dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
+                ></div>
+                <h3 style={{ fontWeight: 500 }}>FuelBot Assistant</h3>
               </div>
-              <div className="flex space-x-2">
-                <button onClick={toggleMinimize} className="text-white hover:text-gray-200">
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  onClick={toggleMinimize}
+                  style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
+                >
                   {isMinimized ? <Maximize2 size={18} /> : <Minimize2 size={18} />}
                 </button>
-                <button onClick={toggleChat} className="text-white hover:text-gray-200">
+                <button
+                  onClick={toggleChat}
+                  style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
+                >
                   <X size={18} />
                 </button>
               </div>
@@ -185,10 +226,19 @@ const ChatBot: React.FC = () => {
                     className={`mb-4 flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     {message.sender === 'bot' && (
-                      <Avatar className="h-8 w-8 mr-2 bg-white overflow-hidden border border-green-500">
-                        <AvatarImage src="./fuel-logo.svg" />
-                        <AvatarFallback>FB</AvatarFallback>
-                      </Avatar>
+                      <div
+                        style={{
+                          width: '32px',
+                          height: '32px',
+                          marginRight: '8px',
+                          backgroundColor: 'white',
+                          borderRadius: '50%',
+                          border: '1px solid #3ECF8E',
+                          padding: '4px',
+                          flexShrink: 0
+                        }}
+                        dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
+                      ></div>
                     )}
                     <div
                       className={`max-w-[80%] p-3 rounded-lg ${
@@ -211,10 +261,19 @@ const ChatBot: React.FC = () => {
                 ))}
                 {isTyping && (
                   <div className="flex items-center mb-4">
-                    <Avatar className="h-8 w-8 mr-2 bg-white overflow-hidden border border-green-500">
-                      <AvatarImage src="./fuel-logo.svg" />
-                      <AvatarFallback>FB</AvatarFallback>
-                    </Avatar>
+                    <div
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        marginRight: '8px',
+                        backgroundColor: 'white',
+                        borderRadius: '50%',
+                        border: '1px solid #3ECF8E',
+                        padding: '4px',
+                        flexShrink: 0
+                      }}
+                      dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
+                    ></div>
                     <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 rounded-lg">
                       <div className="flex space-x-1">
                         <div className="h-2 w-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
@@ -266,9 +325,9 @@ const ChatBot: React.FC = () => {
                 </div>
               </>
             )}
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
+
     </>
   );
 };
