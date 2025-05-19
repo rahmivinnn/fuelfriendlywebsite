@@ -203,9 +203,9 @@ const PartnerWithUs = () => {
           viewport={{ once: true }}
         >
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl dark:text-white">Become a Pump-Side Service Provider</h2>
+            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl dark:text-white">Become a Fuel Friend</h2>
             <p className="text-gray-500 dark:text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed max-w-3xl mx-auto">
-              Join our team of Pump-Side service providers and help us revolutionize the fuel service industry while earning competitive pay on your own schedule.
+              Join our team of Fuel Friends and help us revolutionize the fuel service industry while earning competitive pay on your own schedule.
             </p>
           </div>
         </motion.div>
@@ -261,7 +261,7 @@ const PartnerWithUs = () => {
             <div>
               <h3 className="text-2xl font-bold mb-2 dark:text-white">Ready to Join?</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Become a Pump-Side service provider today and start earning on your own schedule while providing an essential service to your community.
+                Become a Fuel Friend today and start earning on your own schedule while providing an essential service to your community.
               </p>
 
               <div className="space-y-4">
@@ -307,7 +307,7 @@ const PartnerWithUs = () => {
                   className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-6 text-lg"
                   onClick={handlePartnerClick}
                 >
-                  Become a Pump-Side Service Provider
+                  Become a Fuel Friend
                 </Button>
               </motion.div>
 
@@ -335,7 +335,7 @@ const PartnerWithUs = () => {
           <DialogHeader>
             <DialogTitle className="dark:text-white">Partner Application</DialogTitle>
             <DialogDescription className="dark:text-gray-300">
-              Fill out the form below to apply as a Pump-Side service provider.
+              Fill out the form below to apply as a Fuel Friend.
             </DialogDescription>
           </DialogHeader>
 
