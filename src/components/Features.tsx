@@ -244,11 +244,11 @@ const Features = () => {
 
       {/* Feature Details Dialog */}
       <Dialog open={showFeatureDialog} onOpenChange={setShowFeatureDialog}>
-        <DialogContent className="sm:max-w-md dark:bg-gray-800 dark:border-gray-700">
+        <DialogContent className="sm:max-w-md dark:bg-gray-800 dark:border-gray-700 max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="flex items-center dark:text-white">
+            <DialogTitle className="flex items-center dark:text-white text-wrap break-words">
               {activeFeature && (
-                <div className={`p-2 rounded-full ${activeFeature.color} ${
+                <div className={`p-2 rounded-full flex-shrink-0 ${activeFeature.color} ${
                   activeFeature.color === "bg-blue-500/10" ? "dark:bg-blue-500/30" :
                   activeFeature.color === "bg-purple-500/10" ? "dark:bg-purple-500/30" :
                   activeFeature.color === "bg-orange-500/10" ? "dark:bg-orange-500/30" :
@@ -257,9 +257,9 @@ const Features = () => {
                   <div className={activeFeature?.textColor}>{activeFeature?.icon}</div>
                 </div>
               )}
-              {activeFeature?.title || "Our Features"}
+              <span className="break-words">{activeFeature?.title || "Our Features"}</span>
             </DialogTitle>
-            <DialogDescription className="dark:text-gray-300">
+            <DialogDescription className="dark:text-gray-300 text-wrap break-words">
               {activeFeature?.description || "Discover what makes FuelFriendly the best choice for your fueling needs"}
             </DialogDescription>
           </DialogHeader>
@@ -272,12 +272,12 @@ const Features = () => {
                   <ul className="space-y-2">
                     {getFeatureDetails(activeFeature)?.benefits.map((benefit, index) => (
                       <li key={index} className="flex items-start">
-                        <div className="bg-green-100 dark:bg-green-900/50 p-1 rounded-full mr-2 mt-0.5">
+                        <div className="bg-green-100 dark:bg-green-900/50 p-1 rounded-full mr-2 mt-0.5 flex-shrink-0">
                           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-600 dark:text-green-400">
                             <polyline points="20 6 9 17 4 12"></polyline>
                           </svg>
                         </div>
-                        <span className="text-sm text-gray-600 dark:text-gray-300">{benefit}</span>
+                        <span className="text-sm text-gray-600 dark:text-gray-300 break-words">{benefit}</span>
                       </li>
                     ))}
                   </ul>
@@ -287,9 +287,9 @@ const Features = () => {
                   <h4 className="font-medium mb-2 dark:text-white">Performance Metrics</h4>
                   <div className="grid grid-cols-3 gap-2">
                     {Object.entries(getFeatureDetails(activeFeature)?.stats || {}).map(([key, value], index) => (
-                      <div key={index} className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                        <div className="text-lg font-bold text-green-600 dark:text-green-400">{value}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
+                      <div key={index} className="bg-gray-50 dark:bg-gray-700 p-2 rounded-lg text-center">
+                        <div className="text-base font-bold text-green-600 dark:text-green-400">{value}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 capitalize break-words">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
                       </div>
                     ))}
                   </div>
@@ -300,7 +300,7 @@ const Features = () => {
                   <p className="text-sm text-blue-600 dark:text-blue-300 mb-2">
                     Experience this feature by downloading our mobile app or registering your station.
                   </p>
-                  <div className="flex space-x-2">
+                  <div className="flex flex-wrap gap-2">
                     <Button
                       size="sm"
                       variant="outline"
@@ -338,7 +338,7 @@ const Features = () => {
                   FuelFriendly offers a comprehensive suite of features designed to make your fueling experience seamless and efficient.
                 </p>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {features.map((feature, index) => {
                     const darkColor = feature.color === "bg-blue-500/10" ? "dark:bg-blue-500/30" :
                                      feature.color === "bg-purple-500/10" ? "dark:bg-purple-500/30" :
@@ -349,13 +349,13 @@ const Features = () => {
                       <Button
                         key={index}
                         variant="outline"
-                        className="justify-start dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+                        className="justify-start dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700 h-auto py-2 text-wrap"
                         onClick={() => handleFeatureClick(feature)}
                       >
-                        <div className={`p-1.5 rounded-full ${feature.color} ${darkColor} mr-2`}>
+                        <div className={`p-1.5 rounded-full flex-shrink-0 ${feature.color} ${darkColor} mr-2`}>
                           <div className={feature.textColor}>{feature.icon}</div>
                         </div>
-                        <span>{feature.title}</span>
+                        <span className="text-left break-words">{feature.title}</span>
                       </Button>
                     );
                   })}
