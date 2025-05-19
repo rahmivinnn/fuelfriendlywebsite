@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth, UserRole } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import ChatBot from "@/components/organisms/ChatBot";
+import ChatBot from "@/components/ChatBot";
 
 import Index from "./pages/Index";
 import AboutUs from "./pages/AboutUs";

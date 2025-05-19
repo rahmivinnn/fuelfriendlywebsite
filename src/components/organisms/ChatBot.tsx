@@ -1,12 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, Send, X, Minimize2, Maximize2, Bot, Droplet } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Send, X, Minimize2, Maximize2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 
-// Import the SVG directly
+// Simple SVG for the fuel logo
 const FUEL_LOGO = `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <circle cx="50" cy="50" r="45" fill="none" stroke="#3ECF8E" stroke-width="3"/>
@@ -39,8 +36,6 @@ const suggestedQuestions = [
 ];
 
 const ChatBot: React.FC = () => {
-  // Set isVisible to true to ensure the chatbot is always displayed
-  const [isVisible, setIsVisible] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>(initialMessages);
@@ -49,9 +44,46 @@ const ChatBot: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  // Force the chatbot to be visible when the component mounts
+  // Add a style tag to the document head to ensure the chatbot is visible
   useEffect(() => {
-    setIsVisible(true);
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .chatbot-button {
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        width: 60px !important;
+        height: 60px !important;
+        border-radius: 50% !important;
+        background-color: white !important;
+        border: 2px solid #3ECF8E !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        cursor: pointer !important;
+        z-index: 999999 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
+      .chatbot-window {
+        position: fixed !important;
+        bottom: 90px !important;
+        right: 20px !important;
+        width: 350px !important;
+        border-radius: 12px !important;
+        background-color: white !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+        z-index: 999999 !important;
+        overflow: hidden !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
   }, []);
 
   const toggleChat = () => {
@@ -75,7 +107,7 @@ const ChatBot: React.FC = () => {
     }
   }, [messages, isOpen]);
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = () => {
     if (!inputValue.trim()) return;
 
     // Add user message
@@ -90,25 +122,23 @@ const ChatBot: React.FC = () => {
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate AI response (replace with actual API call in production)
+    // Simulate AI response
     setTimeout(() => {
       let botResponse = '';
 
       // Simple pattern matching for demo purposes
       const lowercaseInput = inputValue.toLowerCase();
 
-      if (lowercaseInput.includes('nearest') || lowercaseInput.includes('nearby') || lowercaseInput.includes('close')) {
-        botResponse = "You can find nearby stations by using our 'Nearby Stations' feature. It allows you to select your country and city to find stations registered on Google Maps in your area.";
+      if (lowercaseInput.includes('nearest') || lowercaseInput.includes('nearby')) {
+        botResponse = "You can find nearby stations by using our 'Nearby Stations' feature.";
       } else if (lowercaseInput.includes('add') && lowercaseInput.includes('station')) {
-        botResponse = "To add your station to our platform, go to the 'Station Management' section in your dashboard and click on 'Add New Station'. You'll need to provide details like location, services offered, and operating hours.";
+        botResponse = "To add your station to our platform, go to the 'Station Management' section.";
       } else if (lowercaseInput.includes('payment')) {
-        botResponse = "We accept various payment methods including credit/debit cards, PayPal, Apple Pay, and Google Pay. Station owners can set up their preferred payment methods in the 'Settings' section.";
-      } else if (lowercaseInput.includes('earning') || lowercaseInput.includes('transaction')) {
-        botResponse = "You can check your earnings in the 'Earnings & Transactions' section of your dashboard. It provides daily, weekly, monthly, and total earnings along with detailed transaction history.";
-      } else if (lowercaseInput.includes('support') || lowercaseInput.includes('help') || lowercaseInput.includes('contact')) {
-        botResponse = "For customer support, please visit the 'Help & Support' section or email us at support@fuelfriendly.com. Our team is available 24/7 to assist you.";
+        botResponse = "We accept various payment methods including credit/debit cards, PayPal, and more.";
+      } else if (lowercaseInput.includes('support') || lowercaseInput.includes('help')) {
+        botResponse = "For customer support, please visit the 'Help & Support' section.";
       } else {
-        botResponse = "I'm not sure I understand your question. Could you please rephrase or select one of the suggested questions below?";
+        botResponse = "I'm not sure I understand your question. Could you please rephrase?";
       }
 
       const botMessageObj: Message = {
@@ -120,7 +150,7 @@ const ChatBot: React.FC = () => {
 
       setMessages((prev) => [...prev, botMessageObj]);
       setIsTyping(false);
-    }, 1500);
+    }, 1000);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
