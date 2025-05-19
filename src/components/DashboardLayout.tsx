@@ -54,31 +54,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
     }
   }, []);
 
-  // Simulate real-time notifications
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const messages = [
-        "New order received!",
-        "Inventory update: Petrol levels at 75%",
-        "Daily sales target achieved!",
-        "System update available",
-        "Price change detected in competitors",
-        "Customer feedback received"
-      ];
-
-      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-
-      setNotificationCount(prev => prev + 1);
-
-      toast({
-        title: "Real-time Update",
-        description: randomMessage,
-        duration: 3000,
-      });
-    }, 45000); // Random update every 45 seconds
-
-    return () => clearInterval(interval);
-  }, [toast]);
+  // Real-time notifications disabled
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);

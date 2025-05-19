@@ -136,31 +136,7 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children, t
     }
   ];
 
-  // Simulate real-time notifications
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const messages = [
-        "New user registered!",
-        "System update available",
-        "Security alert: Unusual login activity",
-        "New station registration pending approval",
-        "Database backup completed",
-        "API usage limit reached for station #1234"
-      ];
-
-      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-
-      setNotificationCount(prev => prev + 1);
-
-      toast({
-        title: "Admin Alert",
-        description: randomMessage,
-        duration: 3000,
-      });
-    }, 60000); // Random update every 60 seconds
-
-    return () => clearInterval(interval);
-  }, [toast]);
+  // Real-time notifications disabled
 
   const handleSidebarItemClick = (item: SidebarItem) => {
     // Check if user has permission to access this item
