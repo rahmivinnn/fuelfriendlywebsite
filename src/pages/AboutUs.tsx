@@ -183,7 +183,7 @@ const AboutUs = () => {
             </motion.div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">About Fuel Friendly</h1>
             <p className="text-xl md:text-2xl mb-8">
-              Redefining convenience by bringing fuel and everyday essentials directly to your doorstep.
+              Redefining convenience with our pump side service and everyday essentials.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button
@@ -395,10 +395,10 @@ const AboutUs = () => {
                 <div className="space-y-6">
                   <h2 className="text-3xl font-bold text-gray-800 dark:text-white">What We Do</h2>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
-                    At Fuel Friendly we're redefining convenience by bringing fuel and everyday essentials directly to your car side. Whether you're at home, at work, or on the go, our app connects you with friendly, professional drivers—your "Fuel Friends"—ready to serve you with a smile.
+                    At Fuel Friendly we're redefining convenience with our pump side service and everyday essentials. Whether you're at home, at work, or on the go, our app connects you with friendly, professional staff—your "Fuel Friends"—ready to serve you with a smile.
                   </p>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
-                    We offer on-demand fuel service and a wide selection of convenience store items, all accessible through our easy-to-use mobile app. From snacks and drinks to toiletries and emergency fuel top-ups, we've got you covered—whenever and wherever you need it.
+                    We offer pump side service and a wide selection of convenience store items, all accessible through our easy-to-use mobile app. From snacks and drinks to toiletries and emergency fuel needs, we've got you covered—whenever and wherever you need it.
                   </p>
 
                   <h2 className="text-3xl font-bold text-gray-800 dark:text-white mt-10">Why Choose Us?</h2>
@@ -458,7 +458,7 @@ const AboutUs = () => {
                       <div>
                         <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Real-Time Tracking</h3>
                         <p className="text-gray-600 dark:text-gray-300">
-                          Know exactly when your delivery will arrive with our live tracking feature.
+                          Know exactly when your service will be ready with our live tracking feature.
                         </p>
                       </div>
                     </div>
@@ -529,7 +529,7 @@ const AboutUs = () => {
                 <div className="space-y-6">
                   <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Our Team</h2>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
-                    Meet the passionate individuals behind Fuel Friendly who are working to revolutionize fuel delivery and convenience.
+                    Meet the passionate individuals behind Fuel Friendly who are working to revolutionize pump side service and convenience.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">

@@ -36,7 +36,7 @@ const WhyItWorks = () => {
     },
     {
       title: "Time Efficiency",
-      description: "Save valuable time by having fuel delivered directly to your vehicle when and where you need it.",
+      description: "Save valuable time by using our pump side service when and where you need it.",
       icon: <Clock className="h-6 w-6" />,
       color: "text-green-600",
       bgColor: "bg-green-100"
@@ -44,7 +44,7 @@ const WhyItWorks = () => {
 
     {
       title: "User-Friendly App",
-      description: "Our intuitive mobile app makes ordering fuel and tracking delivery simple and convenient.",
+      description: "Our intuitive mobile app makes ordering fuel and tracking your service simple and convenient.",
       icon: <Smartphone className="h-6 w-6" />,
       color: "text-cyan-600",
       bgColor: "bg-cyan-100"
@@ -61,7 +61,7 @@ const WhyItWorks = () => {
   const stats = [
     { value: "85%", label: "Time Saved" },
     { value: "24/7", label: "Service Availability" },
-    { value: "15min", label: "Average Delivery Time" },
+    { value: "15min", label: "Average Service Time" },
     { value: "98%", label: "Customer Satisfaction" }
   ];
 
@@ -153,7 +153,7 @@ const WhyItWorks = () => {
               Ready to Experience the Future of Fueling?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 max-w-2xl">
-              Join thousands of satisfied customers who have made the switch to on-demand fuel delivery. Save time, avoid gas station lines, and never worry about running on empty again.
+              Join thousands of satisfied customers who have made the switch to our pump side service. Save time, avoid gas station lines, and never worry about running on empty again.
             </p>
           </div>
 

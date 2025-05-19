@@ -65,7 +65,7 @@ const Features = () => {
     },
     {
       title: "Real-Time Tracking",
-      description: "Track your fuel deliveries in real-time and get notifications when your order is on the way.",
+      description: "Track your pump side service in real-time and get notifications when your order is ready.",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10"/>
@@ -120,10 +120,10 @@ const Features = () => {
       },
       "Real-Time Tracking": {
         benefits: [
-          "Live GPS tracking of your fuel delivery",
-          "Accurate ETA predictions",
+          "Live status tracking of your pump side service",
+          "Accurate time predictions",
           "Instant notifications on order status changes",
-          "Track your Fuel Friend's location in real-time"
+          "Track your service status in real-time"
         ],
         stats: {
           trackingAccuracy: "98.5%",
@@ -133,7 +133,7 @@ const Features = () => {
       },
       "24/7 Road Assistance": {
         benefits: [
-          "Emergency fuel delivery anywhere, anytime",
+          "Emergency pump side service anytime",
           "Roadside assistance integration",
           "Priority service for subscribers",
           "Nationwide coverage with local partners"

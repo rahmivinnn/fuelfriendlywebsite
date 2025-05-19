@@ -28,7 +28,7 @@ const HeroSection = () => {
 
   const [liveStats, setLiveStats] = useState({
     activeUsers: 12483,
-    deliveriesInProgress: 347,
+    servicesInProgress: 347,
     stationsOnline: 1289,
     totalSavings: 1245678
   });
@@ -124,7 +124,7 @@ const HeroSection = () => {
                 The Best Way To Fuel - Anytime, Anywhere!
               </h1>
               <p className="text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                The ultimate solution for modern fuel needs. Find and order fuel, schedule deliveries, and pay with ease - all from one convenient app.
+                The ultimate solution for modern fuel needs. Find and order fuel, schedule pump side service, and pay with ease - all from one convenient app.
               </p>
             </div>
 
@@ -666,20 +666,20 @@ const HeroSection = () => {
                     whileHover={{ y: -2 }}
                     onClick={() => {
                       toast({
-                        title: "Deliveries in Progress",
-                        description: `${liveStats.deliveriesInProgress} deliveries currently in progress`,
+                        title: "Services in Progress",
+                        description: `${liveStats.servicesInProgress} services currently in progress`,
                         duration: 2000,
                       });
                     }}
                   >
-                    <div className="text-sm text-gray-500">Deliveries</div>
+                    <div className="text-sm text-gray-500">Services</div>
                     <motion.div
                       className="text-xl sm:text-2xl font-bold text-blue-600 truncate min-w-0 overflow-hidden"
-                      key={liveStats.deliveriesInProgress}
+                      key={liveStats.servicesInProgress}
                       initial={{ scale: 1.1 }}
                       animate={{ scale: 1 }}
                     >
-                      {liveStats.deliveriesInProgress}
+                      {liveStats.servicesInProgress}
                     </motion.div>
                   </motion.div>
 
