@@ -17,15 +17,15 @@
   button.style.justifyContent = 'center';
   button.style.overflow = 'hidden';
 
-  // Add logo - only green circular background with subtle glow effect
+  // Add logo - exact green circle with drop logo
   button.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-      <!-- Subtle glow effect -->
-      <circle cx="50" cy="50" r="45" fill="#3ECF8E" opacity="0.6" filter="blur(5px)"/>
-      <!-- Main circle -->
-      <circle cx="50" cy="50" r="40" fill="#3ECF8E"/>
-      <!-- Inner highlight -->
-      <circle cx="40" cy="40" r="15" fill="#4FDFA0" opacity="0.5"/>
+      <!-- Circle outline -->
+      <circle cx="50" cy="50" r="48" stroke="#3ECF8E" stroke-width="4" fill="none"/>
+      <!-- Drop shape -->
+      <path d="M50 25 L65 50 C65 65 57.5 75 50 75 C42.5 75 35 65 35 50 L50 25Z" fill="#3ECF8E"/>
+      <!-- Inner flame/swirl -->
+      <path d="M50 45 C53 50 58 55 55 60 C52 65 48 60 45 55 C42 50 47 45 50 45Z" fill="white"/>
     </svg>
   `;
 
@@ -57,12 +57,12 @@
     <div style="display: flex; align-items: center;">
       <div style="width: 24px; height: 24px; margin-right: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-          <!-- Subtle glow effect -->
-          <circle cx="50" cy="50" r="45" fill="#3ECF8E" opacity="0.6" filter="blur(3px)"/>
-          <!-- Main circle -->
-          <circle cx="50" cy="50" r="40" fill="#3ECF8E"/>
-          <!-- Inner highlight -->
-          <circle cx="40" cy="40" r="15" fill="#4FDFA0" opacity="0.5"/>
+          <!-- Circle outline -->
+          <circle cx="50" cy="50" r="48" stroke="#3ECF8E" stroke-width="4" fill="none"/>
+          <!-- Drop shape -->
+          <path d="M50 25 L65 50 C65 65 57.5 75 50 75 C42.5 75 35 65 35 50 L50 25Z" fill="#3ECF8E"/>
+          <!-- Inner flame/swirl -->
+          <path d="M50 45 C53 50 58 55 55 60 C52 65 48 60 45 55 C42 50 47 45 50 45Z" fill="white"/>
         </svg>
       </div>
       <span>FuelBot Assistant</span>
@@ -84,12 +84,12 @@
     <div style="margin-bottom: 16px; display: flex; justify-content: flex-start;">
       <div style="width: 32px; height: 32px; margin-right: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-          <!-- Subtle glow effect -->
-          <circle cx="50" cy="50" r="45" fill="#3ECF8E" opacity="0.6" filter="blur(3px)"/>
-          <!-- Main circle -->
-          <circle cx="50" cy="50" r="40" fill="#3ECF8E"/>
-          <!-- Inner highlight -->
-          <circle cx="40" cy="40" r="15" fill="#4FDFA0" opacity="0.5"/>
+          <!-- Circle outline -->
+          <circle cx="50" cy="50" r="48" stroke="#3ECF8E" stroke-width="4" fill="none"/>
+          <!-- Drop shape -->
+          <path d="M50 25 L65 50 C65 65 57.5 75 50 75 C42.5 75 35 65 35 50 L50 25Z" fill="#3ECF8E"/>
+          <!-- Inner flame/swirl -->
+          <path d="M50 45 C53 50 58 55 55 60 C52 65 48 60 45 55 C42 50 47 45 50 45Z" fill="white"/>
         </svg>
       </div>
       <div style="max-width: 80%; padding: 12px; border-radius: 8px; background-color: #f5f5f5; border: 1px solid #e0e0e0;">
