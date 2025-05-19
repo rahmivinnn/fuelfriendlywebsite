@@ -287,7 +287,13 @@ button, a, input, select, textarea {
 
   /* Adjust padding for mobile */
   .p-6 {
-    @apply p-3 sm:p-6;
+    padding: 0.75rem !important;
+  }
+
+  @media (min-width: 640px) {
+    .p-6 {
+      padding: 1.5rem !important;
+    }
   }
 
   /* Ensure buttons don't overflow */

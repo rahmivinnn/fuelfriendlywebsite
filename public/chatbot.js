@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
   chatbotButton.id = 'chatbot-button';
   chatbotButton.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="48" fill="none" stroke="#3ECF8E" stroke-width="4"/>
-      <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="#3ECF8E"/>
-      <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="white"/>
+      <circle cx="50" cy="50" r="48" fill="#3ECF8E" stroke="#3ECF8E" stroke-width="2"/>
+      <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="white"/>
+      <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="#3ECF8E"/>
     </svg>
   `;
   document.body.appendChild(chatbotButton);
@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
       <div id="chatbot-title">
         <div id="chatbot-logo">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="48" fill="none" stroke="#3ECF8E" stroke-width="4"/>
-            <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="#3ECF8E"/>
-            <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="white"/>
+            <circle cx="50" cy="50" r="48" fill="#3ECF8E" stroke="#3ECF8E" stroke-width="2"/>
+            <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="white"/>
+            <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="#3ECF8E"/>
           </svg>
         </div>
         <span>FuelBot Assistant</span>
@@ -37,9 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="chatbot-message bot">
         <div class="chatbot-avatar">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="48" fill="none" stroke="#3ECF8E" stroke-width="4"/>
-            <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="#3ECF8E"/>
-            <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="white"/>
+            <circle cx="50" cy="50" r="48" fill="#3ECF8E" stroke="#3ECF8E" stroke-width="2"/>
+            <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="white"/>
+            <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="#3ECF8E"/>
           </svg>
         </div>
         <div class="chatbot-bubble">
@@ -349,9 +349,9 @@ document.addEventListener('DOMContentLoaded', function() {
         botMessage.innerHTML = `
           <div class="chatbot-avatar">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="48" fill="none" stroke="#3ECF8E" stroke-width="4"/>
-              <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="#3ECF8E"/>
-              <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="white"/>
+              <circle cx="50" cy="50" r="48" fill="#3ECF8E" stroke="#3ECF8E" stroke-width="2"/>
+              <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="white"/>
+              <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="#3ECF8E"/>
             </svg>
           </div>
           <div class="chatbot-bubble">
