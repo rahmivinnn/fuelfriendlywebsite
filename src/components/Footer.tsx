@@ -187,7 +187,7 @@ const Footer = () => {
                   onClick={() => handleNavigation('/nearby-stations')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
-                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Road Assistance</span>
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Pump-Side Service Assistance</span>
                   <span className="opacity-0 group-hover:opacity-100 ml-1 transition-opacity duration-200">→</span>
                 </button>
               </li>

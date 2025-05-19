@@ -76,8 +76,8 @@ const Features = () => {
       textColor: "text-orange-600",
     },
     {
-      title: "24/7 Road Assistance",
-      description: "Get help whenever you need it with our 24/7 customer support and roadside assistance service.",
+      title: "24/7 Pump-Side Service Assistance",
+      description: "Get help whenever you need it with our 24/7 customer support and pump-side service assistance.",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10"/>
@@ -131,10 +131,10 @@ const Features = () => {
           userEngagement: "4.7/5"
         }
       },
-      "24/7 Road Assistance": {
+      "24/7 Pump-Side Service Assistance": {
         benefits: [
           "Emergency pump side service anytime",
-          "Roadside assistance integration",
+          "Pump-side assistance integration",
           "Priority service for subscribers",
           "Nationwide coverage with local partners"
         ],
