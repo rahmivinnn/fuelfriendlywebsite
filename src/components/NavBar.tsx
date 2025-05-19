@@ -234,11 +234,15 @@ const NavBar = () => {
             >
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Button
+                    variant="ghost"
+                    className="relative h-8 w-8 rounded-full focus:ring-2 focus:ring-green-500 focus:outline-none"
+                    aria-label="User menu"
+                  >
                     <DefaultAvatar className="h-8 w-8" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="z-50 w-56">
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">{user?.name}</p>
@@ -247,14 +251,14 @@ const NavBar = () => {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
 
-                  <DropdownMenuItem onClick={handleStationDashboard}>
+                  <DropdownMenuItem onClick={handleStationDashboard} className="cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
                     <span>Station Dashboard</span>
                   </DropdownMenuItem>
 
                   <DropdownMenuSeparator />
 
-                  <DropdownMenuItem onClick={handleLogout}>
+                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                   </DropdownMenuItem>
@@ -281,13 +285,13 @@ const NavBar = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            className="md:hidden"
+            className="md:hidden w-full"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="px-4 py-3 space-y-1 bg-white dark:bg-gray-800 border-t dark:border-gray-700">
+            <div className="px-4 py-3 space-y-1 bg-white dark:bg-gray-800 border-t dark:border-gray-700 max-w-full overflow-hidden">
               <div className="flex justify-between items-center py-2">
                 <span className="text-base font-medium text-gray-700 dark:text-gray-300">Theme</span>
                 <ThemeToggle />

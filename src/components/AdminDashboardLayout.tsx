@@ -372,16 +372,21 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children, t
           </div>
 
           <div className="flex items-center space-x-4">
-            <div className="relative">
-              <Button variant="ghost" className="relative" onClick={() => {
-                setNotificationCount(0);
-                toast({
-                  title: "Notifications Cleared",
-                  description: "All notifications have been marked as read",
-                  duration: 3000,
-                });
-              }}>
-                <BellIcon />
+            <div className="relative z-10">
+              <Button
+                variant="ghost"
+                className="relative focus:ring-2 focus:ring-green-500 focus:outline-none"
+                onClick={() => {
+                  setNotificationCount(0);
+                  toast({
+                    title: "Notifications Cleared",
+                    description: "All notifications have been marked as read",
+                    duration: 3000,
+                  });
+                }}
+                aria-label="Notifications"
+              >
+                <BellIcon className="text-gray-700 dark:text-gray-300" />
                 {notificationCount > 0 && (
                   <motion.span
                     initial={{ scale: 0 }}
@@ -395,7 +400,13 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children, t
             </div>
 
             <div className="flex items-center space-x-2">
-              <DefaultAvatar className="w-8 h-8" />
+              <Button
+                variant="ghost"
+                className="p-0 focus:ring-2 focus:ring-green-500 focus:outline-none"
+                aria-label="Profile Settings"
+              >
+                <DefaultAvatar className="w-8 h-8" />
+              </Button>
               <div className="hidden md:block">
                 <div className="font-medium text-sm">{user?.name || 'Admin User'}</div>
                 {user && (
