@@ -1,14 +1,27 @@
 // Simple script to add a chatbot to the page
 document.addEventListener('DOMContentLoaded', function() {
+  // Check if dark mode is preferred
+  const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  // Add dark mode class to body if preferred
+  if (prefersDarkMode) {
+    document.body.classList.add('dark-mode');
+  }
+
+  // Listen for changes in color scheme preference
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+    if (event.matches) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  });
+
   // Create the chatbot button
   const chatbotButton = document.createElement('div');
   chatbotButton.id = 'chatbot-button';
   chatbotButton.innerHTML = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="48" fill="#3ECF8E" stroke="#3ECF8E" stroke-width="2"/>
-      <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="white"/>
-      <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="#3ECF8E"/>
-    </svg>
+    <img src="/fuel-logo.svg" alt="FuelBot" class="chatbot-logo-img">
   `;
   document.body.appendChild(chatbotButton);
 
@@ -20,11 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div id="chatbot-header">
       <div id="chatbot-title">
         <div id="chatbot-logo">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="48" fill="#3ECF8E" stroke="#3ECF8E" stroke-width="2"/>
-            <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="white"/>
-            <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="#3ECF8E"/>
-          </svg>
+          <img src="/fuel-logo.svg" alt="FuelBot" class="chatbot-logo-img">
         </div>
         <span>FuelBot Assistant</span>
       </div>
@@ -36,11 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div id="chatbot-messages">
       <div class="chatbot-message bot">
         <div class="chatbot-avatar">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="48" fill="#3ECF8E" stroke="#3ECF8E" stroke-width="2"/>
-            <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="white"/>
-            <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="#3ECF8E"/>
-          </svg>
+          <img src="/fuel-logo.svg" alt="FuelBot" class="chatbot-logo-img">
         </div>
         <div class="chatbot-bubble">
           <p>Hello! I'm FuelBot, your AI assistant. How can I help you today?</p>
@@ -348,11 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         botMessage.innerHTML = `
           <div class="chatbot-avatar">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="48" fill="#3ECF8E" stroke="#3ECF8E" stroke-width="2"/>
-              <path d="M50 20 C55 30 65 40 65 55 C65 70 55 80 50 80 C45 80 35 70 35 55 C35 40 45 30 50 20 Z" fill="white"/>
-              <path d="M50 40 C53 45 58 50 55 60 C52 70 48 65 45 60 C42 55 47 50 50 40 Z" fill="#3ECF8E"/>
-            </svg>
+            <img src="/fuel-logo.svg" alt="FuelBot" class="chatbot-logo-img">
           </div>
           <div class="chatbot-bubble">
             <p>${response}</p>
