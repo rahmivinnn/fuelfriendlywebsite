@@ -6,7 +6,6 @@ import {
   Zap,
   Shield,
   Clock,
-  MapPin,
   Smartphone,
   Users,
   TrendingUp,
@@ -42,13 +41,7 @@ const WhyItWorks = () => {
       color: "text-green-600",
       bgColor: "bg-green-100"
     },
-    {
-      title: "Location Flexibility",
-      description: "Get fuel delivered to your home, office, or anywhere your vehicle is parked within our service area.",
-      icon: <MapPin className="h-6 w-6" />,
-      color: "text-red-600",
-      bgColor: "bg-red-100"
-    },
+
     {
       title: "User-Friendly App",
       description: "Our intuitive mobile app makes ordering fuel and tracking delivery simple and convenient.",
@@ -98,7 +91,6 @@ const WhyItWorks = () => {
             const darkBgColor = reason.bgColor === "bg-purple-100" ? "dark:bg-purple-900/30" :
                                reason.bgColor === "bg-blue-100" ? "dark:bg-blue-900/30" :
                                reason.bgColor === "bg-green-100" ? "dark:bg-green-900/30" :
-                               reason.bgColor === "bg-red-100" ? "dark:bg-red-900/30" :
                                reason.bgColor === "bg-cyan-100" ? "dark:bg-cyan-900/30" :
                                "dark:bg-amber-900/30";
 
