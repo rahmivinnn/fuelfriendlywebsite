@@ -163,13 +163,13 @@ const NavBar = () => {
               onClick={handleAppDownloadClick}
               className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
-              User & Pump-Side Service App
+              Download App
             </button>
             <button
               onClick={() => handleNavClick('partner-with-us')}
               className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
-              Become a Service Provider
+              Become a Fuel Friend
             </button>
             <button
               onClick={() => navigate('/nearby-stations')}
@@ -319,13 +319,13 @@ const NavBar = () => {
                 onClick={handleAppDownloadClick}
                 className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
-                User & Pump-Side Service App
+                Download App
               </button>
               <button
                 onClick={() => handleNavClick('partner-with-us')}
                 className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
-                Become a Service Provider
+                Become a Fuel Friend
               </button>
               <button
                 onClick={() => navigate('/nearby-stations')}

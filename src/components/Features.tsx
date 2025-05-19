@@ -65,7 +65,7 @@ const Features = () => {
     },
     {
       title: "Real-Time Tracking",
-      description: "Track your Pump-Side service in real-time and get notifications when it's ready.",
+      description: "Track your Fuel friend in real-time and get notifications when they arrive.",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10"/>
@@ -120,10 +120,10 @@ const Features = () => {
       },
       "Real-Time Tracking": {
         benefits: [
-          "Live status tracking of your Pump-Side service",
+          "Live status tracking of your Fuel friend",
           "Accurate time predictions",
-          "Instant notifications on order status changes",
-          "Track your service status in real-time"
+          "Instant notifications when they arrive",
+          "Track your Fuel friend's location in real-time"
         ],
         stats: {
           trackingAccuracy: "98.5%",
