@@ -31,6 +31,8 @@ const suggestedQuestions = [
 ];
 
 const ChatBot: React.FC = () => {
+  // Set isVisible to true to ensure the chatbot is always displayed
+  const [isVisible, setIsVisible] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>(initialMessages);
@@ -38,6 +40,11 @@ const ChatBot: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+
+  // Force the chatbot to be visible when the component mounts
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
@@ -123,26 +130,28 @@ const ChatBot: React.FC = () => {
 
   return (
     <>
-      {/* Chat Button */}
-      <motion.div
-        className="fixed bottom-6 right-6 z-50"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-      >
-        <Button
-          onClick={toggleChat}
-          className="h-14 w-14 rounded-full bg-white hover:bg-gray-100 shadow-lg p-0 overflow-hidden border-2 border-green-500"
+      {/* Chat Button - Only show if isVisible is true */}
+      {isVisible && (
+        <motion.div
+          className="fixed bottom-6 right-6 z-[9999]"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: 'spring', stiffness: 260, damping: 20 }}
         >
-          <img src="/fuel-logo.svg" alt="FuelBot" className="w-full h-full" />
-        </Button>
-      </motion.div>
+          <Button
+            onClick={toggleChat}
+            className="h-14 w-14 rounded-full bg-white hover:bg-gray-100 shadow-lg p-0 overflow-hidden border-2 border-green-500"
+          >
+            <img src="./fuel-logo.svg" alt="FuelBot" className="w-full h-full" />
+          </Button>
+        </motion.div>
+      )}
 
       {/* Chat Window */}
       <AnimatePresence>
-        {isOpen && (
+        {isVisible && isOpen && (
           <motion.div
-            className="fixed bottom-24 right-6 z-50 w-80 md:w-96 bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden flex flex-col"
+            className="fixed bottom-24 right-6 z-[9999] w-80 md:w-96 bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden flex flex-col"
             style={{ height: isMinimized ? '60px' : '500px' }}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -153,7 +162,7 @@ const ChatBot: React.FC = () => {
             <div className="bg-green-500 text-white p-3 flex justify-between items-center">
               <div className="flex items-center">
                 <div className="w-6 h-6 mr-2 bg-white rounded-full overflow-hidden">
-                  <img src="/fuel-logo.svg" alt="FuelBot" className="w-full h-full" />
+                  <img src="./fuel-logo.svg" alt="FuelBot" className="w-full h-full" />
                 </div>
                 <h3 className="font-medium">FuelBot Assistant</h3>
               </div>
@@ -177,7 +186,7 @@ const ChatBot: React.FC = () => {
                   >
                     {message.sender === 'bot' && (
                       <Avatar className="h-8 w-8 mr-2 bg-white overflow-hidden border border-green-500">
-                        <AvatarImage src="/fuel-logo.svg" />
+                        <AvatarImage src="./fuel-logo.svg" />
                         <AvatarFallback>FB</AvatarFallback>
                       </Avatar>
                     )}
@@ -203,7 +212,7 @@ const ChatBot: React.FC = () => {
                 {isTyping && (
                   <div className="flex items-center mb-4">
                     <Avatar className="h-8 w-8 mr-2 bg-white overflow-hidden border border-green-500">
-                      <AvatarImage src="/fuel-logo.svg" />
+                      <AvatarImage src="./fuel-logo.svg" />
                       <AvatarFallback>FB</AvatarFallback>
                     </Avatar>
                     <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 rounded-lg">

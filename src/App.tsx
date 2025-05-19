@@ -63,8 +63,8 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <ChatBot />
           <BrowserRouter>
+            <ChatBot />
             <Routes>
             {/* Public routes */}
             <Route path="/" element={<Index />} />
