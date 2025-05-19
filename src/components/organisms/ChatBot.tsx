@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, Send, X, Minimize2, Maximize2, Bot } from 'lucide-react';
+import { MessageSquare, Send, X, Minimize2, Maximize2, Bot, Droplet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -132,9 +132,9 @@ const ChatBot: React.FC = () => {
       >
         <Button
           onClick={toggleChat}
-          className="h-14 w-14 rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg"
+          className="h-14 w-14 rounded-full bg-white hover:bg-gray-100 shadow-lg p-0 overflow-hidden border-2 border-green-500"
         >
-          <MessageSquare size={24} />
+          <img src="/fuel-logo.svg" alt="FuelBot" className="w-full h-full" />
         </Button>
       </motion.div>
 
@@ -152,7 +152,9 @@ const ChatBot: React.FC = () => {
             {/* Chat Header */}
             <div className="bg-green-500 text-white p-3 flex justify-between items-center">
               <div className="flex items-center">
-                <Bot size={20} className="mr-2" />
+                <div className="w-6 h-6 mr-2 bg-white rounded-full overflow-hidden">
+                  <img src="/fuel-logo.svg" alt="FuelBot" className="w-full h-full" />
+                </div>
                 <h3 className="font-medium">FuelBot Assistant</h3>
               </div>
               <div className="flex space-x-2">
@@ -174,8 +176,8 @@ const ChatBot: React.FC = () => {
                     className={`mb-4 flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     {message.sender === 'bot' && (
-                      <Avatar className="h-8 w-8 mr-2">
-                        <AvatarImage src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" />
+                      <Avatar className="h-8 w-8 mr-2 bg-white overflow-hidden border border-green-500">
+                        <AvatarImage src="/fuel-logo.svg" />
                         <AvatarFallback>FB</AvatarFallback>
                       </Avatar>
                     )}
@@ -200,8 +202,8 @@ const ChatBot: React.FC = () => {
                 ))}
                 {isTyping && (
                   <div className="flex items-center mb-4">
-                    <Avatar className="h-8 w-8 mr-2">
-                      <AvatarImage src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" />
+                    <Avatar className="h-8 w-8 mr-2 bg-white overflow-hidden border border-green-500">
+                      <AvatarImage src="/fuel-logo.svg" />
                       <AvatarFallback>FB</AvatarFallback>
                     </Avatar>
                     <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 rounded-lg">

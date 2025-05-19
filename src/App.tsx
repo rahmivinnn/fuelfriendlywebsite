@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth, UserRole } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import ChatBot from "@/components/organisms/ChatBot";
 
 import Index from "./pages/Index";
 import AboutUs from "./pages/AboutUs";
@@ -62,6 +63,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <ChatBot />
           <BrowserRouter>
             <Routes>
             {/* Public routes */}
