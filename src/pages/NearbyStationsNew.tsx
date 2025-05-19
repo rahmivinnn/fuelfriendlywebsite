@@ -700,17 +700,60 @@ const NearbyStationsNew = () => {
         setSelectedCity("");
       }
 
-      // If no cities are available for this country, generate some default ones
+      // If no cities are available for this country, generate specific city names
       if (filteredCities.length === 0) {
         const countryName = countries.find(c => c.code === selectedCountry)?.name || "";
-        const defaultCities = [
-          { name: `${countryName} City`, countryCode: selectedCountry },
-          { name: `North ${countryName}`, countryCode: selectedCountry },
-          { name: `South ${countryName}`, countryCode: selectedCountry },
-          { name: `East ${countryName}`, countryCode: selectedCountry },
-          { name: `West ${countryName}`, countryCode: selectedCountry },
-          { name: `Central ${countryName}`, countryCode: selectedCountry },
-        ];
+
+        // Map of countries to their major cities
+        const countryCities: Record<string, string[]> = {
+          // A few examples for common countries
+          'US': ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose'],
+          'GB': ['London', 'Birmingham', 'Manchester', 'Glasgow', 'Liverpool', 'Bristol', 'Edinburgh', 'Leeds', 'Sheffield', 'Newcastle'],
+          'CA': ['Toronto', 'Montreal', 'Vancouver', 'Calgary', 'Edmonton', 'Ottawa', 'Quebec City', 'Winnipeg', 'Hamilton', 'Halifax'],
+          'AU': ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide', 'Gold Coast', 'Canberra', 'Newcastle', 'Wollongong', 'Hobart'],
+          'DE': ['Berlin', 'Hamburg', 'Munich', 'Cologne', 'Frankfurt', 'Stuttgart', 'Düsseldorf', 'Leipzig', 'Dortmund', 'Essen'],
+          'FR': ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice', 'Nantes', 'Strasbourg', 'Montpellier', 'Bordeaux', 'Lille'],
+          'JP': ['Tokyo', 'Yokohama', 'Osaka', 'Nagoya', 'Sapporo', 'Fukuoka', 'Kobe', 'Kyoto', 'Kawasaki', 'Saitama'],
+          'CN': ['Beijing', 'Shanghai', 'Guangzhou', 'Shenzhen', 'Chengdu', 'Tianjin', 'Wuhan', 'Xi\'an', 'Hangzhou', 'Nanjing'],
+          'IN': ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 'Kolkata', 'Ahmedabad', 'Pune', 'Jaipur', 'Lucknow'],
+          'BR': ['São Paulo', 'Rio de Janeiro', 'Brasília', 'Salvador', 'Fortaleza', 'Belo Horizonte', 'Manaus', 'Curitiba', 'Recife', 'Porto Alegre'],
+          'RU': ['Moscow', 'Saint Petersburg', 'Novosibirsk', 'Yekaterinburg', 'Kazan', 'Nizhny Novgorod', 'Chelyabinsk', 'Samara', 'Omsk', 'Rostov-on-Don'],
+          'MX': ['Mexico City', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana', 'León', 'Juárez', 'Zapopan', 'Mérida', 'Cancún'],
+          'ES': ['Madrid', 'Barcelona', 'Valencia', 'Seville', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Las Palmas', 'Bilbao'],
+          'IT': ['Rome', 'Milan', 'Naples', 'Turin', 'Palermo', 'Genoa', 'Bologna', 'Florence', 'Bari', 'Catania'],
+          'NZ': ['Auckland', 'Wellington', 'Christchurch', 'Hamilton', 'Tauranga', 'Napier-Hastings', 'Dunedin', 'Palmerston North', 'Nelson', 'Rotorua'],
+          'ID': ['Jakarta', 'Surabaya', 'Bandung', 'Medan', 'Semarang', 'Makassar', 'Palembang', 'Tangerang', 'Depok', 'Padang'],
+          'ZA': ['Johannesburg', 'Cape Town', 'Durban', 'Pretoria', 'Port Elizabeth', 'Bloemfontein', 'Nelspruit', 'Kimberley', 'Polokwane', 'Pietermaritzburg'],
+          'NG': ['Lagos', 'Kano', 'Ibadan', 'Kaduna', 'Port Harcourt', 'Benin City', 'Maiduguri', 'Zaria', 'Aba', 'Jos'],
+          'EG': ['Cairo', 'Alexandria', 'Giza', 'Shubra El-Kheima', 'Port Said', 'Suez', 'Luxor', 'Aswan', 'Mansoura', 'Tanta'],
+          'AR': ['Buenos Aires', 'Córdoba', 'Rosario', 'Mendoza', 'Tucumán', 'La Plata', 'Mar del Plata', 'Salta', 'Santa Fe', 'San Juan'],
+        };
+
+        // Get cities for the selected country, or generate generic ones if not in our map
+        let cityNames = countryCities[selectedCountry] || [];
+
+        // If we don't have specific cities for this country, generate generic ones with the capital
+        if (cityNames.length === 0) {
+          cityNames = [
+            `${countryName} City`, // Capital city
+            `New ${countryName}`, // New city
+            `Port ${countryName}`, // Port city
+            `${countryName} Heights`, // Heights
+            `${countryName} Valley`, // Valley
+            `${countryName} Springs`, // Springs
+            `${countryName} Harbor`, // Harbor
+            `${countryName} Junction`, // Junction
+            `${countryName} Village`, // Village
+            `${countryName} Town` // Town
+          ];
+        }
+
+        // Create city objects
+        const defaultCities = cityNames.map(cityName => ({
+          name: cityName,
+          countryCode: selectedCountry
+        }));
+
         setAvailableCities(defaultCities);
       }
     } else {
