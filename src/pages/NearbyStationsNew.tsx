@@ -230,8 +230,8 @@ const NearbyStationsNew = () => {
       if (!data.elements || data.elements.length === 0) {
         // If no stations found, use fallback mock data
         toast({
-          title: "No Stations Found",
-          description: "Could not find fuel stations in this area. Using sample data instead.",
+          title: "No Fuel Centers Found",
+          description: "Could not find fuel centers in this area. Using sample data instead.",
           duration: 3000,
         });
 
@@ -326,16 +326,16 @@ const NearbyStationsNew = () => {
       setFilteredStations(processedStations);
 
       toast({
-        title: "Stations Loaded",
-        description: `Found ${processedStations.length} fuel stations near ${selectedCity || "your location"}`,
+        title: "Fuel Centers Loaded",
+        description: `Found ${processedStations.length} fuel centers near ${selectedCity || "your location"}`,
         duration: 3000,
       });
     } catch (error) {
       console.error("Error fetching stations:", error);
 
       toast({
-        title: "Error Loading Stations",
-        description: "Could not load fuel stations. Using sample data instead.",
+        title: "Error Loading Fuel Centers",
+        description: "Could not load fuel centers. Using sample data instead.",
         variant: "destructive",
         duration: 5000,
       });
@@ -397,10 +397,10 @@ const NearbyStationsNew = () => {
     const mockStations = [];
 
     const stationNames = [
-      "Shell Express Station", "Exxon Fuel Center", "Chevron Gas & Go", "BP Premium Station",
-      "Marathon Pit Stop", "Citgo Quick Fuel", "Texaco Star Stop", "Mobil Fuel Plus",
-      "Sunoco Ultra Service", "Phillips 66 Station", "Valero Fresh Start", "Gulf Express",
-      "ARCO Gas Point", "ConocoPhillips Station", "Speedway Junction", "76 Gas & Market"
+      "Shell Express Fuel Center", "Exxon Fuel Center", "Chevron Fuel & Go", "BP Premium Fuel Center",
+      "Marathon Fuel Stop", "Citgo Quick Fuel", "Texaco Fuel Stop", "Mobil Fuel Plus",
+      "Sunoco Ultra Fuel Center", "Phillips 66 Fuel Center", "Valero Fresh Fuel", "Gulf Express Fuel",
+      "ARCO Fuel Point", "ConocoPhillips Fuel Center", "Speedway Fuel Junction", "76 Fuel & Market"
     ];
 
     const streetNames = [
@@ -1636,25 +1636,25 @@ const NearbyStationsNew = () => {
 
                               <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">{station.address}</p>
 
-                              <div className="grid grid-cols-3 gap-2 mb-3">
+                              <div className="grid grid-cols-3 gap-2 mb-3 max-w-full overflow-hidden">
                                 {station.fuelTypes.includes('regular') && (
                                   <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md text-center">
-                                    <div className="text-xs text-gray-500 dark:text-gray-400">Regular</div>
-                                    <div className="font-bold dark:text-white">${station.priceRegular.toFixed(2)}</div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">Regular</div>
+                                    <div className="font-bold dark:text-white text-sm sm:text-base">${station.priceRegular.toFixed(2)}</div>
                                   </div>
                                 )}
 
                                 {station.fuelTypes.includes('premium') && (
                                   <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md text-center">
-                                    <div className="text-xs text-gray-500 dark:text-gray-400">Premium</div>
-                                    <div className="font-bold dark:text-white">${station.pricePremium.toFixed(2)}</div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">Premium</div>
+                                    <div className="font-bold dark:text-white text-sm sm:text-base">${station.pricePremium.toFixed(2)}</div>
                                   </div>
                                 )}
 
                                 {station.fuelTypes.includes('diesel') && (
                                   <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md text-center">
-                                    <div className="text-xs text-gray-500 dark:text-gray-400">Diesel</div>
-                                    <div className="font-bold dark:text-white">${station.priceDiesel.toFixed(2)}</div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">Diesel</div>
+                                    <div className="font-bold dark:text-white text-sm sm:text-base">${station.priceDiesel.toFixed(2)}</div>
                                   </div>
                                 )}
                               </div>
@@ -1687,11 +1687,11 @@ const NearbyStationsNew = () => {
                               </div>
                             </CardContent>
 
-                            <CardFooter className="p-4 pt-0 flex justify-between">
+                            <CardFooter className="p-4 pt-0 flex flex-col sm:flex-row gap-2 sm:gap-0 sm:justify-between">
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="w-[48%] dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                                className="w-full sm:w-[48%] dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
                                 onClick={() => {
                                   if (userLocation) {
                                     window.open(`https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${station.coordinates[1]},${station.coordinates[0]}&travelmode=driving`, '_blank');
@@ -1711,7 +1711,7 @@ const NearbyStationsNew = () => {
 
                               <Button
                                 size="sm"
-                                className="w-[48%] bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+                                className="w-full sm:w-[48%] bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
                                 onClick={() => {
                                   setSelectedStation(station);
                                   setShowStationDetails(true);

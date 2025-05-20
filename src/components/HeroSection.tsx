@@ -37,7 +37,7 @@ const HeroSection = () => {
     {
       id: 1,
       type: 'price_drop',
-      message: 'Gas prices dropping in your area',
+      message: 'Fuel prices dropping in your area',
       location: 'Downtown',
       time: '2 min ago',
       icon: TrendingDown,
@@ -365,7 +365,7 @@ const HeroSection = () => {
                         key={liveStats.activeUsers}
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
-                        className="text-sm sm:text-base font-bold truncate w-full"
+                        className="text-sm sm:text-base font-bold truncate w-full text-white"
                       >
                         {(liveStats.activeUsers / 1000).toFixed(1)}k
                       </motion.div>
@@ -379,7 +379,7 @@ const HeroSection = () => {
                         key={liveStats.servicesInProgress}
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
-                        className="text-sm sm:text-base font-bold truncate w-full"
+                        className="text-sm sm:text-base font-bold truncate w-full text-white"
                       >
                         {liveStats.servicesInProgress}
                       </motion.div>
@@ -393,7 +393,7 @@ const HeroSection = () => {
                         key={liveStats.stationsOnline}
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
-                        className="text-sm sm:text-base font-bold truncate w-full"
+                        className="text-sm sm:text-base font-bold truncate w-full text-white"
                       >
                         {liveStats.stationsOnline.toLocaleString()}
                       </motion.div>
@@ -407,7 +407,7 @@ const HeroSection = () => {
                         key={liveStats.totalSavings}
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
-                        className="text-sm sm:text-base font-bold truncate w-full"
+                        className="text-sm sm:text-base font-bold truncate w-full text-white"
                       >
                         ${Math.floor(liveStats.totalSavings/1000)}k
                       </motion.div>

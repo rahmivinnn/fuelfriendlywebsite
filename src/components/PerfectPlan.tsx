@@ -11,7 +11,7 @@ const PerfectPlan = () => {
     {
       name: "Station Owner",
       price: "FREE",
-      description: "Perfect for gas station owners looking to expand their business",
+      description: "Perfect for fuel center owners looking to expand their business",
       features: [
         "Register your station on our platform",
         "Receive orders from customers",

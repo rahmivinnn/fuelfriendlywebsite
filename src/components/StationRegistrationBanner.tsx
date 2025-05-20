@@ -38,7 +38,7 @@ const StationRegistrationBanner: React.FC<StationRegistrationBannerProps> = ({
         <div className="block lg:hidden">
           <div className="w-full p-5 flex flex-col justify-center">
             <h2 className="text-xl font-bold text-white mb-3">
-              Register your station today for a better future in fuel business!
+              Register your fuel center today for a better future in fuel business!
             </h2>
 
             <div className="flex flex-col gap-2 mt-3">
@@ -46,21 +46,21 @@ const StationRegistrationBanner: React.FC<StationRegistrationBannerProps> = ({
                 className="bg-gray-900 text-white hover:bg-gray-800 w-full"
                 onClick={handleRegisterClick}
               >
-                Register Station
+                Register Fuel Center
               </Button>
 
               <Button
                 className="bg-transparent border border-white text-white hover:bg-white/10 w-full"
                 onClick={handleFindStationsClick}
               >
-                Find Nearby Stations
+                Find Nearby Fuel Centers
               </Button>
             </div>
 
             <div className="mt-4 flex items-start">
               <AlertCircle size={14} className="text-white mr-2 mt-0.5 flex-shrink-0" />
               <p className="text-white/90 text-xs">
-                Registration is completely free for station owners. Join our platform and start growing your business today!
+                Registration is completely free for fuel center owners. Join our platform and start growing your business today!
               </p>
             </div>
           </div>
@@ -75,7 +75,7 @@ const StationRegistrationBanner: React.FC<StationRegistrationBannerProps> = ({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              Register your station today for a better future in fuel business!
+              Register your fuel center today for a better future in fuel business!
             </motion.h2>
 
             <div className="flex flex-row gap-4 mt-4 justify-center">
@@ -87,7 +87,7 @@ const StationRegistrationBanner: React.FC<StationRegistrationBannerProps> = ({
                   className="bg-gray-900 text-white hover:bg-gray-800 px-6 py-5 text-lg"
                   onClick={handleRegisterClick}
                 >
-                  Register Station
+                  Register Fuel Center
                 </Button>
               </motion.div>
 
@@ -99,7 +99,7 @@ const StationRegistrationBanner: React.FC<StationRegistrationBannerProps> = ({
                   className="bg-transparent border-2 border-white text-white hover:bg-white/10 px-6 py-5 text-lg"
                   onClick={handleFindStationsClick}
                 >
-                  Find Nearby Stations
+                  Find Nearby Fuel Centers
                 </Button>
               </motion.div>
             </div>
@@ -107,7 +107,7 @@ const StationRegistrationBanner: React.FC<StationRegistrationBannerProps> = ({
             <div className="mt-6 flex items-start justify-center">
               <AlertCircle size={18} className="text-white mr-2 mt-0.5 flex-shrink-0" />
               <p className="text-white/90 text-base max-w-xl">
-                Registration is completely free for station owners. Join our platform and start growing your business today!
+                Registration is completely free for fuel center owners. Join our platform and start growing your business today!
               </p>
             </div>
           </div>

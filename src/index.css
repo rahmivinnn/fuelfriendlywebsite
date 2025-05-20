@@ -321,6 +321,29 @@ button, a, input, select, textarea {
   [data-radix-popper-content-wrapper] {
     max-width: 95vw !important;
   }
+
+  /* Improve text visibility in light mode */
+  .bg-white\/20, .bg-white\/30, .bg-white\/40 {
+    color: rgba(0, 0, 0, 0.8) !important;
+  }
+
+  /* Ensure proper spacing for stacked buttons on mobile */
+  .flex-col > button, .flex-col > .button {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Improve mobile form inputs */
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+  }
+
+  /* Fix for long text in badges and pills */
+  .badge, [class*="badge-"], [class*="pill-"] {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 @media (min-width: 640px) {

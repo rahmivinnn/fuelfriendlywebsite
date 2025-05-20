@@ -457,11 +457,11 @@ const NavBar = () => {
                           </div>
 
                           <div className="grid grid-cols-2 gap-3">
-                            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 text-white dark:text-white">
                               <div className="text-xs font-medium mb-1">Nearby</div>
                               <div className="text-sm">12 stations</div>
                             </div>
-                            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 text-white dark:text-white">
                               <div className="text-xs font-medium mb-1">Saved</div>
                               <div className="text-sm">3 locations</div>
                             </div>

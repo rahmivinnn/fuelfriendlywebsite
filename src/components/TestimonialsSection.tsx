@@ -53,7 +53,7 @@ const TestimonialsSection = () => {
       likes: 156
     },
     {
-      text: "I travel a lot for work, and FuelFriendly has been a game-changer. I can plan my routes based on fuel prices and availability. The Pump-Side service saved me when I ran out of gas on a remote highway!",
+      text: "I travel a lot for work, and FuelFriendly has been a game-changer. I can plan my routes based on fuel prices and availability. The Pump-Side service tracking feature helps me manage my fuel needs efficiently during long trips!",
       author: "Emma T.",
       role: "Sales Representative",
       company: "Global Tech Solutions",

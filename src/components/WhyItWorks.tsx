@@ -22,14 +22,14 @@ const WhyItWorks = () => {
   const reasons = [
     {
       title: "Innovative Technology",
-      description: "Our platform connects customers, fuel stations, and pump side service providers in real-time for seamless service.",
+      description: "Our platform connects customers, fuel centers, and pump side service providers in real-time for seamless service.",
       icon: <Zap className="h-6 w-6" />,
       color: "text-purple-600",
       bgColor: "bg-purple-100"
     },
     {
       title: "Verified Partners",
-      description: "All fuel stations and pump side service providers undergo thorough verification for quality assurance.",
+      description: "All fuel centers and pump side service providers undergo thorough verification for quality assurance.",
       icon: <Shield className="h-6 w-6" />,
       color: "text-blue-600",
       bgColor: "bg-blue-100"
@@ -80,7 +80,7 @@ const WhyItWorks = () => {
               Why It Works
             </h2>
             <p className="text-gray-500 dark:text-gray-300 md:text-xl/relaxed">
-              FuelFriendly revolutionizes the way you refuel by bringing the gas station to you. Here's why our approach is changing the game:
+              FuelFriendly revolutionizes the way you refuel. Here's why our approach is changing the game:
             </p>
           </div>
         </motion.div>
@@ -153,7 +153,7 @@ const WhyItWorks = () => {
               Ready to Experience the Future of Fueling?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 max-w-2xl">
-              Join thousands of satisfied customers who have made the switch to our pump side service. Save time, avoid gas station lines, and never worry about running on empty again.
+              Join thousands of satisfied customers who have made the switch to our pump side service. Save time, avoid fuel center lines, and never worry about running on empty again.
             </p>
           </div>
 

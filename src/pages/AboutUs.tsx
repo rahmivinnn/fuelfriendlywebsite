@@ -79,7 +79,7 @@ const AboutUs = () => {
           name: "David Rodriguez",
           role: "Head of Partnerships",
           image: "https://randomuser.me/api/portraits/men/67.jpg",
-          bio: "Building relationships with fuel stations and convenience stores worldwide."
+          bio: "Building relationships with fuel centers and convenience stores worldwide."
         }
       ]);
 
@@ -200,7 +200,7 @@ const AboutUs = () => {
                 onClick={() => navigate('/nearby-stations')}
                 className="border-white text-white hover:bg-white/10 rounded-full px-8"
               >
-                Find Nearby Stations
+                Find Nearby Fuel Centers
                 <MapPin className="ml-2 h-5 w-5" />
               </Button>
             </div>
@@ -220,8 +220,8 @@ const AboutUs = () => {
               className="p-6 cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
               onClick={() => {
                 toast({
-                  title: "Partner Stations",
-                  description: `We have ${stats.stations.toLocaleString()}+ partner stations worldwide`,
+                  title: "Partner Fuel Centers",
+                  description: `We have ${stats.stations.toLocaleString()}+ partner fuel centers worldwide`,
                   duration: 2000,
                 });
               }}
@@ -230,7 +230,7 @@ const AboutUs = () => {
                 {stats.stations.toLocaleString()}+
               </div>
               <div className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
-                Partner Stations
+                Partner Fuel Centers
               </div>
             </motion.div>
 
@@ -677,7 +677,7 @@ const AboutUs = () => {
               Join the Pump-Side Service Community
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-              Whether you're a station owner looking to expand your reach or a customer seeking convenience, we're here to serve you.
+              Whether you're a fuel center owner looking to expand your reach or a customer seeking convenience, we're here to serve you.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button
@@ -694,7 +694,7 @@ const AboutUs = () => {
                 onClick={() => navigate('/nearby-stations')}
                 className="border-green-600 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/50 rounded-full px-8"
               >
-                Find Nearby Stations
+                Find Nearby Fuel Centers
                 <MapPin className="ml-2 h-5 w-5" />
               </Button>
             </div>
