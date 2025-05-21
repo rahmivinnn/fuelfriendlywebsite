@@ -279,52 +279,52 @@ const EarningsTransactions: React.FC = () => {
 
   return (
     <DashboardLayout title="Earning and Transition">
-      <div className="p-6">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold">Earning and Transition</h2>
-          <p className="text-gray-500 dark:text-gray-400">Stay on Top of Your Earnings and Payouts</p>
+      <div className="p-4 md:p-6 space-y-6">
+        <div className="space-y-2">
+          <h2 className="text-xl md:text-2xl font-bold">Earning and Transition</h2>
+          <p className="text-sm md:text-base text-gray-500 dark:text-gray-400">Stay on Top of Your Earnings and Payouts</p>
         </div>
 
         {/* Earning Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
           {earningCards.map((card, index) => (
             <Card key={index} className="bg-white dark:bg-gray-800">
-              <CardHeader className="pb-2">
+              <CardHeader className="pb-2 p-4">
                 <CardTitle className="text-xs text-gray-500 dark:text-gray-400 font-medium">
                   {card.title}
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-4">
                 <div className="flex justify-between items-center">
                   <div>
-                    <p className="text-2xl font-bold">{card.amount}</p>
+                    <p className="text-xl md:text-2xl font-bold">{card.amount}</p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       {card.transactions} Transitions
                     </p>
                   </div>
-                  <div className="w-24 h-10">{renderTrendLine(card.trend)}</div>
+                  <div className="w-20 md:w-24 h-10">{renderTrendLine(card.trend)}</div>
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           {/* Bank Card */}
           <Card className="bg-white dark:bg-gray-800">
             <CardContent className="p-0">
-              <div className="bg-green-500 text-white p-6 rounded-t-lg">
-                <div className="flex justify-between items-start mb-8">
+              <div className="bg-green-500 text-white p-4 md:p-6 rounded-t-lg space-y-4 md:space-y-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div>
-                    <p className="text-sm font-medium mb-1">BANK NAME</p>
+                    <p className="text-sm font-medium">BANK NAME</p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-xs mb-1">Available Balance:</p>
-                    <p className="text-xl font-bold">$ 7,284.00</p>
+                  <div className="text-left sm:text-right">
+                    <p className="text-xs">Available Balance:</p>
+                    <p className="text-lg md:text-xl font-bold">$ 7,284.00</p>
                   </div>
                 </div>
-                <div className="mb-4">
-                  <p className="text-xl tracking-widest">5000 0000 0000 0000</p>
+                <div>
+                  <p className="text-lg md:text-xl tracking-widest break-all">5000 0000 0000 0000</p>
                 </div>
                 <div className="flex justify-between items-center">
                   <div>
@@ -337,20 +337,20 @@ const EarningsTransactions: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div className="p-6">
-                <p className="text-lg font-medium mb-4">Withdraw to</p>
-                <div className="grid grid-cols-3 gap-4 mb-4">
-                  <Button variant="outline" className="flex flex-col items-center justify-center h-20">
-                    <img src="/paypal.svg" alt="PayPal" className="h-6 mb-2" />
-                    <span className="text-xs">Paypal</span>
+              <div className="p-4 md:p-6 space-y-4">
+                <p className="text-base md:text-lg font-medium">Withdraw to</p>
+                <div className="grid grid-cols-3 gap-2 md:gap-4">
+                  <Button variant="outline" className="flex flex-col items-center justify-center h-16 md:h-20 p-2">
+                    <img src="/paypal.svg" alt="PayPal" className="h-4 md:h-6 mb-1 md:mb-2" />
+                    <span className="text-[10px] md:text-xs">Paypal</span>
                   </Button>
-                  <Button variant="outline" className="flex flex-col items-center justify-center h-20">
-                    <img src="/visa-mastercard.svg" alt="Credit Card" className="h-6 mb-2" />
-                    <span className="text-xs">Credit card</span>
+                  <Button variant="outline" className="flex flex-col items-center justify-center h-16 md:h-20 p-2">
+                    <img src="/visa-mastercard.svg" alt="Credit Card" className="h-4 md:h-6 mb-1 md:mb-2" />
+                    <span className="text-[10px] md:text-xs">Credit card</span>
                   </Button>
-                  <Button variant="outline" className="flex flex-col items-center justify-center h-20">
-                    <img src="/apple-pay.svg" alt="Apple Pay" className="h-6 mb-2" />
-                    <span className="text-xs">Apple Pay</span>
+                  <Button variant="outline" className="flex flex-col items-center justify-center h-16 md:h-20 p-2">
+                    <img src="/apple-pay.svg" alt="Apple Pay" className="h-4 md:h-6 mb-1 md:mb-2" />
+                    <span className="text-[10px] md:text-xs">Apple Pay</span>
                   </Button>
                 </div>
                 <Button className="w-full bg-green-500 hover:bg-green-600" onClick={handleWithdraw}>
@@ -362,9 +362,9 @@ const EarningsTransactions: React.FC = () => {
 
           {/* Attached Credit Card */}
           <Card className="bg-white dark:bg-gray-800">
-            <CardHeader className="flex flex-row items-center justify-between">
+            <CardHeader className="flex flex-row items-center justify-between p-4 md:p-6">
               <div>
-                <CardTitle>Attached Credit Card</CardTitle>
+                <CardTitle className="text-base md:text-lg">Attached Credit Card</CardTitle>
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -378,138 +378,29 @@ const EarningsTransactions: React.FC = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 md:space-y-4 p-4 md:p-6">
               {paymentMethods.map((method, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-4 border rounded-lg"
+                  className="flex items-center justify-between p-3 md:p-4 border rounded-lg"
                 >
                   <div className="flex items-center">
-                    <img src={method.icon} alt={method.name} className="h-8 w-8 mr-4" />
+                    <img src={method.icon} alt={method.name} className="h-6 md:h-8 w-6 md:w-8 mr-3 md:mr-4" />
                     <div>
-                      <p className="font-medium">{method.name}</p>
-                      <p className="text-xs text-gray-500">**** **** **** {method.lastFour}</p>
+                      <p className="text-sm md:text-base font-medium">{method.name}</p>
+                      <p className="text-[10px] md:text-xs text-gray-500">**** **** **** {method.lastFour}</p>
                     </div>
                   </div>
                   <img
                     src={`/${method.type === 'mastercard' ? 'mastercard' : method.type === 'paypal' ? 'paypal' : 'applepay'}-logo.svg`}
                     alt={`${method.name} Logo`}
-                    className="h-8"
+                    className="h-6 md:h-8"
                   />
                 </div>
               ))}
-              <Button
-                className="w-full bg-green-500 hover:bg-green-600"
-                onClick={handleAddPaymentMethod}
-              >
-                Add Now
-              </Button>
             </CardContent>
           </Card>
         </div>
-
-        {/* Transactions */}
-        <Card className="bg-white dark:bg-gray-800">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <div className="flex items-center">
-              <CardTitle>Transactions</CardTitle>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Select value={timeFilter} onValueChange={setTimeFilter}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select time period" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Today">Today</SelectItem>
-                  <SelectItem value="This Week">This Week</SelectItem>
-                  <SelectItem value="Last Month">Last Month</SelectItem>
-                  <SelectItem value="Last 3 Months">Last 3 Months</SelectItem>
-                  <SelectItem value="This Year">This Year</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button variant="outline" size="icon">
-                <Filter className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="icon" onClick={handleExport}>
-                <Download className="h-4 w-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Customer Name</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Invoice ID</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {transactions.map((transaction) => (
-                  <TableRow key={transaction.id}>
-                    <TableCell className="font-medium">{transaction.customerName}</TableCell>
-                    <TableCell>{transaction.date}</TableCell>
-                    <TableCell>{transaction.invoiceId}</TableCell>
-                    <TableCell>{transaction.amount}</TableCell>
-                    <TableCell>
-                      <Badge
-                        className={
-                          transaction.status === 'received'
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                            : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
-                        }
-                      >
-                        {transaction.status === 'received' ? 'Received' : 'Withdraw'}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>View Details</DropdownMenuItem>
-                          <DropdownMenuItem>Download Invoice</DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-600">Report Issue</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-          <CardFooter className="flex items-center justify-between">
-            <Button variant="outline" size="sm" onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}>
-              <ChevronLeft className="h-4 w-4 mr-2" />
-              Previous
-            </Button>
-            <div className="flex items-center space-x-2">
-              {[1, 2, 3, '...', 8, 9, 10].map((page, i) => (
-                <Button
-                  key={i}
-                  variant={currentPage === page ? 'default' : 'outline'}
-                  size="sm"
-                  className={`w-9 ${typeof page === 'string' ? 'cursor-default' : ''}`}
-                  onClick={() => typeof page === 'number' && setCurrentPage(page)}
-                  disabled={typeof page === 'string'}
-                >
-                  {page}
-                </Button>
-              ))}
-            </div>
-            <Button variant="outline" size="sm" onClick={() => setCurrentPage(currentPage + 1)}>
-              Next
-              <ChevronRight className="h-4 w-4 ml-2" />
-            </Button>
-          </CardFooter>
-        </Card>
       </div>
     </DashboardLayout>
   );

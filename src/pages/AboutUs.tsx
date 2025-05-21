@@ -81,14 +81,14 @@ const AboutUs = () => {
           <motion.div variants={itemVariants}>
             <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">What We Do</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-              We offer on-demand fuel service and a wide selection of convenience store items, all accessible through our easy-to-use mobile app. From snacks and drinks to toiletries and emergency fuel top-ups, we've got you covered—whenever and wherever you need it.
+              We offer convenient pump-side service and a wide selection of convenience store items, all accessible through our easy-to-use mobile app. From snacks and drinks to toiletries and emergency fuel assistance, we've got you covered at participating gas stations.
             </p>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-start">
                 <Fuel className="h-6 w-6 text-green-500 mr-2 flex-shrink-0" />
                 <div>
-                  <h3 className="font-medium text-gray-800 dark:text-white">Fuel Delivery</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">On-demand fuel wherever you are</p>
+                  <h3 className="font-medium text-gray-800 dark:text-white">Pump-Side Service</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Convenient fueling at the station</p>
                 </div>
               </div>
               <div className="flex items-start">
