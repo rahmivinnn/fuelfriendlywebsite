@@ -6,7 +6,6 @@ import {
   Zap,
   Shield,
   Clock,
-  MapPin,
   Smartphone,
   Users,
   TrendingUp,
@@ -23,35 +22,29 @@ const WhyItWorks = () => {
   const reasons = [
     {
       title: "Innovative Technology",
-      description: "Our platform connects customers, fuel stations, and delivery partners in real-time for seamless service.",
+      description: "Our platform connects customers, fuel centers, and pump side service providers in real-time for seamless service.",
       icon: <Zap className="h-6 w-6" />,
       color: "text-purple-600",
       bgColor: "bg-purple-100"
     },
     {
       title: "Verified Partners",
-      description: "All fuel stations and delivery partners undergo thorough verification for quality assurance.",
+      description: "All fuel centers and pump side service providers undergo thorough verification for quality assurance.",
       icon: <Shield className="h-6 w-6" />,
       color: "text-blue-600",
       bgColor: "bg-blue-100"
     },
     {
       title: "Time Efficiency",
-      description: "Save valuable time by having fuel delivered directly to your vehicle when and where you need it.",
+      description: "Save valuable time by using our pump side service when and where you need it.",
       icon: <Clock className="h-6 w-6" />,
       color: "text-green-600",
       bgColor: "bg-green-100"
     },
-    {
-      title: "Location Flexibility",
-      description: "Get fuel delivered to your home, office, or anywhere your vehicle is parked within our service area.",
-      icon: <MapPin className="h-6 w-6" />,
-      color: "text-red-600",
-      bgColor: "bg-red-100"
-    },
+
     {
       title: "User-Friendly App",
-      description: "Our intuitive mobile app makes ordering fuel and tracking delivery simple and convenient.",
+      description: "Our intuitive mobile app makes ordering fuel and tracking your service simple and convenient.",
       icon: <Smartphone className="h-6 w-6" />,
       color: "text-cyan-600",
       bgColor: "bg-cyan-100"
@@ -68,7 +61,7 @@ const WhyItWorks = () => {
   const stats = [
     { value: "85%", label: "Time Saved" },
     { value: "24/7", label: "Service Availability" },
-    { value: "15min", label: "Average Delivery Time" },
+    { value: "15min", label: "Average Service Time" },
     { value: "98%", label: "Customer Satisfaction" }
   ];
 
@@ -87,7 +80,7 @@ const WhyItWorks = () => {
               Why It Works
             </h2>
             <p className="text-gray-500 dark:text-gray-300 md:text-xl/relaxed">
-              FuelFriendly revolutionizes the way you refuel by bringing the gas station to you. Here's why our approach is changing the game:
+              FuelFriendly revolutionizes the way you refuel. Here's why our approach is changing the game:
             </p>
           </div>
         </motion.div>
@@ -98,7 +91,6 @@ const WhyItWorks = () => {
             const darkBgColor = reason.bgColor === "bg-purple-100" ? "dark:bg-purple-900/30" :
                                reason.bgColor === "bg-blue-100" ? "dark:bg-blue-900/30" :
                                reason.bgColor === "bg-green-100" ? "dark:bg-green-900/30" :
-                               reason.bgColor === "bg-red-100" ? "dark:bg-red-900/30" :
                                reason.bgColor === "bg-cyan-100" ? "dark:bg-cyan-900/30" :
                                "dark:bg-amber-900/30";
 
@@ -161,7 +153,7 @@ const WhyItWorks = () => {
               Ready to Experience the Future of Fueling?
             </h3>
             <p className="text-gray-600 dark:text-gray-300 max-w-2xl">
-              Join thousands of satisfied customers who have made the switch to on-demand fuel delivery. Save time, avoid gas station lines, and never worry about running on empty again.
+              Join thousands of satisfied customers who have made the switch to our pump side service. Save time, avoid fuel center lines, and never worry about running on empty again.
             </p>
           </div>
 

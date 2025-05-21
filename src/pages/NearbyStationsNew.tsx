@@ -230,8 +230,8 @@ const NearbyStationsNew = () => {
       if (!data.elements || data.elements.length === 0) {
         // If no stations found, use fallback mock data
         toast({
-          title: "No Stations Found",
-          description: "Could not find fuel stations in this area. Using sample data instead.",
+          title: "No Fuel Centers Found",
+          description: "Could not find fuel centers in this area. Using sample data instead.",
           duration: 3000,
         });
 
@@ -326,16 +326,16 @@ const NearbyStationsNew = () => {
       setFilteredStations(processedStations);
 
       toast({
-        title: "Stations Loaded",
-        description: `Found ${processedStations.length} fuel stations near ${selectedCity || "your location"}`,
+        title: "Fuel Centers Loaded",
+        description: `Found ${processedStations.length} fuel centers near ${selectedCity || "your location"}`,
         duration: 3000,
       });
     } catch (error) {
       console.error("Error fetching stations:", error);
 
       toast({
-        title: "Error Loading Stations",
-        description: "Could not load fuel stations. Using sample data instead.",
+        title: "Error Loading Fuel Centers",
+        description: "Could not load fuel centers. Using sample data instead.",
         variant: "destructive",
         duration: 5000,
       });
@@ -397,10 +397,10 @@ const NearbyStationsNew = () => {
     const mockStations = [];
 
     const stationNames = [
-      "Shell Express Station", "Exxon Fuel Center", "Chevron Gas & Go", "BP Premium Station",
-      "Marathon Pit Stop", "Citgo Quick Fuel", "Texaco Star Stop", "Mobil Fuel Plus",
-      "Sunoco Ultra Service", "Phillips 66 Station", "Valero Fresh Start", "Gulf Express",
-      "ARCO Gas Point", "ConocoPhillips Station", "Speedway Junction", "76 Gas & Market"
+      "Shell Express Fuel Center", "Exxon Fuel Center", "Chevron Fuel & Go", "BP Premium Fuel Center",
+      "Marathon Fuel Stop", "Citgo Quick Fuel", "Texaco Fuel Stop", "Mobil Fuel Plus",
+      "Sunoco Ultra Fuel Center", "Phillips 66 Fuel Center", "Valero Fresh Fuel", "Gulf Express Fuel",
+      "ARCO Fuel Point", "ConocoPhillips Fuel Center", "Speedway Fuel Junction", "76 Fuel & Market"
     ];
 
     const streetNames = [
@@ -700,17 +700,60 @@ const NearbyStationsNew = () => {
         setSelectedCity("");
       }
 
-      // If no cities are available for this country, generate some default ones
+      // If no cities are available for this country, generate specific city names
       if (filteredCities.length === 0) {
         const countryName = countries.find(c => c.code === selectedCountry)?.name || "";
-        const defaultCities = [
-          { name: `${countryName} City`, countryCode: selectedCountry },
-          { name: `North ${countryName}`, countryCode: selectedCountry },
-          { name: `South ${countryName}`, countryCode: selectedCountry },
-          { name: `East ${countryName}`, countryCode: selectedCountry },
-          { name: `West ${countryName}`, countryCode: selectedCountry },
-          { name: `Central ${countryName}`, countryCode: selectedCountry },
-        ];
+
+        // Map of countries to their major cities
+        const countryCities: Record<string, string[]> = {
+          // A few examples for common countries
+          'US': ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose'],
+          'GB': ['London', 'Birmingham', 'Manchester', 'Glasgow', 'Liverpool', 'Bristol', 'Edinburgh', 'Leeds', 'Sheffield', 'Newcastle'],
+          'CA': ['Toronto', 'Montreal', 'Vancouver', 'Calgary', 'Edmonton', 'Ottawa', 'Quebec City', 'Winnipeg', 'Hamilton', 'Halifax'],
+          'AU': ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide', 'Gold Coast', 'Canberra', 'Newcastle', 'Wollongong', 'Hobart'],
+          'DE': ['Berlin', 'Hamburg', 'Munich', 'Cologne', 'Frankfurt', 'Stuttgart', 'Düsseldorf', 'Leipzig', 'Dortmund', 'Essen'],
+          'FR': ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice', 'Nantes', 'Strasbourg', 'Montpellier', 'Bordeaux', 'Lille'],
+          'JP': ['Tokyo', 'Yokohama', 'Osaka', 'Nagoya', 'Sapporo', 'Fukuoka', 'Kobe', 'Kyoto', 'Kawasaki', 'Saitama'],
+          'CN': ['Beijing', 'Shanghai', 'Guangzhou', 'Shenzhen', 'Chengdu', 'Tianjin', 'Wuhan', 'Xi\'an', 'Hangzhou', 'Nanjing'],
+          'IN': ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 'Kolkata', 'Ahmedabad', 'Pune', 'Jaipur', 'Lucknow'],
+          'BR': ['São Paulo', 'Rio de Janeiro', 'Brasília', 'Salvador', 'Fortaleza', 'Belo Horizonte', 'Manaus', 'Curitiba', 'Recife', 'Porto Alegre'],
+          'RU': ['Moscow', 'Saint Petersburg', 'Novosibirsk', 'Yekaterinburg', 'Kazan', 'Nizhny Novgorod', 'Chelyabinsk', 'Samara', 'Omsk', 'Rostov-on-Don'],
+          'MX': ['Mexico City', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana', 'León', 'Juárez', 'Zapopan', 'Mérida', 'Cancún'],
+          'ES': ['Madrid', 'Barcelona', 'Valencia', 'Seville', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Las Palmas', 'Bilbao'],
+          'IT': ['Rome', 'Milan', 'Naples', 'Turin', 'Palermo', 'Genoa', 'Bologna', 'Florence', 'Bari', 'Catania'],
+          'NZ': ['Auckland', 'Wellington', 'Christchurch', 'Hamilton', 'Tauranga', 'Napier-Hastings', 'Dunedin', 'Palmerston North', 'Nelson', 'Rotorua'],
+          'ID': ['Jakarta', 'Surabaya', 'Bandung', 'Medan', 'Semarang', 'Makassar', 'Palembang', 'Tangerang', 'Depok', 'Padang'],
+          'ZA': ['Johannesburg', 'Cape Town', 'Durban', 'Pretoria', 'Port Elizabeth', 'Bloemfontein', 'Nelspruit', 'Kimberley', 'Polokwane', 'Pietermaritzburg'],
+          'NG': ['Lagos', 'Kano', 'Ibadan', 'Kaduna', 'Port Harcourt', 'Benin City', 'Maiduguri', 'Zaria', 'Aba', 'Jos'],
+          'EG': ['Cairo', 'Alexandria', 'Giza', 'Shubra El-Kheima', 'Port Said', 'Suez', 'Luxor', 'Aswan', 'Mansoura', 'Tanta'],
+          'AR': ['Buenos Aires', 'Córdoba', 'Rosario', 'Mendoza', 'Tucumán', 'La Plata', 'Mar del Plata', 'Salta', 'Santa Fe', 'San Juan'],
+        };
+
+        // Get cities for the selected country, or generate generic ones if not in our map
+        let cityNames = countryCities[selectedCountry] || [];
+
+        // If we don't have specific cities for this country, generate generic ones with the capital
+        if (cityNames.length === 0) {
+          cityNames = [
+            `${countryName} City`, // Capital city
+            `New ${countryName}`, // New city
+            `Port ${countryName}`, // Port city
+            `${countryName} Heights`, // Heights
+            `${countryName} Valley`, // Valley
+            `${countryName} Springs`, // Springs
+            `${countryName} Harbor`, // Harbor
+            `${countryName} Junction`, // Junction
+            `${countryName} Village`, // Village
+            `${countryName} Town` // Town
+          ];
+        }
+
+        // Create city objects
+        const defaultCities = cityNames.map(cityName => ({
+          name: cityName,
+          countryCode: selectedCountry
+        }));
+
         setAvailableCities(defaultCities);
       }
     } else {
@@ -1593,25 +1636,25 @@ const NearbyStationsNew = () => {
 
                               <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">{station.address}</p>
 
-                              <div className="grid grid-cols-3 gap-2 mb-3">
+                              <div className="grid grid-cols-3 gap-2 mb-3 max-w-full overflow-hidden">
                                 {station.fuelTypes.includes('regular') && (
                                   <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md text-center">
-                                    <div className="text-xs text-gray-500 dark:text-gray-400">Regular</div>
-                                    <div className="font-bold dark:text-white">${station.priceRegular.toFixed(2)}</div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">Regular</div>
+                                    <div className="font-bold dark:text-white text-sm sm:text-base">${station.priceRegular.toFixed(2)}</div>
                                   </div>
                                 )}
 
                                 {station.fuelTypes.includes('premium') && (
                                   <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md text-center">
-                                    <div className="text-xs text-gray-500 dark:text-gray-400">Premium</div>
-                                    <div className="font-bold dark:text-white">${station.pricePremium.toFixed(2)}</div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">Premium</div>
+                                    <div className="font-bold dark:text-white text-sm sm:text-base">${station.pricePremium.toFixed(2)}</div>
                                   </div>
                                 )}
 
                                 {station.fuelTypes.includes('diesel') && (
                                   <div className="bg-gray-100 dark:bg-gray-700 p-2 rounded-md text-center">
-                                    <div className="text-xs text-gray-500 dark:text-gray-400">Diesel</div>
-                                    <div className="font-bold dark:text-white">${station.priceDiesel.toFixed(2)}</div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">Diesel</div>
+                                    <div className="font-bold dark:text-white text-sm sm:text-base">${station.priceDiesel.toFixed(2)}</div>
                                   </div>
                                 )}
                               </div>
@@ -1644,11 +1687,11 @@ const NearbyStationsNew = () => {
                               </div>
                             </CardContent>
 
-                            <CardFooter className="p-4 pt-0 flex justify-between">
+                            <CardFooter className="p-4 pt-0 flex flex-col sm:flex-row gap-2 sm:gap-0 sm:justify-between">
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="w-[48%] dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                                className="w-full sm:w-[48%] dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
                                 onClick={() => {
                                   if (userLocation) {
                                     window.open(`https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${station.coordinates[1]},${station.coordinates[0]}&travelmode=driving`, '_blank');
@@ -1668,7 +1711,7 @@ const NearbyStationsNew = () => {
 
                               <Button
                                 size="sm"
-                                className="w-[48%] bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+                                className="w-full sm:w-[48%] bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
                                 onClick={() => {
                                   setSelectedStation(station);
                                   setShowStationDetails(true);

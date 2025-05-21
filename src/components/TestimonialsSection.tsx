@@ -18,7 +18,7 @@ const TestimonialsSection = () => {
   // Expanded testimonials list
   const testimonials = [
     {
-      text: "FuelFriendly has completely changed how I manage fuel for my delivery fleet. The scheduling feature alone has saved us countless hours and improved our efficiency by 30%. The real-time tracking is incredibly accurate!",
+      text: "FuelFriendly has completely changed how I manage fuel for my pump side service fleet. The scheduling feature alone has saved us countless hours and improved our efficiency by 30%. The real-time tracking is incredibly accurate!",
       author: "John D.",
       role: "Fleet Manager",
       company: "Express Logistics",
@@ -53,7 +53,7 @@ const TestimonialsSection = () => {
       likes: 156
     },
     {
-      text: "I travel a lot for work, and FuelFriendly has been a game-changer. I can plan my routes based on fuel prices and availability. The emergency fuel delivery feature saved me when I ran out of gas on a remote highway!",
+      text: "I travel a lot for work, and FuelFriendly has been a game-changer. I can plan my routes based on fuel prices and availability. The Pump-Side service tracking feature helps me manage my fuel needs efficiently during long trips!",
       author: "Emma T.",
       role: "Sales Representative",
       company: "Global Tech Solutions",

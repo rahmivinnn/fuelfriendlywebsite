@@ -313,8 +313,8 @@ const MapSection = () => {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <div className="flex flex-col items-start space-y-4">
-          <div className="space-y-2 max-w-3xl">
+        <div className="flex flex-col items-center text-center space-y-4">
+          <div className="space-y-2 max-w-3xl mx-auto">
             <motion.h2
               className="text-3xl font-bold tracking-tighter md:text-4xl dark:text-white"
               initial={{ opacity: 0, y: 20 }}

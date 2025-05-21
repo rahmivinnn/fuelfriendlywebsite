@@ -28,7 +28,7 @@ const HeroSection = () => {
 
   const [liveStats, setLiveStats] = useState({
     activeUsers: 12483,
-    deliveriesInProgress: 347,
+    servicesInProgress: 347,
     stationsOnline: 1289,
     totalSavings: 1245678
   });
@@ -37,7 +37,7 @@ const HeroSection = () => {
     {
       id: 1,
       type: 'price_drop',
-      message: 'Gas prices dropping in your area',
+      message: 'Fuel prices dropping in your area',
       location: 'Downtown',
       time: '2 min ago',
       icon: TrendingDown,
@@ -63,110 +63,10 @@ const HeroSection = () => {
     }
   ]);
 
-  // Simulate real-time data updates
+  // Real-time data updates disabled
   useEffect(() => {
-    // Update fuel prices randomly
-    const priceInterval = setInterval(() => {
-      setFuelPrices(prev => {
-        const randomChange = (Math.random() * 0.04) - 0.02; // Random change between -0.02 and +0.02
-        const newRegular = Math.max(2.5, Math.min(4.5, prev.regular + randomChange)).toFixed(2);
-
-        return {
-          regular: parseFloat(newRegular),
-          premium: parseFloat((parseFloat(newRegular) + 0.40).toFixed(2)),
-          diesel: parseFloat((parseFloat(newRegular) + 0.20).toFixed(2)),
-          lastUpdated: new Date().toLocaleTimeString()
-        };
-      });
-    }, 30000); // Update every 30 seconds
-
-    // Update live stats
-    const statsInterval = setInterval(() => {
-      setLiveStats(prev => ({
-        activeUsers: prev.activeUsers + Math.floor(Math.random() * 10) - 3,
-        deliveriesInProgress: prev.deliveriesInProgress + Math.floor(Math.random() * 5) - 2,
-        stationsOnline: prev.stationsOnline + Math.floor(Math.random() * 3) - 1,
-        totalSavings: prev.totalSavings + Math.floor(Math.random() * 1000)
-      }));
-    }, 1000); // Update every second for more real-time feel
-
-    // Add new alerts occasionally
-    const alertInterval = setInterval(() => {
-      if (Math.random() > 0.7) { // 30% chance of new alert
-        const alertTypes = [
-          {
-            type: 'price_drop',
-            message: 'Gas prices dropping in your area',
-            icon: TrendingDown,
-            color: 'text-green-500'
-          },
-          {
-            type: 'price_increase',
-            message: 'Slight price increase detected',
-            icon: TrendingUp,
-            color: 'text-red-500'
-          },
-          {
-            type: 'high_demand',
-            message: 'High demand in your region',
-            icon: AlertTriangle,
-            color: 'text-amber-500'
-          },
-          {
-            type: 'new_station',
-            message: 'New station joined the network',
-            icon: MapPin,
-            color: 'text-blue-500'
-          },
-          {
-            type: 'promotion',
-            message: 'New discount available',
-            icon: DollarSign,
-            color: 'text-green-500'
-          }
-        ];
-
-        const locations = ['Downtown', 'Uptown', 'Westside', 'Eastside', 'Suburbs', 'City Center', 'Highway 95'];
-        const randomAlert = alertTypes[Math.floor(Math.random() * alertTypes.length)];
-        const randomLocation = locations[Math.floor(Math.random() * locations.length)];
-
-        const newAlert = {
-          id: Date.now(),
-          ...randomAlert,
-          location: randomLocation,
-          time: 'Just now'
-        };
-
-        setAlerts(prev => [newAlert, ...prev.slice(0, 9)]); // Keep only 10 most recent alerts
-
-        // Show toast for new alert
-        toast({
-          title: "Real-time Update",
-          description: `${newAlert.message} in ${newAlert.location}`,
-          duration: 3000,
-        });
-      }
-
-      // Update time on existing alerts
-      setAlerts(prev => prev.map(alert => {
-        if (alert.time === 'Just now') {
-          return { ...alert, time: '1 min ago' };
-        } else if (alert.time === '1 min ago') {
-          return { ...alert, time: '2 min ago' };
-        } else if (alert.time.includes('min ago')) {
-          const mins = parseInt(alert.time.split(' ')[0]);
-          return { ...alert, time: `${mins + 1} min ago` };
-        }
-        return alert;
-      }));
-    }, 20000); // Check every 20 seconds
-
-    return () => {
-      clearInterval(priceInterval);
-      clearInterval(statsInterval);
-      clearInterval(alertInterval);
-    };
-  }, [toast]);
+    // Static data is used instead of real-time updates
+  }, []);
 
   const handleRegisterClick = () => {
     // Navigate immediately without delay
@@ -224,7 +124,7 @@ const HeroSection = () => {
                 The Best Way To Fuel - Anytime, Anywhere!
               </h1>
               <p className="text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                The ultimate solution for modern fuel needs. Find and order fuel, schedule deliveries, and pay with ease - all from one convenient app.
+                The ultimate solution for modern fuel needs. Find and order fuel, Schedule Pump-Side service, and pay with ease - all from one convenient app.
               </p>
             </div>
 
@@ -432,7 +332,7 @@ const HeroSection = () => {
 
                 {/* Live stats overlay */}
                 <motion.div
-                  className="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg p-3 text-white cursor-pointer"
+                  className="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg p-2 sm:p-3 text-white cursor-pointer overflow-hidden"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
@@ -456,44 +356,44 @@ const HeroSection = () => {
                       <Maximize2 size={14} />
                     </motion.div>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3 text-center">
                     <motion.div
                       whileHover={{ y: -2 }}
-                      className="bg-black/30 p-2 rounded-lg"
+                      className="bg-black/30 p-1.5 sm:p-2 rounded-lg overflow-hidden"
                     >
                       <motion.div
                         key={liveStats.activeUsers}
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
-                        className="text-lg font-bold"
+                        className="text-sm sm:text-base font-bold truncate w-full text-white"
                       >
-                        {liveStats.activeUsers.toLocaleString()}
+                        {(liveStats.activeUsers / 1000).toFixed(1)}k
                       </motion.div>
                       <div className="text-xs text-gray-300">Active Users</div>
                     </motion.div>
                     <motion.div
                       whileHover={{ y: -2 }}
-                      className="bg-black/30 p-2 rounded-lg"
+                      className="bg-black/30 p-1.5 sm:p-2 rounded-lg overflow-hidden"
                     >
                       <motion.div
-                        key={liveStats.deliveriesInProgress}
+                        key={liveStats.servicesInProgress}
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
-                        className="text-lg font-bold"
+                        className="text-sm sm:text-base font-bold truncate w-full text-white"
                       >
-                        {liveStats.deliveriesInProgress}
+                        {liveStats.servicesInProgress}
                       </motion.div>
-                      <div className="text-xs text-gray-300">Deliveries</div>
+                      <div className="text-xs text-gray-300">Services</div>
                     </motion.div>
                     <motion.div
                       whileHover={{ y: -2 }}
-                      className="bg-black/30 p-2 rounded-lg"
+                      className="bg-black/30 p-1.5 sm:p-2 rounded-lg overflow-hidden"
                     >
                       <motion.div
                         key={liveStats.stationsOnline}
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
-                        className="text-lg font-bold"
+                        className="text-sm sm:text-base font-bold truncate w-full text-white"
                       >
                         {liveStats.stationsOnline.toLocaleString()}
                       </motion.div>
@@ -501,13 +401,13 @@ const HeroSection = () => {
                     </motion.div>
                     <motion.div
                       whileHover={{ y: -2 }}
-                      className="bg-black/30 p-2 rounded-lg"
+                      className="bg-black/30 p-1.5 sm:p-2 rounded-lg overflow-hidden"
                     >
                       <motion.div
                         key={liveStats.totalSavings}
                         initial={{ scale: 1.2 }}
                         animate={{ scale: 1 }}
-                        className="text-lg font-bold"
+                        className="text-sm sm:text-base font-bold truncate w-full text-white"
                       >
                         ${Math.floor(liveStats.totalSavings/1000)}k
                       </motion.div>
@@ -568,7 +468,7 @@ const HeroSection = () => {
             </div>
 
             <p className="text-gray-600 mb-6">
-              Choose your platform to download the FuelFriendly app and start enjoying convenient fuel services.
+              Choose your platform to download the FuelFriendly app and start enjoying convenient pump side services.
             </p>
 
             <div className="space-y-3">
@@ -752,7 +652,7 @@ const HeroSection = () => {
                   >
                     <div className="text-sm text-gray-500">Active Users</div>
                     <motion.div
-                      className="text-2xl font-bold text-blue-600"
+                      className="text-xl sm:text-2xl font-bold text-blue-600 truncate min-w-0 overflow-hidden"
                       key={liveStats.activeUsers}
                       initial={{ scale: 1.1 }}
                       animate={{ scale: 1 }}
@@ -766,20 +666,20 @@ const HeroSection = () => {
                     whileHover={{ y: -2 }}
                     onClick={() => {
                       toast({
-                        title: "Deliveries in Progress",
-                        description: `${liveStats.deliveriesInProgress} deliveries currently in progress`,
+                        title: "Services in Progress",
+                        description: `${liveStats.servicesInProgress} services currently in progress`,
                         duration: 2000,
                       });
                     }}
                   >
-                    <div className="text-sm text-gray-500">Deliveries</div>
+                    <div className="text-sm text-gray-500">Services</div>
                     <motion.div
-                      className="text-2xl font-bold text-blue-600"
-                      key={liveStats.deliveriesInProgress}
+                      className="text-xl sm:text-2xl font-bold text-blue-600 truncate min-w-0 overflow-hidden"
+                      key={liveStats.servicesInProgress}
                       initial={{ scale: 1.1 }}
                       animate={{ scale: 1 }}
                     >
-                      {liveStats.deliveriesInProgress}
+                      {liveStats.servicesInProgress}
                     </motion.div>
                   </motion.div>
 
@@ -796,7 +696,7 @@ const HeroSection = () => {
                   >
                     <div className="text-sm text-gray-500">Stations Online</div>
                     <motion.div
-                      className="text-2xl font-bold text-blue-600"
+                      className="text-xl sm:text-2xl font-bold text-blue-600 truncate min-w-0 overflow-hidden"
                       key={liveStats.stationsOnline}
                       initial={{ scale: 1.1 }}
                       animate={{ scale: 1 }}
@@ -818,7 +718,7 @@ const HeroSection = () => {
                   >
                     <div className="text-sm text-gray-500">Total Savings</div>
                     <motion.div
-                      className="text-2xl font-bold text-blue-600"
+                      className="text-xl sm:text-2xl font-bold text-blue-600 truncate min-w-0 overflow-hidden"
                       key={liveStats.totalSavings}
                       initial={{ scale: 1.1 }}
                       animate={{ scale: 1 }}

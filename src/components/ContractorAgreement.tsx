@@ -18,15 +18,15 @@ interface ContractorAgreementProps {
 
 const ContractorAgreement: React.FC<ContractorAgreementProps> = ({ open, onOpenChange }) => {
   const [expandedSections, setExpandedSections] = useState<number[]>([]);
-  
+
   const toggleSection = (sectionIndex: number) => {
-    setExpandedSections(prev => 
-      prev.includes(sectionIndex) 
+    setExpandedSections(prev =>
+      prev.includes(sectionIndex)
         ? prev.filter(i => i !== sectionIndex)
         : [...prev, sectionIndex]
     );
   };
-  
+
   const agreementSections = [
     {
       title: "1. Purpose of the Agreement",
@@ -42,19 +42,19 @@ const ContractorAgreement: React.FC<ContractorAgreementProps> = ({ open, onOpenC
     },
     {
       title: "2. Services of the Contractor",
-      content: `2.1 From time to time, Fuel Friendly LLC may notify you of an opportunity to perform personal shopping and/or delivery services through the Fuel Friendly LLC Platform under this Agreement on behalf of Customers (a "Delivery Opportunity"). You understand and agree that the Customer, not Fuel Friendly LLC, determines the Retailer from which the items are to be retrieved, the items to be retrieved, and the timing of delivery. If you accept a Delivery Opportunity using the Fuel Friendly LLC Platform, you agree to, as applicable, retrieve the Customer's requested items from the Retailer selected by the Customer and deliver them in a safe manner within the delivery window requested by the Customer (the "Services").
+      content: `2.1 From time to time, Fuel Friendly LLC may notify you of an opportunity to perform personal shopping and/or pump side services through the Fuel Friendly LLC Platform under this Agreement on behalf of Customers (a "Pump Side Opportunity"). You understand and agree that the Customer, not Fuel Friendly LLC, determines the Retailer from which the items are to be retrieved, the items to be retrieved, and the timing of service. If you accept a Pump Side Opportunity using the Fuel Friendly LLC Platform, you agree to, as applicable, retrieve the Customer's requested items from the Retailer selected by the Customer and provide pump side service in a safe manner within the service window requested by the Customer (the "Services").
 
 2.2 Fuel Friendly LLC is interested only in the end results to be achieved by you under this Agreement. Fuel Friendly LLC shall have no right to, and shall not, supervise, oversee, direct, or control you, or the manner or method you use to perform the Services under this Agreement. Nor shall Fuel Friendly LLC have a right to control, oversee, direct, or supervise any Personnel (as defined in Section 4.1 below) you may choose to engage to assist you in the provision of the Services under this Agreement. You will be solely responsible for determining the manner and method of performing the Services under this Agreement, and achieving the desired results, in a lawful and safe manner. You acknowledge that Fuel Friendly LLC does not require training as to the performance of the Services under this Agreement.
 
-2.3 You acknowledge that Fuel Friendly LLC does not impose any minimum or maximum amount of Delivery Opportunities that you are required to accept or Services that you are required to provide. You also acknowledge that there is no minimum or maximum number of Delivery Opportunities that Fuel Friendly LLC will make available to you. You are under no obligation to accept any particular Delivery Opportunity that is offered to you. You are not required to be logged in to the Shopper App on any specific date, at any specific time, or for any minimum period of time. You are free to accept or reject any Delivery Opportunity in your business judgment and discretion. If, however, you do accept a Delivery Opportunity, then you are contractually obligated to complete it. You further agree to accept liability for any and all damages resulting from your or your Personnel's failure to complete a Delivery Opportunity in accordance with the terms set forth in this Agreement.`
+2.3 You acknowledge that Fuel Friendly LLC does not impose any minimum or maximum amount of Pump Side Opportunities that you are required to accept or Services that you are required to provide. You also acknowledge that there is no minimum or maximum number of Pump Side Opportunities that Fuel Friendly LLC will make available to you. You are under no obligation to accept any particular Pump Side Opportunity that is offered to you. You are not required to be logged in to the Shopper App on any specific date, at any specific time, or for any minimum period of time. You are free to accept or reject any Pump Side Opportunity in your business judgment and discretion. If, however, you do accept a Pump Side Opportunity, then you are contractually obligated to complete it. You further agree to accept liability for any and all damages resulting from your or your Personnel's failure to complete a Pump Side Opportunity in accordance with the terms set forth in this Agreement.`
     },
     {
       title: "3. Rates and Payment",
-      content: `3.1 You will receive payment for completed Services. Fuel Friendly LLC agrees to transmit to you payment for completed Services within 30 days of performance. The rates for payment components may change at any time, and Fuel Friendly LLC will provide you with notice of the changes in advance of your accepting a Delivery Opportunity through Fuel Friendly LLC's Shopper App. Fuel Friendly LLC does not pay for completed Services by salary or by an hourly rate.
+      content: `3.1 You will receive payment for completed Services. Fuel Friendly LLC agrees to transmit to you payment for completed Services within 30 days of performance. The rates for payment components may change at any time, and Fuel Friendly LLC will provide you with notice of the changes in advance of your accepting a Pump Side Opportunity through Fuel Friendly LLC's Shopper App. Fuel Friendly LLC does not pay for completed Services by salary or by an hourly rate.
 
-3.2 For a Delivery Opportunity that involves both personal shopping and delivery, you will be provided a payment for each delivery, which takes into account factors such as weight of items, number and types of items, estimated distance and time, and any applicable incentive associated with the Delivery Opportunity. Payment components are shown in the Shopper App, and you can review the applicable estimated payments prior to accepting or rejecting a Delivery Opportunity.
+3.2 For a Pump Side Opportunity that involves both personal shopping and pump side service, you will be provided a payment for each service, which takes into account factors such as weight of items, number and types of items, estimated distance and time, and any applicable incentive associated with the Pump Side Opportunity. Payment components are shown in the Shopper App, and you can review the applicable estimated payments prior to accepting or rejecting a Pump Side Opportunity.
 
-3.3 For a Delivery Opportunity that involves delivery only, you will be provided a payment for each delivery, which takes into account factors such as estimated distance and time, and any applicable incentive associated with the Delivery Opportunity. Payment components are shown in the Shopper App, and you can review the applicable estimated payments prior to accepting or rejecting a Delivery Opportunity.`
+3.3 For a Pump Side Opportunity that involves pump side service only, you will be provided a payment for each service, which takes into account factors such as estimated distance and time, and any applicable incentive associated with the Pump Side Opportunity. Payment components are shown in the Shopper App, and you can review the applicable estimated payments prior to accepting or rejecting a Pump Side Opportunity.`
     },
     {
       title: "4. Your Personnel",
@@ -79,7 +79,7 @@ i. Invalidate this Agreement through an improper signature or identification ver
 j. Direct, cause, or permit any of your Personnel to commit any of the violations listed in (a) through (i) of this paragraph.`
     }
   ];
-  
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
@@ -89,7 +89,7 @@ j. Direct, cause, or permit any of your Personnel to commit any of the violation
             This Independent Contractor Agreement (the "Agreement") is made effective as of [Effective Date] by and between [Legal First & Last name / Name of Corporate Entity] ("Contractor," "you," or "your"), and Fuel Friendly LLC, and its subsidiaries, representatives, affiliates, officers, and directors (collectively, "Fuel Friendly LLC," "we," "us," or "our").
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="py-4">
           <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
             <p className="text-amber-700 font-medium">IMPORTANT</p>
@@ -97,11 +97,11 @@ j. Direct, cause, or permit any of your Personnel to commit any of the violation
               YOU ACKNOWLEDGE AT THE OUTSET THAT, FOR THE PURPOSES OF CARRYING OUT THIS AGREEMENT, YOU AGREE TO ALL TERMS AND CONDITIONS SET FORTH IN THIS AGREEMENT. IF YOU DO NOT AGREE TO BE BOUND BY THE TERMS AND CONDITIONS OF THIS AGREEMENT, YOU MAY NOT USE OR ACCESS THE FUEL FRIENDLY LLC PLATFORM TO PERFORM THE SERVICES COVERED BY THIS AGREEMENT.
             </p>
           </div>
-          
+
           <div className="space-y-4">
             {agreementSections.map((section, index) => (
               <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
-                <button 
+                <button
                   className="w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100 text-left font-medium"
                   onClick={() => toggleSection(index)}
                 >
@@ -112,7 +112,7 @@ j. Direct, cause, or permit any of your Personnel to commit any of the violation
                     <ChevronDown className="h-5 w-5 text-gray-500" />
                   )}
                 </button>
-                
+
                 {expandedSections.includes(index) && (
                   <div className="p-4 text-sm whitespace-pre-line">
                     {section.content}
@@ -121,12 +121,12 @@ j. Direct, cause, or permit any of your Personnel to commit any of the violation
               </div>
             ))}
           </div>
-          
+
           <p className="text-sm text-gray-500 mt-6">
             This is an abbreviated version of the agreement. The full agreement contains additional sections including Relationship of the Parties, Contractor's Representations and Indemnities, Nondisclosure of Confidential Information, Mutual Agreement to Arbitrate Disputes, and more.
           </p>
         </div>
-        
+
         <DialogFooter>
           <Button onClick={() => onOpenChange(false)}>Close</Button>
         </DialogFooter>

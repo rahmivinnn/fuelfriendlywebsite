@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Search, Users, Phone, Video, Plus, Send,
   Paperclip, Image, Smile, MoreVertical,
-  Star, Clock, Archive, ChevronDown, Check, Trash2
+  Star, Clock, Archive, ChevronDown, Check, Trash2, ArrowUpRight
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
@@ -400,11 +399,11 @@ const Messages = () => {
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-bold text-lg">Messages</h3>
             <div className="flex items-center">
-              <span className="mr-2 text-sm text-gray-500">
+              <span className="mr-2 text-sm text-gray-700 dark:text-gray-400">
                 {searchTerm ? 'Search Results' : `${currentPage * contactsPerPage + 1}-${Math.min((currentPage + 1) * contactsPerPage, allContacts.length)} of ${allContacts.length}`}
               </span>
               <Button variant="ghost" size="icon" onClick={handlePrevPage} disabled={currentPage === 0}>
-                <ChevronDown className="rotate-90" size={18} />
+                <ArrowUpRight size={18} />
               </Button>
               <Button variant="ghost" size="icon" onClick={handleNextPage} disabled={(currentPage + 1) * contactsPerPage >= allContacts.length}>
                 <ChevronDown className="rotate-270" size={18} />
@@ -445,11 +444,11 @@ const Messages = () => {
               
               <div className="ml-3 flex-1 overflow-hidden">
                 <div className="flex justify-between items-center">
-                  <h4 className="font-medium truncate">{contact.name}</h4>
-                  <span className="text-xs text-gray-500">{contact.lastMessageTime}</span>
+                  <h4 className="font-medium truncate text-gray-800 dark:text-gray-200">{contact.name}</h4>
+                  <span className="text-xs text-gray-600 dark:text-gray-400">{contact.lastMessageTime}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <p className="text-sm text-gray-500 truncate">{contact.lastMessage}</p>
+                  <p className="text-sm text-gray-700 dark:text-gray-500 truncate">{contact.lastMessage}</p>
                   {contact.unread > 0 && (
                     <span className="bg-green-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                       {contact.unread}

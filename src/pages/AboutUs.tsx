@@ -58,7 +58,11 @@ const AboutUs = () => {
           name: "Sarah Johnson",
           role: "CEO & Founder",
           image: "https://randomuser.me/api/portraits/women/32.jpg",
+<<<<<<< HEAD
           bio: "Former petroleum industry executive with a vision to revolutionize pump-side service."
+=======
+          bio: "Former petroleum industry executive with a vision to revolutionize pump-side service."
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
         },
         {
           id: 2,
@@ -72,14 +76,14 @@ const AboutUs = () => {
           name: "Aisha Patel",
           role: "COO",
           image: "https://randomuser.me/api/portraits/women/44.jpg",
-          bio: "Operations expert with experience scaling delivery networks across multiple countries."
+          bio: "Operations expert with experience scaling pump-side service networks across multiple countries."
         },
         {
           id: 4,
           name: "David Rodriguez",
           role: "Head of Partnerships",
           image: "https://randomuser.me/api/portraits/men/67.jpg",
-          bio: "Building relationships with fuel stations and convenience stores worldwide."
+          bio: "Building relationships with fuel centers and convenience stores worldwide."
         }
       ]);
 
@@ -183,7 +187,7 @@ const AboutUs = () => {
             </motion.div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">About Fuel Friendly</h1>
             <p className="text-xl md:text-2xl mb-8">
-              Redefining convenience by bringing fuel and everyday essentials directly to your doorstep.
+              Redefining convenience with our pump-side service and everyday essentials.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button
@@ -200,7 +204,7 @@ const AboutUs = () => {
                 onClick={() => navigate('/nearby-stations')}
                 className="border-white text-white hover:bg-white/10 rounded-full px-8"
               >
-                Find Nearby Stations
+                Find Nearby Fuel Centers
                 <MapPin className="ml-2 h-5 w-5" />
               </Button>
             </div>
@@ -220,8 +224,8 @@ const AboutUs = () => {
               className="p-6 cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
               onClick={() => {
                 toast({
-                  title: "Partner Stations",
-                  description: `We have ${stats.stations.toLocaleString()}+ partner stations worldwide`,
+                  title: "Partner Fuel Centers",
+                  description: `We have ${stats.stations.toLocaleString()}+ partner fuel centers worldwide`,
                   duration: 2000,
                 });
               }}
@@ -230,7 +234,7 @@ const AboutUs = () => {
                 {stats.stations.toLocaleString()}+
               </div>
               <div className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
-                Partner Stations
+                Partner Fuel Centers
               </div>
             </motion.div>
 
@@ -286,8 +290,8 @@ const AboutUs = () => {
               className="p-6 cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
               onClick={() => {
                 toast({
-                  title: "Deliveries Completed",
-                  description: `We've successfully completed ${stats.deliveries.toLocaleString()}+ deliveries`,
+                  title: "Pump-Side Services Completed",
+                  description: `We've successfully completed ${stats.deliveries.toLocaleString()}+ pump-side services`,
                   duration: 2000,
                 });
               }}
@@ -296,7 +300,7 @@ const AboutUs = () => {
                 {stats.deliveries.toLocaleString()}+
               </div>
               <div className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
-                Deliveries Completed
+                Pump-Side Services Completed
               </div>
             </motion.div>
           </div>
@@ -344,10 +348,10 @@ const AboutUs = () => {
                 <div className="space-y-6">
                   <h2 className="text-3xl font-bold text-gray-800 dark:text-white">About Us</h2>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
-                    At Fuel Friendly we're redefining convenience by bringing fuel and everyday essentials directly to your car side. Whether you're at home, at work, or on the go, our app connects you with friendly, professional drivers—your "Fuel Friends"—ready to serve you with a smile.
+                    At Fuel Friendly we're redefining convenience by bringing fuel and everyday essentials directly to your car side. Whether you're at home, at work, or on the go, our app connects you with friendly, professional staff—your "Pump-Side service providers"—ready to serve you with a smile.
                   </p>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
-                    Join the Fuel Friends community today and experience a new level of convenience.
+                    Join the Pump-Side service community today and experience a new level of convenience.
                   </p>
                   <div className="mt-8">
                     <div
@@ -395,10 +399,10 @@ const AboutUs = () => {
                 <div className="space-y-6">
                   <h2 className="text-3xl font-bold text-gray-800 dark:text-white">What We Do</h2>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
-                    At Fuel Friendly we're redefining convenience by bringing fuel and everyday essentials directly to your car side. Whether you're at home, at work, or on the go, our app connects you with friendly, professional drivers—your "Fuel Friends"—ready to serve you with a smile.
+                    At Fuel Friendly we're redefining convenience with our pump side service and everyday essentials. Whether you're at home, at work, or on the go, our app connects you with friendly, professional staff—your "Pump-Side service providers"—ready to serve you with a smile.
                   </p>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
-                    We offer on-demand fuel service and a wide selection of convenience store items, all accessible through our easy-to-use mobile app. From snacks and drinks to toiletries and emergency fuel top-ups, we've got you covered—whenever and wherever you need it.
+                    We offer pump side service and a wide selection of convenience store items, all accessible through our easy-to-use mobile app. From snacks and drinks to toiletries and traffic updates, we've got you covered—whenever and wherever you need it.
                   </p>
 
                   <h2 className="text-3xl font-bold text-gray-800 dark:text-white mt-10">Why Choose Us?</h2>
@@ -422,7 +426,7 @@ const AboutUs = () => {
                       <div>
                         <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Friendly Service</h3>
                         <p className="text-gray-600 dark:text-gray-300">
-                          Our "Fuel Friends" are dedicated to providing you with a positive experience.
+                          Our "Pump-Side service providers" are dedicated to providing you with a positive experience.
                         </p>
                       </div>
                     </div>
@@ -432,7 +436,7 @@ const AboutUs = () => {
                         <Truck className="h-5 w-5 text-green-600 dark:text-green-400" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Emergency Assistance</h3>
+                        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Traffic update</h3>
                         <p className="text-gray-600 dark:text-gray-300">
                           Running low on fuel? We're here to help, even in a pinch.
                         </p>
@@ -458,7 +462,7 @@ const AboutUs = () => {
                       <div>
                         <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Real-Time Tracking</h3>
                         <p className="text-gray-600 dark:text-gray-300">
-                          Know exactly when your delivery will arrive with our live tracking feature.
+                          Know exactly when your service will be ready with our live tracking feature.
                         </p>
                       </div>
                     </div>
@@ -529,7 +533,11 @@ const AboutUs = () => {
                 <div className="space-y-6">
                   <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Our Team</h2>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
+<<<<<<< HEAD
                     Meet the passionate individuals behind Fuel Friendly who are working to revolutionize pump-side service and convenience.
+=======
+                    Meet the passionate individuals behind Fuel Friendly who are working to revolutionize pump side service and convenience.
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
@@ -674,10 +682,10 @@ const AboutUs = () => {
             className="max-w-3xl mx-auto text-center"
           >
             <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
-              Join the Fuel Friendly Community
+              Join the Pump-Side Service Community
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-              Whether you're a station owner looking to expand your reach or a customer seeking convenience, we're here to serve you.
+              Whether you're a fuel center owner looking to expand your reach or a customer seeking convenience, we're here to serve you.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button
@@ -694,7 +702,7 @@ const AboutUs = () => {
                 onClick={() => navigate('/nearby-stations')}
                 className="border-green-600 text-green-600 hover:bg-green-50 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/50 rounded-full px-8"
               >
-                Find Nearby Stations
+                Find Nearby Fuel Centers
                 <MapPin className="ml-2 h-5 w-5" />
               </Button>
             </div>

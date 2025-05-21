@@ -5,7 +5,7 @@ import { Bell, Check, Trash2, Clock, ChevronDown, AlertTriangle, Info, CheckCirc
 import DashboardLayout from '@/components/DashboardLayout';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -100,102 +100,36 @@ const Notifications = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [allNotifications, setAllNotifications] = useState(notifications);
   const [activeTab, setActiveTab] = useState('all');
-  
+
   // Filtered notifications
   const filteredNotifications = allNotifications.filter(notification => {
     if (activeTab === 'all') return true;
     if (activeTab === 'unread') return !notification.read;
     return notification.type === activeTab;
   });
-  
+
   // Unread count
   const unreadCount = allNotifications.filter(notification => !notification.read).length;
-  
+
   useEffect(() => {
     // Simulate loading
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-    
-    // Simulate receiving new notifications periodically
-    const interval = setInterval(() => {
-      const notificationTypes = ['alert', 'info', 'success'];
-      const type = notificationTypes[Math.floor(Math.random() * notificationTypes.length)];
-      
-      let icon, iconColor, bgColor, title, message;
-      
-      if (type === 'alert') {
-        icon = AlertTriangle;
-        iconColor = 'text-amber-500';
-        bgColor = 'bg-amber-50';
-        const alertMessages = [
-          { title: 'Low Stock Warning', message: 'Diesel fuel is below 20% capacity' },
-          { title: 'Equipment Alert', message: 'Pump #5 needs inspection' },
-          { title: 'Payment Issue', message: 'Failed payment transaction detected' }
-        ];
-        const selected = alertMessages[Math.floor(Math.random() * alertMessages.length)];
-        title = selected.title;
-        message = selected.message;
-      } else if (type === 'info') {
-        icon = Info;
-        iconColor = 'text-blue-500';
-        bgColor = 'bg-blue-50';
-        const infoMessages = [
-          { title: 'System Update', message: 'New features available in your dashboard' },
-          { title: 'Weather Alert', message: 'Heavy rain expected in your area tomorrow' },
-          { title: 'Market Update', message: 'Fuel wholesale prices changed by 2.3%' }
-        ];
-        const selected = infoMessages[Math.floor(Math.random() * infoMessages.length)];
-        title = selected.title;
-        message = selected.message;
-      } else {
-        icon = CheckCircle2;
-        iconColor = 'text-green-500';
-        bgColor = 'bg-green-50';
-        const successMessages = [
-          { title: 'Delivery Completed', message: 'Fuel delivery successfully received' },
-          { title: 'Sales Goal Reached', message: 'Daily sales target has been achieved' },
-          { title: 'Customer Feedback', message: 'New positive review from a customer' }
-        ];
-        const selected = successMessages[Math.floor(Math.random() * successMessages.length)];
-        title = selected.title;
-        message = selected.message;
-      }
-      
-      const newNotification = {
-        id: Date.now(),
-        type,
-        title,
-        message,
-        time: 'Just now',
-        read: false,
-        icon,
-        iconColor,
-        bgColor
-      };
-      
-      setAllNotifications(prev => [newNotification, ...prev]);
-      
-      toast({
-        title: "New Notification",
-        description: title,
-        duration: 3000,
-      });
-    }, 60000); // Every minute
-    
-    return () => clearInterval(interval);
+
+    // Real-time notifications disabled
   }, [toast]);
-  
+
   const markAsRead = (id) => {
-    setAllNotifications(prev => 
-      prev.map(notification => 
+    setAllNotifications(prev =>
+      prev.map(notification =>
         notification.id === id ? { ...notification, read: true } : notification
       )
     );
   };
-  
+
   const markAllAsRead = () => {
-    setAllNotifications(prev => 
+    setAllNotifications(prev =>
       prev.map(notification => ({ ...notification, read: true }))
     );
     toast({
@@ -204,9 +138,9 @@ const Notifications = () => {
       duration: 2000,
     });
   };
-  
+
   const deleteNotification = (id) => {
-    setAllNotifications(prev => 
+    setAllNotifications(prev =>
       prev.filter(notification => notification.id !== id)
     );
     toast({
@@ -215,7 +149,7 @@ const Notifications = () => {
       duration: 2000,
     });
   };
-  
+
   const clearAllNotifications = () => {
     setAllNotifications([]);
     toast({
@@ -224,10 +158,10 @@ const Notifications = () => {
       duration: 2000,
     });
   };
-  
+
   const content = isLoading ? (
     <div className="flex items-center justify-center h-full">
-      <motion.div 
+      <motion.div
         className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full"
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
@@ -241,16 +175,16 @@ const Notifications = () => {
           <p className="text-gray-500">{unreadCount} unread notifications</p>
         </div>
         <div className="flex gap-2">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={markAllAsRead}
             disabled={unreadCount === 0}
           >
             <Check className="mr-2" size={16} />
             Mark all as read
           </Button>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={clearAllNotifications}
             disabled={allNotifications.length === 0}
             className="text-red-500 border-red-200 hover:bg-red-50"
@@ -260,9 +194,9 @@ const Notifications = () => {
           </Button>
         </div>
       </div>
-      
-      <Tabs 
-        defaultValue="all" 
+
+      <Tabs
+        defaultValue="all"
         value={activeTab}
         onValueChange={setActiveTab}
         className="w-full"
@@ -280,7 +214,7 @@ const Notifications = () => {
           <TabsTrigger value="info">Information</TabsTrigger>
           <TabsTrigger value="success">Success</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value={activeTab} className="mt-0">
           {filteredNotifications.length === 0 ? (
             <div className="text-center py-12">
@@ -292,7 +226,7 @@ const Notifications = () => {
             <div className="space-y-4">
               {filteredNotifications.map((notification) => {
                 const NotificationIcon = notification.icon;
-                
+
                 return (
                   <motion.div
                     key={notification.id}
@@ -306,7 +240,7 @@ const Notifications = () => {
                       <div className={`p-2 rounded-full ${notification.bgColor} mr-4`}>
                         <NotificationIcon className={notification.iconColor} size={24} />
                       </div>
-                      
+
                       <div className="flex-1">
                         <div className="flex justify-between items-start">
                           <div>
@@ -317,24 +251,24 @@ const Notifications = () => {
                               {notification.time}
                             </p>
                           </div>
-                          
+
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 cursor-pointer">
                                 <ChevronDown size={16} />
                               </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-40">
+                            <DropdownMenuContent align="end" className="w-40 z-[9999]">
                               {!notification.read && (
-                                <DropdownMenuItem onClick={() => markAsRead(notification.id)}>
+                                <DropdownMenuItem onClick={() => markAsRead(notification.id)} className="cursor-pointer">
                                   <Check size={14} className="mr-2" />
                                   Mark as read
                                 </DropdownMenuItem>
                               )}
                               <DropdownMenuSeparator />
-                              <DropdownMenuItem 
+                              <DropdownMenuItem
                                 onClick={() => deleteNotification(notification.id)}
-                                className="text-red-600"
+                                className="text-red-600 cursor-pointer"
                               >
                                 <Trash2 size={14} className="mr-2" />
                                 Delete
@@ -353,7 +287,7 @@ const Notifications = () => {
       </Tabs>
     </div>
   );
-  
+
   return (
     <DashboardLayout title="Notifications">
       {content}

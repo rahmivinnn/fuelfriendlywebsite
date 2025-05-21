@@ -66,44 +66,8 @@ const NavBar = () => {
     navigate('/');
   };
 
-  const handleAdminDashboard = () => {
-    navigate('/admin-dashboard');
-  };
-
   const handleStationDashboard = () => {
     navigate('/station-dashboard');
-  };
-
-  // Get role badge color
-  const getRoleBadgeColor = (role: UserRole) => {
-    switch (role) {
-      case UserRole.Level1:
-        return "bg-blue-100 text-blue-800";
-      case UserRole.Level2:
-        return "bg-purple-100 text-purple-800";
-      case UserRole.Level3:
-        return "bg-amber-100 text-amber-800";
-      case UserRole.SuperiorAdmin:
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
-  // Get role icon
-  const getRoleIcon = (role: UserRole) => {
-    switch (role) {
-      case UserRole.Level1:
-        return <Shield size={14} className="mr-1" />;
-      case UserRole.Level2:
-        return <ShieldCheck size={14} className="mr-1" />;
-      case UserRole.Level3:
-        return <ShieldAlert size={14} className="mr-1" />;
-      case UserRole.SuperiorAdmin:
-        return <UserCog size={14} className="mr-1" />;
-      default:
-        return null;
-    }
   };
 
   const handleNavClick = (sectionId: string) => {
@@ -199,7 +163,7 @@ const NavBar = () => {
               onClick={handleAppDownloadClick}
               className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors"
             >
-              User & Fuel Friend App
+              Download App
             </button>
             <button
               onClick={() => handleNavClick('partner-with-us')}
@@ -270,40 +234,31 @@ const NavBar = () => {
             >
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Button
+                    variant="ghost"
+                    className="relative h-8 w-8 rounded-full focus:ring-2 focus:ring-green-500 focus:outline-none cursor-pointer"
+                    aria-label="User menu"
+                  >
                     <DefaultAvatar className="h-8 w-8" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="z-[9999] w-56">
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">{user?.name}</p>
                       <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
-                      {user && (
-                        <div className={`text-xs px-2 py-0.5 mt-1 rounded-full flex items-center ${getRoleBadgeColor(user.role)}`}>
-                          {getRoleIcon(user.role)}
-                          {UserRole[user.role]}
-                        </div>
-                      )}
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
 
-                  {user && user.role >= UserRole.Level1 && (
-                    <DropdownMenuItem onClick={handleAdminDashboard}>
-                      <Shield className="mr-2 h-4 w-4" />
-                      <span>Admin Dashboard</span>
-                    </DropdownMenuItem>
-                  )}
-
-                  <DropdownMenuItem onClick={handleStationDashboard}>
+                  <DropdownMenuItem onClick={handleStationDashboard} className="cursor-pointer">
                     <User className="mr-2 h-4 w-4" />
                     <span>Station Dashboard</span>
                   </DropdownMenuItem>
 
                   <DropdownMenuSeparator />
 
-                  <DropdownMenuItem onClick={handleLogout}>
+                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                   </DropdownMenuItem>
@@ -330,13 +285,13 @@ const NavBar = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            className="md:hidden"
+            className="md:hidden w-full"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="px-4 py-3 space-y-1 bg-white dark:bg-gray-800 border-t dark:border-gray-700">
+            <div className="px-4 py-3 space-y-1 bg-white dark:bg-gray-800 border-t dark:border-gray-700 max-w-full overflow-hidden">
               <div className="flex justify-between items-center py-2">
                 <span className="text-base font-medium text-gray-700 dark:text-gray-300">Theme</span>
                 <ThemeToggle />
@@ -364,13 +319,13 @@ const NavBar = () => {
                 onClick={handleAppDownloadClick}
                 className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
-                User & Fuel Friend App
+                Download App
               </button>
               <button
                 onClick={() => handleNavClick('partner-with-us')}
                 className="block py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 w-full text-left"
               >
-                Become a FuelFriend
+                Become a Fuel Friend
               </button>
               <button
                 onClick={() => navigate('/nearby-stations')}
@@ -397,16 +352,6 @@ const NavBar = () => {
                 </div>
               ) : (
                 <div className="pt-2 pb-3 space-y-2">
-                  {user && user.role >= UserRole.Level1 && (
-                    <Button
-                      variant="outline"
-                      className="w-full border-blue-500 text-blue-600"
-                      onClick={handleAdminDashboard}
-                    >
-                      <Shield size={16} className="mr-2" />
-                      Admin Dashboard
-                    </Button>
-                  )}
                   <Button
                     variant="outline"
                     className="w-full border-gray-500 text-gray-600"
@@ -423,14 +368,7 @@ const NavBar = () => {
                     <LogOut size={16} className="mr-2" />
                     Logout
                   </Button>
-                  {user && (
-                    <div className={`mt-2 p-2 rounded-md flex items-center justify-center ${getRoleBadgeColor(user.role)}`}>
-                      {getRoleIcon(user.role)}
-                      <span className="text-sm font-medium">
-                        {UserRole[user.role]} Access
-                      </span>
-                    </div>
-                  )}
+
                 </div>
               )}
             </div>
@@ -465,7 +403,11 @@ const NavBar = () => {
                     />
                     <div>
                       <h3 className="text-xl font-bold text-gray-900">FuelFriendly</h3>
+<<<<<<< HEAD
                       <p className="text-sm text-gray-500">Convenient pump-side service at participating stations</p>
+=======
+                      <p className="text-sm text-gray-500">Pump-Side service at your fingertips</p>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                     </div>
                   </div>
                   <Button
@@ -511,17 +453,17 @@ const NavBar = () => {
                               </div>
                               <div>
                                 <div className="text-xs font-medium text-gray-800 dark:text-gray-200">Order Fuel</div>
-                                <div className="text-xs text-gray-500 dark:text-gray-400">Quick & easy delivery</div>
+                                <div className="text-xs text-gray-500 dark:text-gray-400">Quick & easy pump side</div>
                               </div>
                             </div>
                           </div>
 
                           <div className="grid grid-cols-2 gap-3">
-                            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 text-white dark:text-white">
                               <div className="text-xs font-medium mb-1">Nearby</div>
                               <div className="text-sm">12 stations</div>
                             </div>
-                            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+                            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 text-white dark:text-white">
                               <div className="text-xs font-medium mb-1">Saved</div>
                               <div className="text-sm">3 locations</div>
                             </div>
@@ -536,7 +478,7 @@ const NavBar = () => {
                     <div>
                       <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Download Our App</h2>
                       <p className="text-gray-600 dark:text-gray-300 mb-6">
-                        Get fuel delivered to your doorstep with our mobile app. Available for iOS and Android devices.
+                        Get pump side service with our mobile app. Available for iOS and Android devices.
                       </p>
 
                       <div className="space-y-4">

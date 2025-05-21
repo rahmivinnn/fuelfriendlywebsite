@@ -9,12 +9,33 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
-import { User, Mail, Lock, Bell, Eye, EyeOff, Shield, CreditCard, Edit } from 'lucide-react';
+import { User, Mail, Lock, Bell, Eye, EyeOff, Shield, CreditCard, Edit, Plus, Trash2 } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const Settings = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showAddPaymentDialog, setShowAddPaymentDialog] = useState(false);
+  const [paymentMethods, setPaymentMethods] = useState([
+    {
+      id: '1',
+      type: 'Visa',
+      cardNumber: '4242424242424242',
+      expiry: '04/25',
+      cvv: '123',
+      holderName: 'John Doe'
+    }
+  ]);
+  const [newPaymentMethod, setNewPaymentMethod] = useState({
+    type: '',
+    cardNumber: '',
+    expiry: '',
+    cvv: '',
+    holderName: ''
+  });
   const [formData, setFormData] = useState({
     name: '',
     email: 'owner@example.com',
@@ -35,7 +56,7 @@ const Settings = () => {
       setFormData(prev => ({ ...prev, name: storedName }));
     }
   }, []);
-  
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prevData => ({
@@ -43,20 +64,20 @@ const Settings = () => {
       [name]: value
     }));
   };
-  
+
   const handleSwitchChange = (name: string, checked: boolean) => {
     setFormData(prevData => ({
       ...prevData,
       [name]: checked
     }));
   };
-  
+
   const handleSaveProfile = () => {
     setLoading(true);
-    
+
     // Save the user name to localStorage
     localStorage.setItem('stationOwnerName', formData.name);
-    
+
     setTimeout(() => {
       setLoading(false);
       toast({
@@ -64,15 +85,15 @@ const Settings = () => {
         description: "Your profile information has been updated successfully.",
         duration: 3000,
       });
-      
+
       // Navigate to dashboard after updating settings
       navigate('/station-dashboard');
     }, 1000);
   };
-  
+
   const handleSaveNotifications = () => {
     setLoading(true);
-    
+
     setTimeout(() => {
       setLoading(false);
       toast({
@@ -82,7 +103,84 @@ const Settings = () => {
       });
     }, 1000);
   };
-  
+
+  const handlePaymentMethodChange = (e) => {
+    const { name, value } = e.target;
+    setNewPaymentMethod(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handlePaymentTypeChange = (value) => {
+    setNewPaymentMethod(prev => ({ ...prev, type: value }));
+  };
+
+  const addPaymentMethod = () => {
+    // Basic validation
+    if (!newPaymentMethod.type || !newPaymentMethod.cardNumber || !newPaymentMethod.expiry || !newPaymentMethod.holderName) {
+      toast({
+        title: "Incomplete Information",
+        description: "Please fill in all required payment method fields.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    // Validate card number (simple check for length)
+    if (newPaymentMethod.cardNumber.length < 15 || newPaymentMethod.cardNumber.length > 16) {
+      toast({
+        title: "Invalid Card Number",
+        description: "Please enter a valid card number.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    // Validate expiry date format (MM/YY)
+    const expiryRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+    if (!expiryRegex.test(newPaymentMethod.expiry)) {
+      toast({
+        title: "Invalid Expiry Date",
+        description: "Please use MM/YY format (e.g., 05/25).",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    // Add payment method
+    const newMethod = { ...newPaymentMethod, id: Date.now().toString() };
+    setPaymentMethods([...paymentMethods, newMethod]);
+
+    // Reset form
+    setNewPaymentMethod({
+      type: '',
+      cardNumber: '',
+      expiry: '',
+      cvv: '',
+      holderName: ''
+    });
+
+    // Close dialog
+    setShowAddPaymentDialog(false);
+
+    toast({
+      title: "Payment Method Added",
+      description: "Your new payment method has been added successfully.",
+      duration: 3000,
+    });
+  };
+
+  const removePaymentMethod = (id) => {
+    setPaymentMethods(paymentMethods.filter(method => method.id !== id));
+
+    toast({
+      title: "Payment Method Removed",
+      description: "Your payment method has been removed.",
+      duration: 3000,
+    });
+  };
+
   const handlePasswordChange = () => {
     if (formData.newPassword !== formData.confirmPassword) {
       toast({
@@ -93,9 +191,9 @@ const Settings = () => {
       });
       return;
     }
-    
+
     setLoading(true);
-    
+
     setTimeout(() => {
       setLoading(false);
       toast({
@@ -103,7 +201,7 @@ const Settings = () => {
         description: "Your password has been updated successfully.",
         duration: 3000,
       });
-      
+
       setFormData(prevData => ({
         ...prevData,
         currentPassword: '',
@@ -128,7 +226,7 @@ const Settings = () => {
               <TabsTrigger value="notifications">Notifications</TabsTrigger>
               <TabsTrigger value="payment">Payment Methods</TabsTrigger>
             </TabsList>
-            
+
             {/* Profile Tab */}
             <TabsContent value="profile">
               <Card>
@@ -148,7 +246,7 @@ const Settings = () => {
                     </div>
                     <div className="relative">
                       <User className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-                      <Input 
+                      <Input
                         id="name"
                         name="name"
                         placeholder="Enter your full name"
@@ -158,7 +256,7 @@ const Settings = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <label htmlFor="email" className="text-sm font-medium leading-none">
@@ -168,7 +266,7 @@ const Settings = () => {
                     </div>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-                      <Input 
+                      <Input
                         id="email"
                         name="email"
                         type="email"
@@ -179,7 +277,7 @@ const Settings = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <label htmlFor="phone" className="text-sm font-medium leading-none">
@@ -188,19 +286,19 @@ const Settings = () => {
                       <div className="text-sm text-gray-500">Used for SMS notifications</div>
                     </div>
                     <div className="relative">
-                      <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        viewBox="0 0 24 24" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        strokeWidth="2" 
-                        strokeLinecap="round" 
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
                         strokeLinejoin="round"
                         className="absolute left-3 top-3 h-4 w-4 text-gray-500"
                       >
                         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                       </svg>
-                      <Input 
+                      <Input
                         id="phone"
                         name="phone"
                         placeholder="Enter your phone number"
@@ -218,7 +316,7 @@ const Settings = () => {
                 </CardFooter>
               </Card>
             </TabsContent>
-            
+
             {/* Security Tab */}
             <TabsContent value="security">
               <Card>
@@ -235,7 +333,7 @@ const Settings = () => {
                     </label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-                      <Input 
+                      <Input
                         id="currentPassword"
                         name="currentPassword"
                         type={showPassword ? "text" : "password"}
@@ -257,14 +355,14 @@ const Settings = () => {
                       </button>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <label htmlFor="newPassword" className="text-sm font-medium leading-none">
                       New Password
                     </label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-                      <Input 
+                      <Input
                         id="newPassword"
                         name="newPassword"
                         type={showPassword ? "text" : "password"}
@@ -275,14 +373,14 @@ const Settings = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <label htmlFor="confirmPassword" className="text-sm font-medium leading-none">
                       Confirm New Password
                     </label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-                      <Input 
+                      <Input
                         id="confirmPassword"
                         name="confirmPassword"
                         type={showPassword ? "text" : "password"}
@@ -293,7 +391,7 @@ const Settings = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="border-t pt-4 mt-4">
                     <h3 className="text-sm font-medium mb-3">Two-Factor Authentication</h3>
                     <div className="flex items-center justify-between">
@@ -315,7 +413,7 @@ const Settings = () => {
                 </CardFooter>
               </Card>
             </TabsContent>
-            
+
             {/* Notifications Tab */}
             <TabsContent value="notifications">
               <Card>
@@ -334,21 +432,21 @@ const Settings = () => {
                         <p className="text-xs text-gray-500">Receive order updates, payment confirmations, and product alerts</p>
                       </div>
                     </div>
-                    <Switch 
+                    <Switch
                       checked={formData.emailNotifications}
                       onCheckedChange={(checked) => handleSwitchChange('emailNotifications', checked)}
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        viewBox="0 0 24 24" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        strokeWidth="2" 
-                        strokeLinecap="round" 
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
                         strokeLinejoin="round"
                         className="h-5 w-5 text-gray-500"
                       >
@@ -359,12 +457,12 @@ const Settings = () => {
                         <p className="text-xs text-gray-500">Receive order statuses and critical updates via text message</p>
                       </div>
                     </div>
-                    <Switch 
+                    <Switch
                       checked={formData.smsNotifications}
                       onCheckedChange={(checked) => handleSwitchChange('smsNotifications', checked)}
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <Bell className="h-5 w-5 text-gray-500" />
@@ -373,7 +471,7 @@ const Settings = () => {
                         <p className="text-xs text-gray-500">Receive real-time alerts on your mobile device</p>
                       </div>
                     </div>
-                    <Switch 
+                    <Switch
                       checked={formData.pushNotifications}
                       onCheckedChange={(checked) => handleSwitchChange('pushNotifications', checked)}
                     />
@@ -386,7 +484,7 @@ const Settings = () => {
                 </CardFooter>
               </Card>
             </TabsContent>
-            
+
             {/* Payment Methods Tab */}
             <TabsContent value="payment">
               <Card>
@@ -397,30 +495,131 @@ const Settings = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="bg-gray-50 border rounded-lg p-4 flex justify-between items-center mb-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="bg-blue-500 text-white rounded p-2">
-                        <CreditCard className="h-5 w-5" />
+                  {paymentMethods.map((method) => (
+                    <div key={method.id} className="bg-gray-50 border rounded-lg p-4 flex justify-between items-center mb-4">
+                      <div className="flex items-center space-x-3">
+                        <div className={`text-white rounded p-2 ${
+                          method.type === 'Visa' ? 'bg-blue-500' :
+                          method.type === 'Mastercard' ? 'bg-red-500' :
+                          method.type === 'American Express' ? 'bg-purple-500' :
+                          'bg-gray-500'
+                        }`}>
+                          <CreditCard className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <p className="font-medium">{method.type} ending in {method.cardNumber.slice(-4)}</p>
+                          <p className="text-sm text-gray-500">Expires {method.expiry}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-medium">Visa ending in 4242</p>
-                        <p className="text-sm text-gray-500">Expires 04/25</p>
+                      <div className="flex space-x-2">
+                        <Button variant="outline" size="sm">
+                          <Edit className="h-4 w-4 mr-1" />
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-red-500 border-red-200 hover:bg-red-50"
+                          onClick={() => removePaymentMethod(method.id)}
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Remove
+                        </Button>
                       </div>
                     </div>
-                    <div className="flex space-x-2">
-                      <Button variant="outline" size="sm">
-                        <Edit className="h-4 w-4 mr-1" />
-                        Edit
+                  ))}
+
+                  <Dialog open={showAddPaymentDialog} onOpenChange={setShowAddPaymentDialog}>
+                    <DialogTrigger asChild>
+                      <Button className="w-full" variant="outline">
+                        <Plus className="h-4 w-4 mr-2" /> Add New Payment Method
                       </Button>
-                      <Button variant="outline" size="sm" className="text-red-500 border-red-200 hover:bg-red-50">
-                        Remove
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <Button className="w-full" variant="outline">
-                    + Add New Payment Method
-                  </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Add Payment Method</DialogTitle>
+                        <DialogDescription>
+                          Add a new credit or debit card to your account.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid gap-2">
+                          <Label htmlFor="paymentType">Card Type</Label>
+                          <Select
+                            value={newPaymentMethod.type}
+                            onValueChange={handlePaymentTypeChange}
+                          >
+                            <SelectTrigger id="paymentType">
+                              <SelectValue placeholder="Select card type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Visa">Visa</SelectItem>
+                              <SelectItem value="Mastercard">Mastercard</SelectItem>
+                              <SelectItem value="American Express">American Express</SelectItem>
+                              <SelectItem value="Discover">Discover</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="grid gap-2">
+                          <Label htmlFor="cardNumber">Card Number</Label>
+                          <Input
+                            id="cardNumber"
+                            name="cardNumber"
+                            placeholder="XXXX XXXX XXXX XXXX"
+                            value={newPaymentMethod.cardNumber}
+                            onChange={handlePaymentMethodChange}
+                            maxLength={16}
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="grid gap-2">
+                            <Label htmlFor="expiry">Expiry Date</Label>
+                            <Input
+                              id="expiry"
+                              name="expiry"
+                              placeholder="MM/YY"
+                              value={newPaymentMethod.expiry}
+                              onChange={handlePaymentMethodChange}
+                              maxLength={5}
+                            />
+                          </div>
+                          <div className="grid gap-2">
+                            <Label htmlFor="cvv">CVV</Label>
+                            <Input
+                              id="cvv"
+                              name="cvv"
+                              placeholder="XXX"
+                              type="password"
+                              value={newPaymentMethod.cvv}
+                              onChange={handlePaymentMethodChange}
+                              maxLength={4}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid gap-2">
+                          <Label htmlFor="holderName">Cardholder Name</Label>
+                          <Input
+                            id="holderName"
+                            name="holderName"
+                            placeholder="Name as it appears on card"
+                            value={newPaymentMethod.holderName}
+                            onChange={handlePaymentMethodChange}
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button variant="outline" onClick={() => setShowAddPaymentDialog(false)}>
+                          Cancel
+                        </Button>
+                        <Button onClick={addPaymentMethod} className="bg-green-500 hover:bg-green-600">
+                          Add Card
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </CardContent>
               </Card>
             </TabsContent>

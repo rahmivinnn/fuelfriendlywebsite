@@ -210,11 +210,11 @@ const ContactUs = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('Albania');
-  
-  const filteredCountries = countries.filter(country => 
+
+  const filteredCountries = countries.filter(country =>
     country.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
@@ -223,24 +223,24 @@ const ContactUs = () => {
       duration: 3000,
     });
   };
-  
+
   const selectedCountryData = countries.find(c => c.name === selectedCountry);
-  
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <NavBar />
-      
+
       <section className="py-12 md:py-20 bg-gradient-to-r from-green-600 to-green-500 text-white">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
             <p className="text-xl md:text-2xl">
-              We're here to help with any questions about our fuel delivery service.
+              We're here to help with any questions about our pump side service.
             </p>
           </div>
         </div>
       </section>
-      
+
       <section className="py-12 md:py-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -257,37 +257,37 @@ const ContactUs = () => {
                     <Input id="email" type="email" placeholder="Your email" required />
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <label htmlFor="subject" className="text-sm font-medium">Subject</label>
                   <Input id="subject" placeholder="How can we help?" required />
                 </div>
-                
+
                 <div className="space-y-2">
                   <label htmlFor="message" className="text-sm font-medium">Message</label>
                   <Textarea id="message" placeholder="Your message" rows={5} required />
                 </div>
-                
+
                 <Button type="submit" className="w-full md:w-auto bg-green-600 hover:bg-green-700">
                   Send Message
                 </Button>
               </form>
             </div>
-            
+
             <div>
               <h2 className="text-2xl md:text-3xl font-bold mb-6">Customer Support by Country</h2>
               <div className="mb-6">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-                  <Input 
-                    placeholder="Search country..." 
+                  <Input
+                    placeholder="Search country..."
                     className="pl-10"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 max-h-[400px] overflow-y-auto pr-2">
                 {filteredCountries.map((country) => (
                   <motion.div
@@ -306,14 +306,14 @@ const ContactUs = () => {
                   </motion.div>
                 ))}
               </div>
-              
+
               {selectedCountryData && (
                 <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border">
                   <h3 className="text-xl font-bold mb-4 flex items-center">
                     <Globe className="mr-2 h-5 w-5 text-green-600" />
                     {selectedCountryData.name} Support
                   </h3>
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-start">
                       <Phone className="h-5 w-5 text-green-600 mr-3 mt-0.5" />
@@ -327,7 +327,7 @@ const ContactUs = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start">
                       <Mail className="h-5 w-5 text-green-600 mr-3 mt-0.5" />
                       <div>
@@ -340,7 +340,7 @@ const ContactUs = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start">
                       <MapPin className="h-5 w-5 text-green-600 mr-3 mt-0.5" />
                       <div>
@@ -360,7 +360,7 @@ const ContactUs = () => {
           </div>
         </div>
       </section>
-      
+
       <Footer />
     </div>
   );

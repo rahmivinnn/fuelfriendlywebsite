@@ -37,7 +37,7 @@ const BusinessSection = () => {
                 Grow Your Fuel Business with Digital Convenience!
               </h2>
               <p className="text-gray-500 dark:text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Join our network of fuel providers and unlock new revenue streams. Our platform makes it easy to reach more customers, streamline operations, and boost profits.
+                Join the network of Pump-Side service providers and unlock new revenue streams. Our platform makes it easy to reach more customers, streamline operations, and boost profits.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -46,7 +46,7 @@ const BusinessSection = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <Button className="bg-primary hover:bg-primary/90 text-white">
-                  Become a Fuel Friend
+                  Become a Pump-Side service provider
                 </Button>
               </motion.div>
             </div>

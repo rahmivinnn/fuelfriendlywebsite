@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -95,8 +94,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div className="flex items-center mb-4">
-              <img src="/logo.png" alt="FuelFriendly Logo" className="h-8 mr-2 invert" />
-              <h3 className="text-lg font-bold text-white">FuelFriendly</h3>
+              <img src="/logo.png" alt="Logo" className="h-8 mr-2 invert" />
             </div>
             <p className="text-white text-sm mb-4">
               Making fuel accessible anywhere, anytime.
@@ -167,7 +165,7 @@ const Footer = () => {
                   onClick={() => handleNavigation('/nearby-stations')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
-                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Pump-Side Service</span>
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Pump side service</span>
                   <span className="opacity-0 group-hover:opacity-100 ml-1 transition-opacity duration-200">→</span>
                 </button>
               </li>
@@ -185,7 +183,7 @@ const Footer = () => {
                   onClick={() => handleNavigation('/nearby-stations')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
-                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Road Assistance</span>
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Pump-Side Service Assistance</span>
                   <span className="opacity-0 group-hover:opacity-100 ml-1 transition-opacity duration-200">→</span>
                 </button>
               </li>
@@ -329,7 +327,7 @@ const Footer = () => {
                 initial={{ opacity: 0.8 }}
                 whileHover={{ opacity: 1 }}
               >
-                © {new Date().getFullYear()} FuelFriendly. All rights reserved.
+                © {new Date().getFullYear()} All rights reserved.
               </motion.p>
               <motion.div
                 className="ml-4 flex items-center gap-2"

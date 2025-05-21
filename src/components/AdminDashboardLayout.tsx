@@ -5,7 +5,7 @@ import {
   PieChart, Bell as BellIcon, HelpCircle, Settings,
   LogOut, MapPin, LayoutDashboard, Activity, FileText,
   MessageCircle, Users, Shield, ShieldAlert, ShieldCheck,
-  UserCog, Lock, Key, Database, Server
+  UserCog, Lock, Key, Database, Server, Menu, X
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ import { useAuth, UserRole } from '@/contexts/AuthContext';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 type SidebarItem = {
   icon: React.ElementType;
@@ -34,9 +35,11 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children, t
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout, elevateToSuperiorAdmin } = useAuth();
+  const isMobile = useIsMobile();
 
   const [notificationCount, setNotificationCount] = useState<number>(4);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(isMobile);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [showSuperiorAdminDialog, setShowSuperiorAdminDialog] = useState<boolean>(false);
   const [accessCode, setAccessCode] = useState<string>('');
 
@@ -136,31 +139,15 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children, t
     }
   ];
 
-  // Simulate real-time notifications
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const messages = [
-        "New user registered!",
-        "System update available",
-        "Security alert: Unusual login activity",
-        "New station registration pending approval",
-        "Database backup completed",
-        "API usage limit reached for station #1234"
-      ];
+  // Real-time notifications disabled
 
-      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-
-      setNotificationCount(prev => prev + 1);
-
-      toast({
-        title: "Admin Alert",
-        description: randomMessage,
-        duration: 3000,
-      });
-    }, 60000); // Random update every 60 seconds
-
-    return () => clearInterval(interval);
-  }, [toast]);
+  // Effect to handle sidebar state based on screen size
+  useEffect(() => {
+    if (isMobile) {
+      setIsSidebarCollapsed(true);
+      setIsSidebarOpen(false);
+    }
+  }, [isMobile]);
 
   const handleSidebarItemClick = (item: SidebarItem) => {
     // Check if user has permission to access this item
@@ -176,6 +163,11 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children, t
 
     // Navigate to the path
     navigate(item.path);
+
+    // Close sidebar on mobile after navigation
+    if (isMobile) {
+      setIsSidebarOpen(false);
+    }
   };
 
   const handleLogout = () => {
@@ -241,13 +233,24 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children, t
   };
 
   return (
-    <div className="h-screen flex bg-gray-50">
+    <div className="h-screen flex bg-gray-50 overflow-hidden">
+      {/* Mobile Overlay */}
+      {isMobile && isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <motion.div
-        initial={{ x: -300 }}
-        animate={{ x: 0, width: isSidebarCollapsed ? 80 : 256 }}
+        initial={{ x: isMobile ? -300 : 0 }}
+        animate={{
+          x: isMobile ? (isSidebarOpen ? 0 : -300) : 0,
+          width: isMobile ? 256 : (isSidebarCollapsed ? 80 : 256)
+        }}
         transition={{ type: "spring", stiffness: 100 }}
-        className="bg-white border-r border-gray-200 flex flex-col"
+        className={`bg-white border-r border-gray-200 flex flex-col ${isMobile ? 'fixed h-full z-50' : ''}`}
       >
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
           <AnimatePresence>
@@ -272,7 +275,13 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children, t
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+            onClick={() => {
+              if (isMobile) {
+                setIsSidebarOpen(!isSidebarOpen);
+              } else {
+                setIsSidebarCollapsed(!isSidebarCollapsed);
+              }
+            }}
             aria-label="Toggle sidebar"
           >
             <Grid size={20} />
@@ -372,14 +381,25 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children, t
       </motion.div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className={`flex-1 flex flex-col overflow-hidden ${isMobile ? 'w-full' : ''}`}>
         {/* Top Nav */}
-        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-6 flex items-center justify-between transition-colors duration-300">
+        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-3 px-4 sm:py-4 sm:px-6 flex items-center justify-between transition-colors duration-300">
           <div className="flex items-center">
+            {isMobile && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="mr-2 hover:bg-gray-100"
+                aria-label="Toggle Menu"
+              >
+                <Menu size={20} className="text-gray-500" />
+              </Button>
+            )}
             <motion.h1
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-2xl font-bold dark:text-white"
+              className="text-xl sm:text-2xl font-bold dark:text-white truncate"
             >
               {title}
             </motion.h1>
@@ -387,30 +407,37 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children, t
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="ml-3 px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded-full flex items-center transition-colors duration-300"
+                className="ml-2 sm:ml-3 px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded-full flex items-center transition-colors duration-300"
               >
                 <div className="h-2 w-2 bg-green-500 dark:bg-green-400 rounded-full mr-1 animate-pulse"></div>
-                Live Admin Data
+                <span className="hidden xs:inline">Admin</span>
               </motion.div>
             )}
           </div>
 
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <Button variant="ghost" className="relative" onClick={() => {
-                setNotificationCount(0);
-                toast({
-                  title: "Notifications Cleared",
-                  description: "All notifications have been marked as read",
-                  duration: 3000,
-                });
-              }}>
-                <BellIcon />
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="relative z-10">
+              <Button
+                variant="ghost"
+                size={isMobile ? "sm" : "default"}
+                className="relative focus:ring-2 focus:ring-green-500 focus:outline-none cursor-pointer"
+                onClick={() => {
+                  setNotificationCount(0);
+                  toast({
+                    title: "Notifications Cleared",
+                    description: "All notifications have been marked as read",
+                    duration: 3000,
+                  });
+                }}
+                aria-label="Notifications"
+              >
+                <BellIcon className="text-gray-700 dark:text-gray-300" size={isMobile ? 18 : 20} />
                 {notificationCount > 0 && (
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center"
+                    whileHover={{ scale: 1.2 }}
+                    className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center"
                   >
                     {notificationCount}
                   </motion.span>
@@ -418,14 +445,21 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children, t
               </Button>
             </div>
 
-            <div className="flex items-center space-x-2">
-              <DefaultAvatar className="w-8 h-8" />
-              <div className="hidden md:block">
-                <div className="font-medium text-sm">{user?.name || 'Admin User'}</div>
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              <Button
+                variant="ghost"
+                size={isMobile ? "sm" : "default"}
+                className="p-0 focus:ring-2 focus:ring-green-500 focus:outline-none cursor-pointer"
+                aria-label="Profile Settings"
+              >
+                <DefaultAvatar className="w-7 h-7 sm:w-8 sm:h-8" />
+              </Button>
+              <div className="hidden sm:block">
+                <div className="font-medium text-xs sm:text-sm">{user?.name || 'Admin User'}</div>
                 {user && (
                   <div className={`text-xs px-2 py-0.5 rounded-full flex items-center ${getRoleBadgeColor(user.role)}`}>
                     {getRoleIcon(user.role)}
-                    {UserRole[user.role]}
+                    <span className="hidden sm:inline">{UserRole[user.role]}</span>
                   </div>
                 )}
               </div>
@@ -434,7 +468,7 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = ({ children, t
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 p-6 transition-colors duration-300">
+        <main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 p-3 sm:p-6 transition-colors duration-300">
           <div className="container mx-auto max-w-7xl">
             {children}
           </div>

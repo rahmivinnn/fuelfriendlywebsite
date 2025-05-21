@@ -36,8 +36,8 @@ const HowItWorks = () => {
     },
     {
       id: 3,
-      title: "Pay & Track Fuel Friend",
-      description: "Pay directly from your device and track your Fuel Friend's location for a smooth fueling experience.",
+      title: "Pay & Track Service",
+      description: "Pay directly from your device and track your service status for a smooth fueling experience.",
       icon: (
         <div className="w-12 h-12 rounded-lg bg-blue-500 flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -50,8 +50,8 @@ const HowItWorks = () => {
     },
     {
       id: 4,
-      title: "Get Fuel & Delivery",
-      description: "Your Fuel Friend fuels your vehicle and delivers groceries directly to your car trunk.",
+      title: "Get Fuel & Service",
+      description: "Your Fuel Friend provides pump side service and helps with any groceries you purchased.",
       icon: (
         <div className="w-12 h-12 rounded-lg bg-green-500 flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

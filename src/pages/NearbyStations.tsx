@@ -46,11 +46,11 @@ import {
 // Expanded station data with 50 entries
 const generateStationsData = () => {
   const stationNames = [
-    "Shell Express Station", "Exxon Fuel Center", "Chevron Gas & Go", "BP Premium Station",
-    "Marathon Pit Stop", "Citgo Quick Fuel", "Texaco Star Stop", "Mobil Fuel Plus",
-    "Sunoco Ultra Service", "Phillips 66 Station", "Valero Fresh Start", "Gulf Express",
-    "ARCO Gas Point", "ConocoPhillips Station", "Speedway Junction", "76 Gas & Market",
-    "Circle K Gas", "QuikTrip Fuel", "RaceTrac Gas & Goods", "Wawa Fuel Stop"
+    "Shell Express Fuel Center", "Exxon Fuel Center", "Chevron Fuel & Go", "BP Premium Fuel Center",
+    "Marathon Fuel Stop", "Citgo Quick Fuel", "Texaco Fuel Stop", "Mobil Fuel Plus",
+    "Sunoco Ultra Fuel Center", "Phillips 66 Fuel Center", "Valero Fresh Fuel", "Gulf Express Fuel",
+    "ARCO Fuel Point", "ConocoPhillips Fuel Center", "Speedway Fuel Junction", "76 Fuel & Market",
+    "Circle K Fuel Center", "QuikTrip Fuel", "RaceTrac Fuel & Goods", "Wawa Fuel Center"
   ];
 
   const streetNames = [
@@ -260,8 +260,8 @@ const NearbyStations = () => {
     setTimeout(() => {
       setLoading(false);
       toast({
-        title: "Stations Loaded",
-        description: "Nearby stations data has been updated",
+        title: "Fuel Centers Loaded",
+        description: "Nearby fuel centers data has been updated",
         duration: 3000,
       });
     }, 1500);
@@ -1079,7 +1079,7 @@ const NearbyStations = () => {
               Find Nearby Fuel Stations Worldwide
             </h1>
             <p className="text-gray-600 text-lg mb-6">
-              Discover the best gas stations near you with automatic location detection across 195 countries. Get real-time prices, wait times, and amenities for stations anywhere in the world.
+              Discover the best fuel centers near you with automatic location detection across 195 countries. Get real-time prices, wait times, and amenities for stations anywhere in the world.
             </p>
 
             <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
@@ -1135,7 +1135,7 @@ const NearbyStations = () => {
                     <div className="relative">
                       <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" size={20} />
                       <Input
-                        placeholder="Search for gas stations or addresses..."
+                        placeholder="Search for fuel centers or addresses..."
                         className="pl-10 border-gray-300"
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
@@ -1871,7 +1871,7 @@ const NearbyStations = () => {
                   />
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">FuelFriendly</h3>
-                    <p className="text-sm text-gray-500">Fuel delivery at your fingertips</p>
+                    <p className="text-sm text-gray-500">Pump side service at your fingertips</p>
                   </div>
                 </div>
                 <Button

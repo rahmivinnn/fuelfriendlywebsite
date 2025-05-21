@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
@@ -105,7 +104,8 @@ const Reports = () => {
     if (!typeMatch) return false;
 
     if (dateRange === 'custom' && customDateRange.from && customDateRange.to) {
-      return reportDate >= customDateRange.from && reportDate <= customDateRange.to;
+      // Compare timestamps for robust date range filtering
+      return reportDate.getTime() >= customDateRange.from.getTime() && reportDate.getTime() <= customDateRange.to.getTime();
     }
 
     const today = new Date();

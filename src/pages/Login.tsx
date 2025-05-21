@@ -6,9 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth, UserRole } from '@/contexts/AuthContext';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Shield, ShieldAlert, ShieldCheck, ShieldQuestion, User, UserCog } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { User } from 'lucide-react';
 
 const Login = () => {
   const { toast } = useToast();
@@ -17,23 +16,12 @@ const Login = () => {
 
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
-    role: UserRole.Level1.toString()
+    password: ''
   });
-
-  const [showAccessCodeInput, setShowAccessCodeInput] = useState(false);
-  const [accessCode, setAccessCode] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleRoleChange = (value: string) => {
-    setFormData(prev => ({ ...prev, role: value }));
-
-    // Show access code input if Superior Admin is selected
-    setShowAccessCodeInput(value === UserRole.SuperiorAdmin.toString());
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,15 +42,6 @@ const Login = () => {
       errors.push("Password must be at least 6 characters");
     }
 
-    // If trying to login as Superior Admin, check access code
-    if (formData.role === UserRole.SuperiorAdmin.toString()) {
-      if (!accessCode) {
-        errors.push("Access code is required for Superior Admin");
-      } else if (accessCode !== 'FUEL-SUPERIOR-2023') {
-        errors.push("Invalid Superior Admin access code");
-      }
-    }
-
     if (errors.length > 0) {
       toast({
         title: "Validation Error",
@@ -81,23 +60,18 @@ const Login = () => {
 
     const success = await login(
       formData.email,
-      formData.password,
-      parseInt(formData.role) as UserRole
+      formData.password
     );
 
     if (success) {
       toast({
         title: "Login Successful",
-        description: "Welcome to FuelFriendly Admin Panel",
+        description: "Welcome to FuelFriendly",
         duration: 3000,
       });
 
-      // Redirect based on role
-      if (parseInt(formData.role) >= UserRole.Level1) {
-        navigate('/admin-dashboard');
-      } else {
-        navigate('/station-dashboard');
-      }
+      // Redirect to station dashboard
+      navigate('/station-dashboard');
     } else {
       toast({
         title: "Login Failed",
@@ -108,20 +82,7 @@ const Login = () => {
     }
   };
 
-  const getRoleIcon = (role: string) => {
-    switch (parseInt(role)) {
-      case UserRole.Level1:
-        return <Shield className="h-4 w-4 mr-2" />;
-      case UserRole.Level2:
-        return <ShieldCheck className="h-4 w-4 mr-2" />;
-      case UserRole.Level3:
-        return <ShieldAlert className="h-4 w-4 mr-2" />;
-      case UserRole.SuperiorAdmin:
-        return <UserCog className="h-4 w-4 mr-2" />;
-      default:
-        return <User className="h-4 w-4 mr-2" />;
-    }
-  };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
@@ -176,65 +137,7 @@ const Login = () => {
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="role">Access Level</Label>
-                <Select
-                  value={formData.role}
-                  onValueChange={handleRoleChange}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select your access level" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={UserRole.Level1.toString()}>
-                      <div className="flex items-center">
-                        <Shield className="h-4 w-4 mr-2" />
-                        Level 1 - Basic Access
-                      </div>
-                    </SelectItem>
-                    <SelectItem value={UserRole.Level2.toString()}>
-                      <div className="flex items-center">
-                        <ShieldCheck className="h-4 w-4 mr-2" />
-                        Level 2 - Extended Access
-                      </div>
-                    </SelectItem>
-                    <SelectItem value={UserRole.Level3.toString()}>
-                      <div className="flex items-center">
-                        <ShieldAlert className="h-4 w-4 mr-2" />
-                        Level 3 - Advanced Access
-                      </div>
-                    </SelectItem>
-                    <SelectItem value={UserRole.SuperiorAdmin.toString()}>
-                      <div className="flex items-center">
-                        <UserCog className="h-4 w-4 mr-2" />
-                        Superior Admin
-                      </div>
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
 
-              {showAccessCodeInput && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="space-y-2"
-                >
-                  <Label htmlFor="accessCode">Superior Admin Access Code</Label>
-                  <Input
-                    id="accessCode"
-                    type="password"
-                    placeholder="Enter access code"
-                    value={accessCode}
-                    onChange={(e) => setAccessCode(e.target.value)}
-                    required={showAccessCodeInput}
-                  />
-                  <p className="text-xs text-gray-500">
-                    Superior Admin requires a special access code. Use: FUEL-SUPERIOR-2023
-                  </p>
-                </motion.div>
-              )}
 
               <Button
                 type="submit"
@@ -248,7 +151,7 @@ const Login = () => {
                   </div>
                 ) : (
                   <div className="flex items-center justify-center">
-                    {getRoleIcon(formData.role)}
+                    <User className="h-4 w-4 mr-2" />
                     Sign In
                   </div>
                 )}

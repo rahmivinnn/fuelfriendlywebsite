@@ -1,10 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, Send, X, Minimize2, Maximize2, Bot } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Send, X, Minimize2, Maximize2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
+
+// Simple SVG for the fuel logo
+const FUEL_LOGO = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="45" fill="none" stroke="#3ECF8E" stroke-width="3"/>
+  <path d="M50 20 L65 45 L50 70 C45 65 40 60 45 50 C50 40 45 35 40 30 Z" fill="#3ECF8E"/>
+</svg>
+`;
 
 type Message = {
   id: string;
@@ -39,6 +44,48 @@ const ChatBot: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
+  // Add a style tag to the document head to ensure the chatbot is visible
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .chatbot-button {
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        width: 60px !important;
+        height: 60px !important;
+        border-radius: 50% !important;
+        background-color: white !important;
+        border: 2px solid #3ECF8E !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        cursor: pointer !important;
+        z-index: 999999 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
+      .chatbot-window {
+        position: fixed !important;
+        bottom: 90px !important;
+        right: 20px !important;
+        width: 350px !important;
+        border-radius: 12px !important;
+        background-color: white !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+        z-index: 999999 !important;
+        overflow: hidden !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   const toggleChat = () => {
     setIsOpen(!isOpen);
     if (!isOpen) {
@@ -60,7 +107,7 @@ const ChatBot: React.FC = () => {
     }
   }, [messages, isOpen]);
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = () => {
     if (!inputValue.trim()) return;
 
     // Add user message
@@ -75,25 +122,23 @@ const ChatBot: React.FC = () => {
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate AI response (replace with actual API call in production)
+    // Simulate AI response
     setTimeout(() => {
       let botResponse = '';
 
       // Simple pattern matching for demo purposes
       const lowercaseInput = inputValue.toLowerCase();
 
-      if (lowercaseInput.includes('nearest') || lowercaseInput.includes('nearby') || lowercaseInput.includes('close')) {
-        botResponse = "You can find nearby stations by using our 'Nearby Stations' feature. It allows you to select your country and city to find stations registered on Google Maps in your area.";
+      if (lowercaseInput.includes('nearest') || lowercaseInput.includes('nearby')) {
+        botResponse = "You can find nearby stations by using our 'Nearby Stations' feature.";
       } else if (lowercaseInput.includes('add') && lowercaseInput.includes('station')) {
-        botResponse = "To add your station to our platform, go to the 'Station Management' section in your dashboard and click on 'Add New Station'. You'll need to provide details like location, services offered, and operating hours.";
+        botResponse = "To add your station to our platform, go to the 'Station Management' section.";
       } else if (lowercaseInput.includes('payment')) {
-        botResponse = "We accept various payment methods including credit/debit cards, PayPal, Apple Pay, and Google Pay. Station owners can set up their preferred payment methods in the 'Settings' section.";
-      } else if (lowercaseInput.includes('earning') || lowercaseInput.includes('transaction')) {
-        botResponse = "You can check your earnings in the 'Earnings & Transactions' section of your dashboard. It provides daily, weekly, monthly, and total earnings along with detailed transaction history.";
-      } else if (lowercaseInput.includes('support') || lowercaseInput.includes('help') || lowercaseInput.includes('contact')) {
-        botResponse = "For customer support, please visit the 'Help & Support' section or email us at support@fuelfriendly.com. Our team is available 24/7 to assist you.";
+        botResponse = "We accept various payment methods including credit/debit cards, PayPal, and more.";
+      } else if (lowercaseInput.includes('support') || lowercaseInput.includes('help')) {
+        botResponse = "For customer support, please visit the 'Help & Support' section.";
       } else {
-        botResponse = "I'm not sure I understand your question. Could you please rephrase or select one of the suggested questions below?";
+        botResponse = "I'm not sure I understand your question. Could you please rephrase?";
       }
 
       const botMessageObj: Message = {
@@ -105,7 +150,7 @@ const ChatBot: React.FC = () => {
 
       setMessages((prev) => [...prev, botMessageObj]);
       setIsTyping(false);
-    }, 1500);
+    }, 1000);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -123,43 +168,80 @@ const ChatBot: React.FC = () => {
 
   return (
     <>
-      {/* Chat Button */}
-      <motion.div
-        className="fixed bottom-6 right-6 z-50"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-      >
-        <Button
-          onClick={toggleChat}
-          className="h-14 w-14 rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg"
-        >
-          <MessageSquare size={24} />
-        </Button>
-      </motion.div>
+      {/* Chat Button - Direct implementation with inline SVG */}
+      <div
+        onClick={toggleChat}
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          width: '60px',
+          height: '60px',
+          borderRadius: '50%',
+          backgroundColor: 'white',
+          border: '2px solid #3ECF8E',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          zIndex: 99999,
+          padding: '8px'
+        }}
+        dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
+      />
 
       {/* Chat Window */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            className="fixed bottom-24 right-6 z-50 w-80 md:w-96 bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden flex flex-col"
-            style={{ height: isMinimized ? '60px' : '500px' }}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-          >
+      {isOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '90px',
+            right: '24px',
+            width: '350px',
+            height: isMinimized ? '60px' : '500px',
+            backgroundColor: 'white',
+            borderRadius: '12px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+            zIndex: 99999
+          }}
+        >
             {/* Chat Header */}
-            <div className="bg-green-500 text-white p-3 flex justify-between items-center">
-              <div className="flex items-center">
-                <Bot size={20} className="mr-2" />
-                <h3 className="font-medium">FuelBot Assistant</h3>
+            <div style={{
+              backgroundColor: '#3ECF8E',
+              color: 'white',
+              padding: '12px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{
+                  width: '24px',
+                  height: '24px',
+                  marginRight: '8px',
+                  backgroundColor: 'white',
+                  borderRadius: '50%',
+                  padding: '2px'
+                }}
+                dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
+                ></div>
+                <h3 style={{ fontWeight: 500 }}>FuelBot Assistant</h3>
               </div>
-              <div className="flex space-x-2">
-                <button onClick={toggleMinimize} className="text-white hover:text-gray-200">
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  onClick={toggleMinimize}
+                  style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
+                >
                   {isMinimized ? <Maximize2 size={18} /> : <Minimize2 size={18} />}
                 </button>
-                <button onClick={toggleChat} className="text-white hover:text-gray-200">
+                <button
+                  onClick={toggleChat}
+                  style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
+                >
                   <X size={18} />
                 </button>
               </div>
@@ -174,10 +256,19 @@ const ChatBot: React.FC = () => {
                     className={`mb-4 flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     {message.sender === 'bot' && (
-                      <Avatar className="h-8 w-8 mr-2">
-                        <AvatarImage src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" />
-                        <AvatarFallback>FB</AvatarFallback>
-                      </Avatar>
+                      <div
+                        style={{
+                          width: '32px',
+                          height: '32px',
+                          marginRight: '8px',
+                          backgroundColor: 'white',
+                          borderRadius: '50%',
+                          border: '1px solid #3ECF8E',
+                          padding: '4px',
+                          flexShrink: 0
+                        }}
+                        dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
+                      ></div>
                     )}
                     <div
                       className={`max-w-[80%] p-3 rounded-lg ${
@@ -200,10 +291,19 @@ const ChatBot: React.FC = () => {
                 ))}
                 {isTyping && (
                   <div className="flex items-center mb-4">
-                    <Avatar className="h-8 w-8 mr-2">
-                      <AvatarImage src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" />
-                      <AvatarFallback>FB</AvatarFallback>
-                    </Avatar>
+                    <div
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        marginRight: '8px',
+                        backgroundColor: 'white',
+                        borderRadius: '50%',
+                        border: '1px solid #3ECF8E',
+                        padding: '4px',
+                        flexShrink: 0
+                      }}
+                      dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
+                    ></div>
                     <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 rounded-lg">
                       <div className="flex space-x-1">
                         <div className="h-2 w-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
@@ -255,9 +355,9 @@ const ChatBot: React.FC = () => {
                 </div>
               </>
             )}
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
+
     </>
   );
 };

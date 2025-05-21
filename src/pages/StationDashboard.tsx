@@ -249,63 +249,16 @@ const StationDashboard = () => {
         return newData;
       });
 
-      // Occasionally show a real-time activity toast
-      if (Math.random() > 0.95) { // Reduced frequency to avoid too many toasts
-        const activities = [
-          "New customer just registered in your area",
-          "Fuel price update detected in nearby station",
-          "System detected increased demand for diesel today",
-          "New promotion opportunity available for your station",
-          "Customer satisfaction rating increased by 4.2%"
-        ];
-
-        toast({
-          title: "Real-time Activity",
-          description: activities[Math.floor(Math.random() * activities.length)],
-          duration: 3000,
-        });
-      }
+      // Real-time activity toasts disabled
     }, 1000); // Update every second for true real-time feel
 
     return () => clearInterval(interval);
   }, []);
 
-  // Real-time order updates every 5 seconds
+  // Real-time order updates disabled
   useEffect(() => {
-    let orderInterval;
-
-    // Random order status updates
-    orderInterval = setInterval(() => {
-      if (recentOrders.length > 0) {
-        setRecentOrders(prev => {
-          const updated = [...prev];
-          const randomIndex = Math.floor(Math.random() * updated.length);
-
-          // Random chance to change status
-          if (updated[randomIndex].status === 'New' && Math.random() > 0.5) {
-            updated[randomIndex] = {
-              ...updated[randomIndex],
-              status: 'Completed'
-            };
-
-            // Only show notification occasionally to avoid too many
-            if (Math.random() > 0.7) {
-              addNotification(`Order ${updated[randomIndex].id} has been completed`);
-            }
-          }
-
-          return updated;
-        });
-      }
-
-      // Random chance to receive a new order (increased probability)
-      if (Math.random() > 0.8) {
-        processNewOrder();
-      }
-    }, 5000); // Check every 5 seconds for more frequent updates
-
-    return () => clearInterval(orderInterval);
-  }, [recentOrders, addNotification, processNewOrder]);
+    // No real-time updates
+  }, []);
 
   // Filter orders based on search
   const filteredOrders = recentOrders.filter(order =>

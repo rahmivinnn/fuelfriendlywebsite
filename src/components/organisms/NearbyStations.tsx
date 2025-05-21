@@ -1496,7 +1496,7 @@ const NearbyStations: React.FC = () => {
                             <motion.div key={index} whileHover={{ scale: 1.05 }}>
                               <Badge variant="outline" className="text-xs flex items-center hover:bg-green-50 hover:text-green-700 transition-colors duration-300">
                                 {renderServiceIcon(service)}
-                                {service}
+                                {service === 'Fuel Delivery' ? 'Pump side service' : service}
                               </Badge>
                             </motion.div>
                           ))}
@@ -1512,7 +1512,7 @@ const NearbyStations: React.FC = () => {
                                   {station.services.slice(3).map((service, index) => (
                                     <div key={index} className="flex items-center text-sm">
                                       {renderServiceIcon(service)}
-                                      {service}
+                                      {service === 'Fuel Delivery' ? 'Pump side service' : service}
                                     </div>
                                   ))}
                                 </div>

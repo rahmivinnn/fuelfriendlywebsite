@@ -46,25 +46,7 @@ const Index = () => {
         duration: 5000,
       });
 
-      // Simulate real-time updates
-      const interval = setInterval(() => {
-        const messages = [
-          "New fuel station added in your area!",
-          "Gas prices updated in real-time",
-          "Special discount available now!",
-          "New feature: Schedule recurring deliveries"
-        ];
-
-        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-
-        toast({
-          title: "Real-time Update",
-          description: randomMessage,
-          duration: 3000,
-        });
-      }, 45000); // Show a random update every 45 seconds
-
-      return () => clearInterval(interval);
+      // Real-time updates disabled
     }, 1000); // Reduced from 1500 to 1000
 
     return () => clearTimeout(loadData);

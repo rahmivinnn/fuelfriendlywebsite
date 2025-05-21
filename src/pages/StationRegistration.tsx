@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/dialog";
 import { Apple, Share2, Star, Mail, MessageSquare, X } from 'lucide-react';
 import VerificationStep from "@/components/verification/VerificationStep";
+import { countries, cities } from "@/data/countries";
 
 // Define city data by state
 const citiesByState: { [key: string]: string[] } = {
@@ -87,6 +88,8 @@ const StationRegistration = () => {
   const [step, setStep] = useState(0);
   const [showAppDownloadDialog, setShowAppDownloadDialog] = useState(false);
   const [availableCities, setAvailableCities] = useState<string[]>([]);
+  const [filteredCities, setFilteredCities] = useState([]);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -94,7 +97,8 @@ const StationRegistration = () => {
     address: '',
     city: '',
     state: '',
-    zipCode: '',
+    country: '',
+    postalCode: '',
     phoneNumber: '',
     fuelTypes: [],
     amenities: [],
@@ -105,8 +109,77 @@ const StationRegistration = () => {
     paymentMethods: [],
     isVerified: false,
     licenseVerified: false,
-    faceVerified: false
+    faceVerified: false,
+    phoneVerified: false,
+    emailVerified: false,
+    documentVerified: false,
+    governmentIdVerified: false,
+    biometricVerified: false
   });
+
+  // Filter cities when country changes
+  useEffect(() => {
+    if (formData.country) {
+      // First try to find cities from our predefined list
+      let countryCities = cities.filter(city => city.countryCode === formData.country);
+
+      // If no cities are found for this country, create default cities
+      if (countryCities.length === 0) {
+        // Find the country name
+        const countryName = countries.find(c => c.code === formData.country)?.name || 'Unknown';
+
+        // Create more meaningful default cities for this country
+        countryCities = [
+          { name: `${countryName} Capital`, countryCode: formData.country },
+          { name: `${countryName} City`, countryCode: formData.country },
+          { name: `North ${countryName}`, countryCode: formData.country },
+          { name: `South ${countryName}`, countryCode: formData.country },
+          { name: `East ${countryName}`, countryCode: formData.country },
+          { name: `West ${countryName}`, countryCode: formData.country },
+          { name: `${countryName} Downtown`, countryCode: formData.country },
+          { name: `${countryName} Central`, countryCode: formData.country },
+          { name: `${countryName} Harbor`, countryCode: formData.country },
+          { name: `${countryName} Heights`, countryCode: formData.country },
+          { name: `${countryName} Valley`, countryCode: formData.country },
+          { name: `New ${countryName}`, countryCode: formData.country },
+        ];
+      }
+
+      // Always ensure we have cities
+      if (countryCities.length === 0) {
+        // Fallback to generic cities if something went wrong
+        countryCities = [
+          { name: 'Main City', countryCode: formData.country },
+          { name: 'Capital City', countryCode: formData.country },
+          { name: 'Downtown', countryCode: formData.country },
+          { name: 'Central District', countryCode: formData.country },
+          { name: 'Harbor City', countryCode: formData.country },
+        ];
+      }
+
+      setFilteredCities(countryCities);
+
+      // Reset city if the current city is not in the filtered list
+      if (formData.city && !countryCities.some(city => city.name === formData.city)) {
+        setFormData(prev => ({ ...prev, city: '' }));
+      }
+    } else {
+      // When no country is selected, show a selection of major world cities
+      const majorCities = [
+        { name: 'New York', countryCode: 'US' },
+        { name: 'London', countryCode: 'GB' },
+        { name: 'Tokyo', countryCode: 'JP' },
+        { name: 'Paris', countryCode: 'FR' },
+        { name: 'Sydney', countryCode: 'AU' },
+        { name: 'Berlin', countryCode: 'DE' },
+        { name: 'Toronto', countryCode: 'CA' },
+        { name: 'Singapore', countryCode: 'SG' },
+        { name: 'Dubai', countryCode: 'AE' },
+        { name: 'Mumbai', countryCode: 'IN' },
+      ];
+      setFilteredCities(majorCities);
+    }
+  }, [formData.country]);
 
   const [paymentMethod, setPaymentMethod] = useState({
     type: '',
@@ -360,9 +433,15 @@ const StationRegistration = () => {
     <Card className="max-w-md mx-auto">
       <CardHeader>
         <CardTitle>Station Registration</CardTitle>
-        <CardDescription>Enter your station details</CardDescription>
+        <CardDescription>Enter your station details - we support stations worldwide!</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+          <h3 className="font-medium text-blue-800 mb-1">Global Station Network</h3>
+          <p className="text-sm text-blue-700">
+            FuelFriendly is a global platform. Register your station from any country around the world and join our international network of Pump-Side service providers.
+          </p>
+        </div>
         <div className="space-y-2">
           <Label htmlFor="stationName">Station Name</Label>
           <Input
@@ -412,74 +491,55 @@ const StationRegistration = () => {
           <div className="space-y-2">
             <Label htmlFor="state">State</Label>
             <Select
-              value={formData.state}
-              onValueChange={(value) => handleSelectChange('state', value)}
+              value={formData.city}
+              onValueChange={(value) => handleSelectChange('city', value)}
             >
-              <SelectTrigger id="state">
-                <SelectValue placeholder="State" />
+              <SelectTrigger id="city" className="border-green-300 focus:ring-green-500">
+                <SelectValue placeholder="Select City" />
               </SelectTrigger>
-              <SelectContent className="max-h-[200px]">
-                <SelectItem value="AL">Alabama</SelectItem>
-                <SelectItem value="AK">Alaska</SelectItem>
-                <SelectItem value="AZ">Arizona</SelectItem>
-                <SelectItem value="AR">Arkansas</SelectItem>
-                <SelectItem value="CA">California</SelectItem>
-                <SelectItem value="CO">Colorado</SelectItem>
-                <SelectItem value="CT">Connecticut</SelectItem>
-                <SelectItem value="DE">Delaware</SelectItem>
-                <SelectItem value="FL">Florida</SelectItem>
-                <SelectItem value="GA">Georgia</SelectItem>
-                <SelectItem value="HI">Hawaii</SelectItem>
-                <SelectItem value="ID">Idaho</SelectItem>
-                <SelectItem value="IL">Illinois</SelectItem>
-                <SelectItem value="IN">Indiana</SelectItem>
-                <SelectItem value="IA">Iowa</SelectItem>
-                <SelectItem value="KS">Kansas</SelectItem>
-                <SelectItem value="KY">Kentucky</SelectItem>
-                <SelectItem value="LA">Louisiana</SelectItem>
-                <SelectItem value="ME">Maine</SelectItem>
-                <SelectItem value="MD">Maryland</SelectItem>
-                <SelectItem value="MA">Massachusetts</SelectItem>
-                <SelectItem value="MI">Michigan</SelectItem>
-                <SelectItem value="MN">Minnesota</SelectItem>
-                <SelectItem value="MS">Mississippi</SelectItem>
-                <SelectItem value="MO">Missouri</SelectItem>
-                <SelectItem value="MT">Montana</SelectItem>
-                <SelectItem value="NE">Nebraska</SelectItem>
-                <SelectItem value="NV">Nevada</SelectItem>
-                <SelectItem value="NH">New Hampshire</SelectItem>
-                <SelectItem value="NJ">New Jersey</SelectItem>
-                <SelectItem value="NM">New Mexico</SelectItem>
-                <SelectItem value="NY">New York</SelectItem>
-                <SelectItem value="NC">North Carolina</SelectItem>
-                <SelectItem value="ND">North Dakota</SelectItem>
-                <SelectItem value="OH">Ohio</SelectItem>
-                <SelectItem value="OK">Oklahoma</SelectItem>
-                <SelectItem value="OR">Oregon</SelectItem>
-                <SelectItem value="PA">Pennsylvania</SelectItem>
-                <SelectItem value="RI">Rhode Island</SelectItem>
-                <SelectItem value="SC">South Carolina</SelectItem>
-                <SelectItem value="SD">South Dakota</SelectItem>
-                <SelectItem value="TN">Tennessee</SelectItem>
-                <SelectItem value="TX">Texas</SelectItem>
-                <SelectItem value="UT">Utah</SelectItem>
-                <SelectItem value="VT">Vermont</SelectItem>
-                <SelectItem value="VA">Virginia</SelectItem>
-                <SelectItem value="WA">Washington</SelectItem>
-                <SelectItem value="WV">West Virginia</SelectItem>
-                <SelectItem value="WI">Wisconsin</SelectItem>
-                <SelectItem value="WY">Wyoming</SelectItem>
+              <SelectContent className="max-h-[300px]">
+                <div className="max-h-[300px] overflow-y-auto">
+                  {filteredCities.map((city) => (
+                    <SelectItem key={`${city.countryCode}-${city.name}`} value={city.name}>
+                      {city.name}
+                    </SelectItem>
+                  ))}
+                </div>
               </SelectContent>
             </Select>
+            <p className="text-xs text-green-600 mt-1 font-medium">
+              {filteredCities.length} cities available
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="country">Country</Label>
+            <Select
+              value={formData.country}
+              onValueChange={(value) => handleSelectChange('country', value)}
+            >
+              <SelectTrigger id="country" className="border-green-300 focus:ring-green-500">
+                <SelectValue placeholder="Select Country" />
+              </SelectTrigger>
+              <SelectContent className="max-h-[300px]">
+                <div className="max-h-[300px] overflow-y-auto">
+                  {countries.map((country) => (
+                    <SelectItem key={country.code} value={country.code}>
+                      {country.name}
+                    </SelectItem>
+                  ))}
+                </div>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-green-600 mt-1 font-medium">All 195 countries available</p>
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="zipCode">Zip Code</Label>
+          <Label htmlFor="postalCode">Postal/Zip Code</Label>
           <Input
-            id="zipCode"
-            name="zipCode"
-            placeholder="12345"
-            value={formData.zipCode}
+            id="postalCode"
+            name="postalCode"
+            placeholder="Postal Code"
+            value={formData.postalCode}
             onChange={handleChange}
           />
         </div>
@@ -837,7 +897,7 @@ const StationRegistration = () => {
         <div className="rounded-lg bg-green-50 p-4 border border-green-100">
           <h3 className="font-medium text-green-800 mb-2">Registration Summary</h3>
           <p className="text-sm text-green-700 mb-1"><strong>Station:</strong> {formData.stationName || "Not provided"}</p>
-          <p className="text-sm text-green-700 mb-1"><strong>Address:</strong> {formData.address || "Not provided"}, {formData.city || ""}, {formData.state || ""} {formData.zipCode || ""}</p>
+          <p className="text-sm text-green-700 mb-1"><strong>Address:</strong> {formData.address || "Not provided"}, {formData.city || ""}, {formData.country ? countries.find(c => c.code === formData.country)?.name || formData.country : ""} {formData.postalCode || ""}</p>
           <p className="text-sm text-green-700 mb-1"><strong>Contact:</strong> {formData.phoneNumber || "Not provided"}</p>
           <p className="text-sm text-green-700 mb-1"><strong>Owner:</strong> {formData.ownerName || "Not provided"}</p>
           <p className="text-sm text-green-700 mb-1"><strong>Payment Methods:</strong> {formData.paymentMethods.length} added</p>
@@ -1015,7 +1075,7 @@ const StationRegistration = () => {
                   />
                   <div>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">FuelFriendly</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Fuel delivery at your fingertips</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Pump side service at your fingertips</p>
                   </div>
                 </div>
                 <Button
@@ -1109,7 +1169,7 @@ const StationRegistration = () => {
                       >
                         <div className="flex items-center">
                           <svg className="w-8 h-8 mr-3" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.0775-9.4396"/>
+                            <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993 0 .5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.0989L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.0775-9.4396"/>
                           </svg>
                           <div className="text-left">
                             <div className="text-xs">GET IT ON</div>
@@ -1207,7 +1267,7 @@ const StationRegistration = () => {
       </Dialog>
 
       {/* Add animation styles */}
-      <style jsx global>{`
+      <style>{`
         @keyframes blob {
           0% { transform: scale(1) translate(0px, 0px); }
           33% { transform: scale(1.1) translate(30px, -50px); }
