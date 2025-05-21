@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -69,6 +68,7 @@ const ProtectedRoute = ({
   if (user && user.role < requiredRole) {
     return <Navigate to="/access-denied" replace />;
   }
+
   return <>{children}</>;
 };
 
@@ -99,9 +99,25 @@ const App = () => (
                     </Suspense>
                   </>
                 } />
+                <Route path="/contact-us" element={
+                  <>
+                    <ContactUs />
+                    <Suspense fallback={null}>
+                      <ChatBot />
+                    </Suspense>
+                  </>
+                } />
                 <Route path="/nearby-stations" element={
                   <>
                     <NearbyStations />
+                    <Suspense fallback={null}>
+                      <ChatBot />
+                    </Suspense>
+                  </>
+                } />
+                <Route path="/nearby-stations-new" element={
+                  <>
+                    <NearbyStationsNew />
                     <Suspense fallback={null}>
                       <ChatBot />
                     </Suspense>
@@ -136,6 +152,38 @@ const App = () => (
                       <ChatBot />
                     </>
                   </Suspense>
+                } />
+                <Route path="/independent-contractor-agreement" element={
+                  <>
+                    <IndependentContractorAgreement />
+                    <Suspense fallback={null}>
+                      <ChatBot />
+                    </Suspense>
+                  </>
+                } />
+                <Route path="/independent-contractor-agreement-full" element={
+                  <>
+                    <IndependentContractorAgreementFull />
+                    <Suspense fallback={null}>
+                      <ChatBot />
+                    </Suspense>
+                  </>
+                } />
+                <Route path="/privacy-policy" element={
+                  <>
+                    <PrivacyPolicy />
+                    <Suspense fallback={null}>
+                      <ChatBot />
+                    </Suspense>
+                  </>
+                } />
+                <Route path="/shopper-terms" element={
+                  <>
+                    <ShopperTerms />
+                    <Suspense fallback={null}>
+                      <ChatBot />
+                    </Suspense>
+                  </>
                 } />
 
                 {/* New feature routes */}
@@ -321,118 +369,24 @@ const App = () => (
                 {/* Access Denied route */}
                 <Route path="/access-denied" element={
                   <div className="flex h-screen flex-col items-center justify-center">
-                    <h1 className="text-2xl font-bold text-red-600">Access Denied</h1>
-                    <p className="mt-2 text-gray-600 dark:text-gray-400">You don't have permission to access this page.</p>
+                    <h1 className="text-3xl font-bold mb-4">Access Denied</h1>
+                    <p className="text-gray-600 mb-6">You don't have permission to access this page.</p>
                     <button
-                      onClick={() => window.history.back()}
-                      className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+                      onClick={() => navigate('/')}
+                      className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
                     >
-                      Go Back
+                      Return to Home
                     </button>
                   </div>
                 } />
 
-                {/* Catch-all route */}
-                <Route path="*" element={
-                  <>
-                    <NotFound />
-                    <Suspense fallback={null}>
-                      <ChatBot />
-                    </Suspense>
-                  </>
-                } />
+                {/* 404 route */}
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
           </TooltipProvider>
         </NotificationProvider>
       </AuthProvider>
-=======
-    <ThemeProvider defaultTheme="system" storageKey="theme">
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <ChatBot />
-          <BrowserRouter>
-            <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<Index />} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/contact-us" element={<ContactUs />} />
-            <Route path="/nearby-stations" element={<NearbyStationsNew />} />
-            <Route path="/station-registration" element={<StationRegistration />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/independent-contractor-agreement" element={<IndependentContractorAgreement />} />
-            <Route path="/independent-contractor-agreement-full" element={<IndependentContractorAgreementFull />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/shopper-terms" element={<ShopperTerms />} />
-
-            {/* Station Dashboard routes - require authentication */}
-            <Route path="/station-dashboard" element={
-              <ProtectedRoute>
-                <StationDashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="/station-dashboard/products" element={
-              <ProtectedRoute>
-                <ProductsManagement />
-              </ProtectedRoute>
-            } />
-            <Route path="/station-dashboard/station" element={
-              <ProtectedRoute>
-                <StationManagement />
-              </ProtectedRoute>
-            } />
-            <Route path="/station-dashboard/orders" element={
-              <ProtectedRoute>
-                <OrdersManagement />
-              </ProtectedRoute>
-            } />
-            <Route path="/station-dashboard/earnings" element={
-              <ProtectedRoute>
-                <EarningsTransactions />
-              </ProtectedRoute>
-            } />
-            <Route path="/station-dashboard/customers" element={
-              <ProtectedRoute>
-                <Customers />
-              </ProtectedRoute>
-            } />
-            <Route path="/station-dashboard/reports" element={
-              <ProtectedRoute>
-                <Reports />
-              </ProtectedRoute>
-            } />
-            <Route path="/station-dashboard/messages" element={
-              <ProtectedRoute>
-                <Messages />
-              </ProtectedRoute>
-            } />
-            <Route path="/station-dashboard/notifications" element={
-              <ProtectedRoute>
-                <Notifications />
-              </ProtectedRoute>
-            } />
-            <Route path="/station-dashboard/support" element={
-              <ProtectedRoute>
-                <SupportHelp />
-              </ProtectedRoute>
-            } />
-            <Route path="/station-dashboard/settings" element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            } />
-
-
-
-            {/* Catch-all route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </AuthProvider>
->>>>>>> fc50f12d78601307538b9c65c6925970812ed209
     </ThemeProvider>
   </QueryClientProvider>
 );

@@ -1,0 +1,117 @@
+{
+  "name": "FuelFriendly",
+  "short_name": "FuelFriendly",
+  "description": "Smart pump side service and management platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#22c55e",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/images/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Find Fuel",
+      "short_name": "Find Fuel",
+      "description": "Find nearby fuel stations",
+      "url": "/nearby-stations",
+      "icons": [{"src": "/icons/fuel.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "Register Station",
+      "short_name": "Register",
+      "description": "Register your fuel station",
+      "url": "/register-station",
+      "icons": [{"src": "/icons/register.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "Request Pump Side Service",
+      "short_name": "Pump Service",
+      "description": "Request pump side service",
+      "url": "/request-pump-service",
+      "icons": [{"src": "/icons/pump.png", "sizes": "192x192"}]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/images/screenshots/home-540x720.jpg",
+      "type": "image/jpg",
+      "sizes": "540x720",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/assets/images/screenshots/dashboard-540x720.jpg",
+      "type": "image/jpg",
+      "sizes": "540x720",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/assets/images/screenshots/home-720x540.jpg",
+      "type": "image/jpg",
+      "sizes": "720x540",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/assets/images/screenshots/dashboard-720x540.jpg",
+      "type": "image/jpg",
+      "sizes": "720x540",
+      "form_factor": "wide"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.fuelfriendly",
+      "id": "com.fuelfriendly"
+    }
+  ],
+  "prefer_related_applications": false
+}

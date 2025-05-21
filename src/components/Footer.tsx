@@ -238,7 +238,7 @@ const Footer = () => {
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 <button
-                  onClick={() => handleContactMethod('email', 'info@fuelfriendly.com')}
+                  onClick={() => handleContactMethod('email', 'info@nearbystation.com')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group bg-white/10 hover:bg-white/20 p-2 rounded-lg w-full"
                 >
                   <div className="bg-white/20 p-2 rounded-full mr-3">
@@ -246,7 +246,7 @@ const Footer = () => {
                   </div>
                   <div className="text-left">
                     <span className="block font-medium">Email Us</span>
-                    <span className="text-xs text-white/80">info@fuelfriendly.com</span>
+                    <span className="text-xs text-white/80">info@nearbystation.com</span>
                   </div>
                   <Send size={14} className="ml-auto text-white/50 group-hover:text-white/80 transition-colors" />
                 </button>

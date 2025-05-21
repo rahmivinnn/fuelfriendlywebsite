@@ -56,40 +56,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
     }
   }, []);
 
-  // Simulate real-time notifications
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      const messages = [
-        "New order received!",
-        "Inventory update: Petrol levels at 75%",
-        "Daily sales target achieved!",
-        "System update available",
-        "Price change detected in competitors",
-        "Customer feedback received"
-      ];
-
-      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-      setNotificationCount(prev => prev + 1);
-
-      toast({
-        title: "Real-time Update",
-        description: randomMessage,
-        duration: 3000,
-      });
-    }, 45000); // Random update every 45 seconds
-
-    return () => clearInterval(interval);
-  }, [toast]);
-
-  const toggleSidebar = () => {
-    setIsSidebarCollapsed(!isSidebarCollapsed);
-    toast({
-      title: isSidebarCollapsed ? "Sidebar Expanded" : "Sidebar Collapsed",
-      description: isSidebarCollapsed ? "Showing full sidebar view" : "Showing minimal sidebar for more space",
-      duration: 2000,
-    });
-  };
-
   // Effect to handle sidebar state based on screen size
   useEffect(() => {
     if (isMobile) {
@@ -98,18 +64,38 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
     }
   }, [isMobile]);
 
+  const toggleSidebar = () => {
+    if (isMobile) {
+      setIsSidebarOpen(!isSidebarOpen);
+    } else {
+      setIsSidebarCollapsed(!isSidebarCollapsed);
+      toast({
+        title: isSidebarCollapsed ? "Sidebar Expanded" : "Sidebar Collapsed",
+        description: isSidebarCollapsed ? "Showing full sidebar view" : "Showing minimal sidebar for more space",
+        duration: 2000,
+      });
+    }
+  };
+
   const handleSidebarItemClick = (item: SidebarItem) => {
+    // Allow clicking on all sidebar items, including the main dashboard
+    
     // Navigate to the path
     navigate(item.path);
 
-    // Show toast for navigation
-    toast({
-      title: `${item.label} Selected`,
-      description: !['/station-dashboard', '/station-dashboard/orders', '/station-dashboard/products', '/station-dashboard/station'].includes(item.path)
-        ? `The ${item.label.toLowerCase()} page is being loaded`
-        : `Navigating to ${item.label.toLowerCase()}`,
-      duration: 2000,
-    });
+    // Close sidebar on mobile after navigation
+    if (isMobile) {
+      setIsSidebarOpen(false);
+    }
+
+    // For any item without a proper page yet, show a toast
+    if (!['/station-dashboard', '/station-dashboard/orders', '/station-dashboard/products', '/station-dashboard/station'].includes(item.path)) {
+      toast({
+        title: `${item.label} Selected`,
+        description: `The ${item.label.toLowerCase()} page is being loaded`,
+        duration: 2000,
+      });
+    }
   };
 
   const handleLogout = () => {
@@ -261,60 +247,40 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
             >
               {title}
             </motion.h1>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="ml-2 sm:ml-3 px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded-full flex items-center transition-colors duration-300"
+            >
+              <div className="h-2 w-2 bg-green-500 dark:bg-green-400 rounded-full mr-1 animate-pulse"></div>
+              Live Data
+            </motion.div>
           </div>
 
           <div className="flex items-center space-x-2 sm:space-x-4">
-            <div className="relative z-10">
-              <Button
-                variant="ghost"
-                size={isMobile ? "sm" : "default"}
-                className="relative focus:ring-2 focus:ring-green-500 focus:outline-none cursor-pointer"
-                onClick={() => {
-                  setNotificationCount(0);
-                  navigate('/station-dashboard/notifications');
-                  toast({
-                    title: "Notifications Viewed",
-                    description: "All notifications have been marked as read",
-                    duration: 3000,
-                  });
-                }}
-                aria-label="Notifications"
-              >
-                <BellIcon className="text-gray-700 dark:text-gray-300" size={isMobile ? 18 : 20} />
-                {notificationCount > 0 && (
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    whileHover={{ scale: 1.2 }}
-                    className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center"
-                  >
-                    {notificationCount}
-                  </motion.span>
-                )}
+            <div className="relative">
+              <Button variant="ghost" className="relative p-2" aria-label="Notifications">
+                <BellIcon size={20} className="text-gray-500" />
+                <span className="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  {notificationCount}
+                </span>
               </Button>
             </div>
-
-            <div className="flex items-center space-x-1 sm:space-x-2">
-              <Button
-                variant="ghost"
-                size={isMobile ? "sm" : "default"}
-                className="p-0 focus:ring-2 focus:ring-green-500 focus:outline-none cursor-pointer"
-                onClick={() => navigate('/station-dashboard/settings')}
-                aria-label="Profile Settings"
-              >
-                <DefaultAvatar className="w-7 h-7 sm:w-8 sm:h-8" />
-              </Button>
-              <span className="font-medium text-xs sm:text-sm hidden sm:block">{userName}</span>
+            
+            <div className="flex items-center space-x-2">
+              <DefaultAvatar className="h-8 w-8" />
+              <div className="hidden sm:block">
+                <div className="text-sm font-medium">{userName}</div>
+                <div className="text-xs text-gray-500">Station Manager</div>
+              </div>
             </div>
           </div>
         </header>
 
-        {/* Dashboard Content */}
-        <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 p-3 sm:p-6 transition-colors duration-300">
-          <div className="container mx-auto max-w-7xl">
-            {children}
-          </div>
-        </div>
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-auto p-4 sm:p-6">
+          {children}
+        </main>
       </div>
     </div>
   );

@@ -1,4 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
+<<<<<<< HEAD
+import { motion, AnimatePresence } from 'framer-motion';
+import { MessageSquare, Send, X, Minimize2, Maximize2, Bot } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useToast } from '@/hooks/use-toast';
+
+=======
 import { Send, X, Minimize2, Maximize2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -11,6 +20,7 @@ const FUEL_LOGO = `
 </svg>
 `;
 
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 type Message = {
   id: string;
   content: string;
@@ -44,6 +54,8 @@ const ChatBot: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
+<<<<<<< HEAD
+=======
   // Add a style tag to the document head to ensure the chatbot is visible
   useEffect(() => {
     const style = document.createElement('style');
@@ -86,6 +98,7 @@ const ChatBot: React.FC = () => {
     };
   }, []);
 
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
   const toggleChat = () => {
     setIsOpen(!isOpen);
     if (!isOpen) {
@@ -107,7 +120,11 @@ const ChatBot: React.FC = () => {
     }
   }, [messages, isOpen]);
 
+<<<<<<< HEAD
+  const handleSendMessage = async () => {
+=======
   const handleSendMessage = () => {
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
     if (!inputValue.trim()) return;
 
     // Add user message
@@ -122,6 +139,27 @@ const ChatBot: React.FC = () => {
     setInputValue('');
     setIsTyping(true);
 
+<<<<<<< HEAD
+    // Simulate AI response (replace with actual API call in production)
+    setTimeout(() => {
+      let botResponse = '';
+      
+      // Simple pattern matching for demo purposes
+      const lowercaseInput = inputValue.toLowerCase();
+      
+      if (lowercaseInput.includes('nearest') || lowercaseInput.includes('nearby') || lowercaseInput.includes('close')) {
+        botResponse = "You can find nearby stations by using our 'Nearby Stations' feature. It allows you to select your country and city to find stations registered on Google Maps in your area.";
+      } else if (lowercaseInput.includes('add') && lowercaseInput.includes('station')) {
+        botResponse = "To add your station to our platform, go to the 'Station Management' section in your dashboard and click on 'Add New Station'. You'll need to provide details like location, services offered, and operating hours.";
+      } else if (lowercaseInput.includes('payment')) {
+        botResponse = "We accept various payment methods including credit/debit cards, PayPal, Apple Pay, and Google Pay. Station owners can set up their preferred payment methods in the 'Settings' section.";
+      } else if (lowercaseInput.includes('earning') || lowercaseInput.includes('transaction')) {
+        botResponse = "You can check your earnings in the 'Earnings & Transactions' section of your dashboard. It provides daily, weekly, monthly, and total earnings along with detailed transaction history.";
+      } else if (lowercaseInput.includes('support') || lowercaseInput.includes('help') || lowercaseInput.includes('contact')) {
+        botResponse = "For customer support, please visit the 'Help & Support' section or email us at support@fuelfriendly.com. Our team is available 24/7 to assist you.";
+      } else {
+        botResponse = "I'm not sure I understand your question. Could you please rephrase or select one of the suggested questions below?";
+=======
     // Simulate AI response
     setTimeout(() => {
       let botResponse = '';
@@ -139,6 +177,7 @@ const ChatBot: React.FC = () => {
         botResponse = "For customer support, please visit the 'Help & Support' section.";
       } else {
         botResponse = "I'm not sure I understand your question. Could you please rephrase?";
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
       }
 
       const botMessageObj: Message = {
@@ -150,7 +189,11 @@ const ChatBot: React.FC = () => {
 
       setMessages((prev) => [...prev, botMessageObj]);
       setIsTyping(false);
+<<<<<<< HEAD
+    }, 1500);
+=======
     }, 1000);
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -168,6 +211,45 @@ const ChatBot: React.FC = () => {
 
   return (
     <>
+<<<<<<< HEAD
+      {/* Chat Button */}
+      <motion.div
+        className="fixed bottom-6 right-6 z-50"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+      >
+        <Button
+          onClick={toggleChat}
+          className="h-14 w-14 rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg"
+        >
+          <MessageSquare size={24} />
+        </Button>
+      </motion.div>
+
+      {/* Chat Window */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="fixed bottom-24 right-6 z-50 w-80 md:w-96 bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden flex flex-col"
+            style={{ height: isMinimized ? '60px' : '500px' }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+          >
+            {/* Chat Header */}
+            <div className="bg-green-500 text-white p-3 flex justify-between items-center">
+              <div className="flex items-center">
+                <Bot size={20} className="mr-2" />
+                <h3 className="font-medium">FuelBot Assistant</h3>
+              </div>
+              <div className="flex space-x-2">
+                <button onClick={toggleMinimize} className="text-white hover:text-gray-200">
+                  {isMinimized ? <Maximize2 size={18} /> : <Minimize2 size={18} />}
+                </button>
+                <button onClick={toggleChat} className="text-white hover:text-gray-200">
+=======
       {/* Chat Button - Direct implementation with inline SVG */}
       <div
         onClick={toggleChat}
@@ -242,6 +324,7 @@ const ChatBot: React.FC = () => {
                   onClick={toggleChat}
                   style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
                 >
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                   <X size={18} />
                 </button>
               </div>
@@ -256,6 +339,12 @@ const ChatBot: React.FC = () => {
                     className={`mb-4 flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     {message.sender === 'bot' && (
+<<<<<<< HEAD
+                      <Avatar className="h-8 w-8 mr-2">
+                        <AvatarImage src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" />
+                        <AvatarFallback>FB</AvatarFallback>
+                      </Avatar>
+=======
                       <div
                         style={{
                           width: '32px',
@@ -269,6 +358,7 @@ const ChatBot: React.FC = () => {
                         }}
                         dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
                       ></div>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                     )}
                     <div
                       className={`max-w-[80%] p-3 rounded-lg ${
@@ -291,6 +381,12 @@ const ChatBot: React.FC = () => {
                 ))}
                 {isTyping && (
                   <div className="flex items-center mb-4">
+<<<<<<< HEAD
+                    <Avatar className="h-8 w-8 mr-2">
+                      <AvatarImage src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" />
+                      <AvatarFallback>FB</AvatarFallback>
+                    </Avatar>
+=======
                     <div
                       style={{
                         width: '32px',
@@ -304,6 +400,7 @@ const ChatBot: React.FC = () => {
                       }}
                       dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
                     ></div>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                     <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 rounded-lg">
                       <div className="flex space-x-1">
                         <div className="h-2 w-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
@@ -317,6 +414,49 @@ const ChatBot: React.FC = () => {
               </div>
             )}
 
+<<<<<<< HEAD
+            {/* Suggested Questions */}
+            {!isMinimized && messages.length < 3 && (
+              <div className="p-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Suggested questions:</p>
+                <div className="flex flex-wrap gap-2">
+                  {suggestedQuestions.map((question, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleSuggestedQuestion(question)}
+                      className="text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full px-3 py-1 text-gray-700 dark:text-gray-300"
+                    >
+                      {question}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Chat Input */}
+            {!isMinimized && (
+              <div className="p-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex items-center">
+                <Input
+                  type="text"
+                  placeholder="Type your message..."
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  className="flex-1 mr-2"
+                />
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={!inputValue.trim()}
+                  className="bg-green-500 hover:bg-green-600 text-white"
+                >
+                  <Send size={18} />
+                </Button>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+=======
             {/* Chat Input */}
             {!isMinimized && (
               <>
@@ -358,6 +498,7 @@ const ChatBot: React.FC = () => {
           </div>
         )}
 
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
     </>
   );
 };

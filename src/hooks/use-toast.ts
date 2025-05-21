@@ -1,3 +1,23 @@
+<<<<<<< HEAD
+import { toast as sonnerToast, type Toast } from "sonner";
+
+type ToastProps = Omit<Toast, "id" | "title" | "description"> & {
+  title?: string;
+  description?: string;
+  variant?: "default" | "destructive";
+};
+
+export function useToast() {
+  function toast({ title, description, variant = "default", ...props }: ToastProps) {
+    return sonnerToast[variant === "destructive" ? "error" : "success"](title, {
+      description,
+      ...props,
+    });
+  }
+
+  return { toast };
+}
+=======
 import * as React from "react"
 
 import type {
@@ -189,3 +209,4 @@ function useToast() {
 }
 
 export { useToast, toast }
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209

@@ -4,13 +4,14 @@ import {
   Grid, ShoppingBag, Package, Building2,
   PieChart, Bell as BellIcon, HelpCircle, Settings,
   LogOut, MapPin, LayoutDashboard, Activity, FileText,
-  MessageCircle, Users, Menu, X
+  MessageCircle, Users, X
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
 import { DefaultAvatar } from '@/components/ui/avatar';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { ThemeToggle } from '@/components/molecules/ThemeToggle';
+import NotificationCenter from '@/components/organisms/NotificationCenter';
 
 type SidebarItem = {
   icon: React.ElementType;
@@ -42,12 +43,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
   const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
   const [notificationCount, setNotificationCount] = useState<number>(4);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(isMobile);
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [userName, setUserName] = useState('Station Owner');
-
+  
   // Get user name from localStorage if available
   useEffect(() => {
     const storedName = localStorage.getItem('stationOwnerName');
@@ -70,14 +70,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
 
       const randomMessage = messages[Math.floor(Math.random() * messages.length)];
       setNotificationCount(prev => prev + 1);
-
+      
       toast({
         title: "Real-time Update",
         description: randomMessage,
         duration: 3000,
       });
     }, 45000); // Random update every 45 seconds
-
+    
     return () => clearInterval(interval);
   }, [toast]);
 
@@ -89,25 +89,19 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
       duration: 2000,
     });
   };
-
-  // Effect to handle sidebar state based on screen size
-  useEffect(() => {
-    if (isMobile) {
-      setIsSidebarCollapsed(true);
-      setIsSidebarOpen(false);
-    }
-  }, [isMobile]);
+  
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   const handleSidebarItemClick = (item: SidebarItem) => {
     // Navigate to the path
     navigate(item.path);
 
-    // Show toast for navigation
+    // Show a toast for the selected item
     toast({
       title: `${item.label} Selected`,
-      description: !['/station-dashboard', '/station-dashboard/orders', '/station-dashboard/products', '/station-dashboard/station'].includes(item.path)
-        ? `The ${item.label.toLowerCase()} page is being loaded`
-        : `Navigating to ${item.label.toLowerCase()}`,
+      description: `Navigating to ${item.label.toLowerCase()}`,
       duration: 2000,
     });
   };
@@ -124,26 +118,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
   };
 
   return (
-    <div className="h-screen flex bg-gray-50 overflow-hidden">
-      {/* Mobile Overlay */}
-      {isMobile && isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
+    <div className="h-screen flex bg-gray-50 dark:bg-gray-900">
+      {/* Sidebar - Desktop */}
       <motion.div
-        initial={{ x: isMobile ? -300 : 0 }}
-        animate={{
-          x: isMobile ? (isSidebarOpen ? 0 : -300) : 0,
-          width: isMobile ? 256 : (isSidebarCollapsed ? 80 : 256)
-        }}
+        initial={{ x: -300 }}
+        animate={{ x: 0, width: isSidebarCollapsed ? 80 : 256 }}
         transition={{ type: "spring", stiffness: 100 }}
-        className={`bg-white border-r border-gray-200 flex flex-col ${isMobile ? 'fixed h-full z-50' : ''}`}
+        className="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col hidden md:flex"
       >
-        <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
           <AnimatePresence>
             {!isSidebarCollapsed && (
               <motion.div
@@ -157,6 +140,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
                     alt="FuelFriendly Logo"
                     className="h-8"
                   />
+                  <span className="ml-2 font-bold text-green-600 dark:text-green-400">FuelFriendly</span>
                 </Link>
               </motion.div>
             )}
@@ -166,16 +150,16 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
             variant="ghost"
             size="sm"
             onClick={toggleSidebar}
-            className="hover:bg-gray-100"
+            className="hover:bg-gray-100 dark:hover:bg-gray-700"
           >
-            <Grid size={20} className="text-gray-500" />
+            <Grid size={20} className="text-gray-500 dark:text-gray-400" />
           </Button>
         </div>
 
         <div className="flex-1 p-4 space-y-2 overflow-y-auto">
           {sidebarItems.map((item, index) => {
             const isActive = location.pathname === item.path;
-
+            
             return (
               <motion.div
                 key={item.label}
@@ -185,9 +169,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
               >
                 <div
                   onClick={() => handleSidebarItemClick(item)}
-                  className={`flex items-center p-3 rounded-lg transition-colors hover:bg-gray-100 cursor-pointer ${isActive ? 'bg-green-50 text-green-500' : 'text-gray-600'}`}
+                  className={`flex items-center p-3 rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer ${isActive ? 'bg-green-50 text-green-500 dark:bg-green-900/20 dark:text-green-400' : 'text-gray-600 dark:text-gray-300'}`}
                 >
-                  <item.icon size={20} className={isActive ? 'text-green-500' : 'text-gray-500'} />
+                  <item.icon size={20} className={isActive ? 'text-green-500 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'} />
                   <AnimatePresence>
                     {!isSidebarCollapsed && (
                       <motion.span
@@ -216,10 +200,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
           })}
         </div>
 
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-4 border-t border-gray-200 dark:border-gray-700">
           <Button
             variant="ghost"
-            className={`${isSidebarCollapsed ? 'justify-center' : 'w-full justify-start'} text-gray-600 hover:text-gray-900 hover:bg-gray-100`}
+            className={`${isSidebarCollapsed ? 'justify-center' : 'w-full justify-start'} text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-gray-100 dark:hover:bg-gray-700`}
             onClick={handleLogout}
           >
             <LogOut size={20} className={isSidebarCollapsed ? '' : 'mr-2'} />
@@ -239,81 +223,128 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
       </motion.div>
 
       {/* Main Content */}
-      <div className={`flex-1 flex flex-col overflow-hidden ${isMobile ? 'w-full' : ''}`}>
+      <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Nav */}
-        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-3 px-4 sm:py-4 sm:px-6 flex items-center justify-between transition-colors duration-300">
+        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-6 flex items-center justify-between">
           <div className="flex items-center">
-            {isMobile && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={toggleSidebar}
-                className="mr-2 hover:bg-gray-100"
-                aria-label="Toggle Menu"
-              >
-                <Menu size={20} className="text-gray-500" />
-              </Button>
-            )}
+            {/* Mobile menu button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="mr-2 md:hidden"
+              onClick={toggleMobileMenu}
+            >
+              <Grid size={20} className="text-gray-500 dark:text-gray-400" />
+            </Button>
+            
             <motion.h1
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-xl sm:text-2xl font-bold dark:text-white truncate"
+              className="text-2xl font-bold dark:text-white"
             >
               {title}
             </motion.h1>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="ml-3 px-2 py-1 bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300 text-xs rounded-full flex items-center"
+            >
+              <div className="h-2 w-2 bg-green-500 rounded-full mr-1 animate-pulse"></div>
+              Live Data
+            </motion.div>
           </div>
 
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            <div className="relative z-10">
-              <Button
-                variant="ghost"
-                size={isMobile ? "sm" : "default"}
-                className="relative focus:ring-2 focus:ring-green-500 focus:outline-none cursor-pointer"
-                onClick={() => {
-                  setNotificationCount(0);
-                  navigate('/station-dashboard/notifications');
-                  toast({
-                    title: "Notifications Viewed",
-                    description: "All notifications have been marked as read",
-                    duration: 3000,
-                  });
-                }}
-                aria-label="Notifications"
-              >
-                <BellIcon className="text-gray-700 dark:text-gray-300" size={isMobile ? 18 : 20} />
-                {notificationCount > 0 && (
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    whileHover={{ scale: 1.2 }}
-                    className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center"
-                  >
-                    {notificationCount}
-                  </motion.span>
-                )}
-              </Button>
-            </div>
+          <div className="flex items-center space-x-4">
+            <ThemeToggle />
+            <NotificationCenter />
 
-            <div className="flex items-center space-x-1 sm:space-x-2">
-              <Button
-                variant="ghost"
-                size={isMobile ? "sm" : "default"}
-                className="p-0 focus:ring-2 focus:ring-green-500 focus:outline-none cursor-pointer"
-                onClick={() => navigate('/station-dashboard/settings')}
-                aria-label="Profile Settings"
-              >
-                <DefaultAvatar className="w-7 h-7 sm:w-8 sm:h-8" />
-              </Button>
-              <span className="font-medium text-xs sm:text-sm hidden sm:block">{userName}</span>
+            <div className="flex items-center space-x-2">
+              <DefaultAvatar className="w-8 h-8" />
+              <span className="font-medium text-sm hidden md:block dark:text-white">{userName}</span>
             </div>
           </div>
         </header>
+        
+        {/* Mobile Sidebar */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, x: -300 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -300 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="fixed inset-0 z-50 md:hidden"
+            >
+              <div className="absolute inset-0 bg-black/50" onClick={toggleMobileMenu} />
+              <div className="absolute inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 shadow-lg flex flex-col">
+                <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                  <Link to="/" className="flex items-center">
+                    <img
+                      src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png"
+                      alt="FuelFriendly Logo"
+                      className="h-8"
+                    />
+                    <span className="ml-2 font-bold text-green-600 dark:text-green-400">FuelFriendly</span>
+                  </Link>
+                  
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={toggleMobileMenu}
+                    className="hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <X size={20} className="text-gray-500 dark:text-gray-400" />
+                  </Button>
+                </div>
+                
+                <div className="flex-1 p-4 space-y-2 overflow-y-auto">
+                  {sidebarItems.map((item, index) => {
+                    const isActive = location.pathname === item.path;
+                    
+                    return (
+                      <div
+                        key={item.label}
+                        onClick={() => {
+                          handleSidebarItemClick(item);
+                          toggleMobileMenu();
+                        }}
+                        className={`flex items-center p-3 rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer ${isActive ? 'bg-green-50 text-green-500 dark:bg-green-900/20 dark:text-green-400' : 'text-gray-600 dark:text-gray-300'}`}
+                      >
+                        <item.icon size={20} className={isActive ? 'text-green-500 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'} />
+                        <span className="ml-3 font-medium text-sm">
+                          {item.label}
+                        </span>
+                        {item.realtime && (
+                          <div className="ml-auto">
+                            <Activity size={14} className="text-green-500" />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                
+                <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-gray-100 dark:hover:bg-gray-700"
+                    onClick={() => {
+                      handleLogout();
+                      toggleMobileMenu();
+                    }}
+                  >
+                    <LogOut size={20} className="mr-2" />
+                    Logout Account
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Dashboard Content */}
-        <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 p-3 sm:p-6 transition-colors duration-300">
-          <div className="container mx-auto max-w-7xl">
-            {children}
-          </div>
+        <div className="flex-1 overflow-y-auto">
+          {children}
         </div>
       </div>
     </div>

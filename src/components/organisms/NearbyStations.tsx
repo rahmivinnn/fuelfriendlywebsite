@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { MapPin, Search, ChevronDown, Loader2, ExternalLink, Info } from 'lucide-react';
+=======
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -26,6 +31,7 @@ import {
   SortDesc,
   Locate
 } from 'lucide-react';
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -46,6 +52,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+<<<<<<< HEAD
+=======
 import {
   Dialog,
   DialogContent,
@@ -69,6 +77,7 @@ import {
 import {
   Slider
 } from "@/components/ui/slider";
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 
 // Types
 type Station = {
@@ -82,6 +91,8 @@ type Station = {
   priceLevel: number;
   photoUrl?: string;
   placeId: string;
+<<<<<<< HEAD
+=======
   regularPrice: number;
   premiumPrice: number;
   dieselPrice: number;
@@ -108,6 +119,7 @@ type Review = {
 type PriceFilter = {
   min: number;
   max: number;
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 };
 
 type Country = {
@@ -429,6 +441,68 @@ const cities: City[] = [
   { name: 'Kawasaki', countryCode: 'JP' },
   { name: 'Saitama', countryCode: 'JP' },
 
+<<<<<<< HEAD
+  // China
+  { name: 'Beijing', countryCode: 'CN' },
+  { name: 'Shanghai', countryCode: 'CN' },
+  { name: 'Guangzhou', countryCode: 'CN' },
+  { name: 'Shenzhen', countryCode: 'CN' },
+  { name: 'Chengdu', countryCode: 'CN' },
+  { name: 'Tianjin', countryCode: 'CN' },
+  { name: 'Wuhan', countryCode: 'CN' },
+  { name: 'Dongguan', countryCode: 'CN' },
+  { name: 'Chongqing', countryCode: 'CN' },
+  { name: 'Nanjing', countryCode: 'CN' },
+
+  // India
+  { name: 'Mumbai', countryCode: 'IN' },
+  { name: 'Delhi', countryCode: 'IN' },
+  { name: 'Bangalore', countryCode: 'IN' },
+  { name: 'Hyderabad', countryCode: 'IN' },
+  { name: 'Chennai', countryCode: 'IN' },
+  { name: 'Kolkata', countryCode: 'IN' },
+  { name: 'Ahmedabad', countryCode: 'IN' },
+  { name: 'Pune', countryCode: 'IN' },
+  { name: 'Surat', countryCode: 'IN' },
+  { name: 'Jaipur', countryCode: 'IN' },
+
+  // Brazil
+  { name: 'São Paulo', countryCode: 'BR' },
+  { name: 'Rio de Janeiro', countryCode: 'BR' },
+  { name: 'Brasília', countryCode: 'BR' },
+  { name: 'Salvador', countryCode: 'BR' },
+  { name: 'Fortaleza', countryCode: 'BR' },
+  { name: 'Belo Horizonte', countryCode: 'BR' },
+  { name: 'Manaus', countryCode: 'BR' },
+  { name: 'Curitiba', countryCode: 'BR' },
+  { name: 'Recife', countryCode: 'BR' },
+  { name: 'Porto Alegre', countryCode: 'BR' },
+
+  // Indonesia
+  { name: 'Jakarta', countryCode: 'ID' },
+  { name: 'Surabaya', countryCode: 'ID' },
+  { name: 'Bandung', countryCode: 'ID' },
+  { name: 'Medan', countryCode: 'ID' },
+  { name: 'Semarang', countryCode: 'ID' },
+
+  // Mexico
+  { name: 'Mexico City', countryCode: 'MX' },
+  { name: 'Guadalajara', countryCode: 'MX' },
+  { name: 'Monterrey', countryCode: 'MX' },
+  { name: 'Puebla', countryCode: 'MX' },
+  { name: 'Tijuana', countryCode: 'MX' },
+
+  // South Africa
+  { name: 'Johannesburg', countryCode: 'ZA' },
+  { name: 'Cape Town', countryCode: 'ZA' },
+  { name: 'Durban', countryCode: 'ZA' },
+  { name: 'Pretoria', countryCode: 'ZA' },
+  { name: 'Port Elizabeth', countryCode: 'ZA' },
+
+  // This would be expanded to include major cities for each country
+];
+
+=======
   // This would be expanded to include major cities for each country
 ];
 
@@ -487,10 +561,58 @@ const generateReviews = (count: number): Review[] => {
   return reviews;
 };
 
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 // Mock data for stations (in production, this would come from Google Places API)
 const mockStations: Station[] = [
   {
     id: '1',
+<<<<<<< HEAD
+    name: 'Shell Gas Station',
+    address: '123 Main St, New York, NY 10001',
+    distance: '0.5 miles',
+    rating: 4.5,
+    isOpen: true,
+    services: ['Fuel', 'Car Wash', 'Convenience Store'],
+    priceLevel: 2,
+    photoUrl: 'https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sAUjq9jnEX4MxnDjlCgJHAhQprtI4-LFOvzRQBCY5QQ9P1U4Eqp1q6-5qvHfWleHNUzHr9d-1ULBNCzOBVlY1s-s9iE2QhQbLTKo1e3Jx5qXJHPDzVsj6A7Ot0TQWJ1e5u8JR2K1pFnwSQTax0iSgWjsH5LKNDGjQoLWpM&3u1000&5m1&2e1&callback=none&key=AIzaSyBhXn3YLKwUFv9xiIFRKPDjQwbC0y0P1Eo&token=32572',
+    placeId: 'ChIJN1t_tDeuEmsRUsoyG83frY4',
+  },
+  {
+    id: '2',
+    name: 'Exxon Mobil',
+    address: '456 Broadway, New York, NY 10012',
+    distance: '1.2 miles',
+    rating: 4.2,
+    isOpen: true,
+    services: ['Fuel', 'ATM', 'Convenience Store'],
+    priceLevel: 3,
+    photoUrl: 'https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sAUjq9jlCX4MxnDjlCgJHAhQprtI4-LFOvzRQBCY5QQ9P1U4Eqp1q6-5qvHfWleHNUzHr9d-1ULBNCzOBVlY1s-s9iE2QhQbLTKo1e3Jx5qXJHPDzVsj6A7Ot0TQWJ1e5u8JR2K1pFnwSQTax0iSgWjsH5LKNDGjQoLWpM&3u1000&5m1&2e1&callback=none&key=AIzaSyBhXn3YLKwUFv9xiIFRKPDjQwbC0y0P1Eo&token=32572',
+    placeId: 'ChIJN1t_tDeuEmsRUsoyG83frY4',
+  },
+  {
+    id: '3',
+    name: 'BP Gas Station',
+    address: '789 5th Ave, New York, NY 10022',
+    distance: '1.8 miles',
+    rating: 3.8,
+    isOpen: false,
+    services: ['Fuel', 'Electric Charging', 'Car Wash'],
+    priceLevel: 2,
+    photoUrl: 'https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sAUjq9jmEX4MxnDjlCgJHAhQprtI4-LFOvzRQBCY5QQ9P1U4Eqp1q6-5qvHfWleHNUzHr9d-1ULBNCzOBVlY1s-s9iE2QhQbLTKo1e3Jx5qXJHPDzVsj6A7Ot0TQWJ1e5u8JR2K1pFnwSQTax0iSgWjsH5LKNDGjQoLWpM&3u1000&5m1&2e1&callback=none&key=AIzaSyBhXn3YLKwUFv9xiIFRKPDjQwbC0y0P1Eo&token=32572',
+    placeId: 'ChIJN1t_tDeuEmsRUsoyG83frY4',
+  },
+  {
+    id: '4',
+    name: 'Chevron',
+    address: '321 Park Ave, New York, NY 10016',
+    distance: '2.3 miles',
+    rating: 4.0,
+    isOpen: true,
+    services: ['Fuel', 'Convenience Store', 'Restaurant'],
+    priceLevel: 1,
+    photoUrl: 'https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sAUjq9jkEX4MxnDjlCgJHAhQprtI4-LFOvzRQBCY5QQ9P1U4Eqp1q6-5qvHfWleHNUzHr9d-1ULBNCzOBVlY1s-s9iE2QhQbLTKo1e3Jx5qXJHPDzVsj6A7Ot0TQWJ1e5u8JR2K1pFnwSQTax0iSgWjsH5LKNDGjQoLWpM&3u1000&5m1&2e1&callback=none&key=AIzaSyBhXn3YLKwUFv9xiIFRKPDjQwbC0y0P1Eo&token=32572',
+    placeId: 'ChIJN1t_tDeuEmsRUsoyG83frY4',
+=======
     name: 'ARCO Gas Point #19',
     address: '1078 Rruga Ismail Qemali, Tirana, Albania',
     distance: '0.5 miles',
@@ -626,11 +748,15 @@ const mockStations: Station[] = [
     reviews: generateReviews(9),
     isFavorite: false,
     brand: 'Kastrati',
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
   },
 ];
 
 const NearbyStations: React.FC = () => {
+<<<<<<< HEAD
+=======
   // Basic state
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
   const [selectedCountry, setSelectedCountry] = useState<string>('');
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [filteredCities, setFilteredCities] = useState<City[]>([]);
@@ -641,6 +767,17 @@ const NearbyStations: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const { toast } = useToast();
 
+<<<<<<< HEAD
+  // Filter cities based on selected country
+  useEffect(() => {
+    if (selectedCountry) {
+      const filtered = cities.filter(city => city.countryCode === selectedCountry);
+      setFilteredCities(filtered);
+      setSelectedCity('');
+    } else {
+      setFilteredCities([]);
+    }
+=======
   // Advanced features state
   const [selectedStation, setSelectedStation] = useState<Station | null>(null);
   const [showStationDetails, setShowStationDetails] = useState<boolean>(false);
@@ -785,14 +922,18 @@ const NearbyStations: React.FC = () => {
       setSelectedCity('');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
   }, [selectedCountry]);
 
   // Handle search
   const handleSearch = () => {
     if (!selectedCountry || !selectedCity) {
+<<<<<<< HEAD
+=======
       // Don't show error toast when auto-searching
       if (isLoading) return;
 
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
       toast({
         title: 'Selection Required',
         description: 'Please select both a country and a city to search for nearby stations.',
@@ -808,6 +949,14 @@ const NearbyStations: React.FC = () => {
     // In a real implementation, this would call the Google Places API with the selected country and city
     setTimeout(() => {
       // Customize the mock data to reflect the selected city and country
+<<<<<<< HEAD
+      const customizedStations = mockStations.map(station => ({
+        ...station,
+        address: station.address.replace('New York, NY', `${selectedCity}, ${countries.find(c => c.code === selectedCountry)?.name}`),
+      }));
+
+      setStations(customizedStations);
+=======
       const customizedStations = mockStations.map(station => {
         // Get the country name from the country code
         const countryName = countries.find(c => c.code === selectedCountry)?.name || 'United States';
@@ -884,17 +1033,29 @@ const NearbyStations: React.FC = () => {
       }));
 
       setStations(filteredStations);
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
       setIsLoading(false);
       setHasSearched(true);
 
       toast({
         title: 'Stations Found',
+<<<<<<< HEAD
+        description: `Found ${customizedStations.length} fuel stations in ${selectedCity}, ${countries.find(c => c.code === selectedCountry)?.name}.`,
+=======
         description: `Found ${filteredStations.length} fuel stations in ${selectedCity}, ${countries.find(c => c.code === selectedCountry)?.name}.`,
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
       });
     }, 1500);
   };
 
   // Handle view station details
+<<<<<<< HEAD
+  const handleViewDetails = (placeId: string) => {
+    // In production, this would open Google Maps with the place details
+    window.open(`https://www.google.com/maps/place/?q=place_id:${placeId}`, '_blank');
+  };
+
+=======
   const handleViewDetails = (station: Station) => {
     setSelectedStation(station);
     setShowStationDetails(true);
@@ -993,6 +1154,7 @@ const NearbyStations: React.FC = () => {
     }
   };
 
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
   // Render price level
   const renderPriceLevel = (level: number) => {
     return Array(5)
@@ -1004,6 +1166,16 @@ const NearbyStations: React.FC = () => {
       ));
   };
 
+<<<<<<< HEAD
+  return (
+    <div className="container mx-auto p-4 max-w-6xl">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+        <h2 className="text-2xl font-bold mb-4 flex items-center">
+          <MapPin className="mr-2 text-green-500" />
+          Find Nearby Fuel Stations
+        </h2>
+        <p className="text-gray-600 dark:text-gray-300 mb-6">
+=======
   // Render fuel price
   const renderFuelPrice = (station: Station, type: 'regular' | 'premium' | 'diesel') => {
     const price = type === 'regular'
@@ -1056,6 +1228,7 @@ const NearbyStations: React.FC = () => {
           Find Nearby Fuel Stations
         </h2>
         <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-4 sm:mb-6">
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
           Select from 195 countries worldwide and find fuel stations registered on Google Maps in your chosen city.
           Get real-time information on prices, services, and more.
         </p>
@@ -1074,7 +1247,11 @@ const NearbyStations: React.FC = () => {
             </div>
           </div>
 
+<<<<<<< HEAD
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+=======
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 mb-4">
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
             <div>
               <label className="block text-sm font-medium mb-1">Country</label>
               <Select value={selectedCountry} onValueChange={setSelectedCountry}>
@@ -1098,6 +1275,9 @@ const NearbyStations: React.FC = () => {
               <label className="block text-sm font-medium mb-1">City</label>
               <Select
                 value={selectedCity}
+<<<<<<< HEAD
+                onValueChange={setSelectedCity}
+=======
                 onValueChange={(value) => {
                   setSelectedCity(value);
                   // Auto-search when city changes
@@ -1107,6 +1287,7 @@ const NearbyStations: React.FC = () => {
                     }, 100);
                   }
                 }}
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                 disabled={!selectedCountry || filteredCities.length === 0}
               >
                 <SelectTrigger className={selectedCountry ? "border-green-500 focus:ring-green-500" : ""}>
@@ -1121,12 +1302,42 @@ const NearbyStations: React.FC = () => {
                         </SelectItem>
                       ))
                     ) : (
+<<<<<<< HEAD
+                      <div className="p-2 text-center text-gray-500">No cities available for this country yet</div>
+=======
                       <div className="p-2 text-center text-gray-500">Select another country</div>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                     )}
                   </div>
                 </SelectContent>
               </Select>
               {selectedCountry && filteredCities.length > 0 && (
+<<<<<<< HEAD
+                <p className="text-xs text-gray-500 mt-1">{filteredCities.length} cities available</p>
+              )}
+            </div>
+
+            <div className="flex items-end">
+              <Button
+                onClick={handleSearch}
+                className="w-full bg-green-500 hover:bg-green-600"
+                disabled={isLoading || !selectedCountry || !selectedCity}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Searching...
+                  </>
+                ) : (
+                  <>
+                    <Search className="mr-2 h-4 w-4" />
+                    Find Stations
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+=======
                 <p className="text-xs text-gray-500 mt-1">
                   {filteredCities.length} cities available
                   {selectedCity && <span className="text-green-500"> • Auto-selected</span>}
@@ -1339,6 +1550,7 @@ const NearbyStations: React.FC = () => {
               </Button>
             )}
           </div>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
         </div>
 
         {hasSearched && (
@@ -1372,6 +1584,106 @@ const NearbyStations: React.FC = () => {
             </div>
 
             {viewType === 'list' ? (
+<<<<<<< HEAD
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {stations.map((station) => (
+                  <Card key={station.id} className="overflow-hidden">
+                    <div className="h-40 bg-gray-200 relative">
+                      {station.photoUrl ? (
+                        <img
+                          src={station.photoUrl}
+                          alt={station.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+                          <MapPin size={40} className="text-gray-400" />
+                        </div>
+                      )}
+                      <Badge
+                        className={`absolute top-2 right-2 ${
+                          station.isOpen ? 'bg-green-500' : 'bg-red-500'
+                        }`}
+                      >
+                        {station.isOpen ? 'Open Now' : 'Closed'}
+                      </Badge>
+                    </div>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg flex justify-between">
+                        {station.name}
+                        <span className="text-sm font-normal text-gray-500">
+                          {station.distance}
+                        </span>
+                      </CardTitle>
+                      <CardDescription className="text-xs truncate">
+                        {station.address}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="pb-2">
+                      <div className="flex justify-between items-center mb-2">
+                        <div className="flex items-center">
+                          <span className="text-yellow-500 mr-1">★</span>
+                          <span>{station.rating}</span>
+                        </div>
+                        <div>{renderPriceLevel(station.priceLevel)}</div>
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {station.services.map((service, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {service}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button
+                        variant="outline"
+                        className="w-full text-green-600 border-green-600 hover:bg-green-50"
+                        onClick={() => handleViewDetails(station.placeId)}
+                      >
+                        <ExternalLink size={16} className="mr-2" />
+                        View on Google Maps
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg h-[500px] overflow-hidden relative">
+                <div className="absolute inset-0 bg-gray-200 dark:bg-gray-800 opacity-50 z-10"></div>
+                <div className="absolute inset-0 flex items-center justify-center z-20">
+                  <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md text-center">
+                    <Info size={48} className="mx-auto mb-4 text-gray-400" />
+                    <h3 className="text-lg font-medium mb-2">Interactive Map View</h3>
+                    <p className="text-gray-500 dark:text-gray-400 mb-4">
+                      This would display an interactive Google Map with markers for each of the {stations.length} fuel stations in {selectedCity}, {countries.find(c => c.code === selectedCountry)?.name}.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                      <Button
+                        variant="outline"
+                        className="border-green-500 text-green-600 hover:bg-green-50"
+                        onClick={() => window.open(`https://www.google.com/maps/search/gas+stations+in+${selectedCity},+${countries.find(c => c.code === selectedCountry)?.name}`, '_blank')}
+                      >
+                        <ExternalLink size={16} className="mr-2" />
+                        View on Google Maps
+                      </Button>
+                      <Button
+                        variant="default"
+                        className="bg-green-500 hover:bg-green-600"
+                        onClick={() => setViewType('list')}
+                      >
+                        Return to List View
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute bottom-4 right-4 z-20">
+                  <Badge className="bg-green-500">
+                    {selectedCity}, {countries.find(c => c.code === selectedCountry)?.name}
+                  </Badge>
+                </div>
+              </div>
+=======
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
                 {stations.map((station, index) => (
                   <motion.div
@@ -1721,10 +2033,13 @@ const NearbyStations: React.FC = () => {
                   </Badge>
                 </motion.div>
               </motion.div>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
             )}
           </>
         )}
       </div>
+<<<<<<< HEAD
+=======
 
       {/* Station Details Dialog */}
       <Dialog open={showStationDetails} onOpenChange={setShowStationDetails}>
@@ -1904,6 +2219,7 @@ const NearbyStations: React.FC = () => {
           )}
         </DialogContent>
       </Dialog>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
     </div>
   );
 };
