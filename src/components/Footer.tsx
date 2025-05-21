@@ -169,7 +169,7 @@ const Footer = () => {
                   onClick={() => handleNavigation('/nearby-stations')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
-                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Fuel Friendly</span>
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Fuel Services</span>
                   <span className="opacity-0 group-hover:opacity-100 ml-1 transition-opacity duration-200">→</span>
                 </button>
               </li>
@@ -331,7 +331,7 @@ const Footer = () => {
                 initial={{ opacity: 0.8 }}
                 whileHover={{ opacity: 1 }}
               >
-                © {new Date().getFullYear()} FuelFriendly. All rights reserved.
+                © {new Date().getFullYear()} All rights reserved.
               </motion.p>
               <motion.div
                 className="ml-4 flex items-center gap-2"
@@ -377,7 +377,7 @@ const Footer = () => {
 
           <div className="mt-6 text-center">
             <p className="text-xs text-white/50">
-              FuelFriendly is committed to providing convenient pump side services worldwide. Our platform connects customers with verified fuel stations and pump side service providers.
+              We are committed to providing convenient pump side services worldwide. Our platform connects customers with verified fuel stations and pump side service providers.
             </p>
           </div>
         </div>
