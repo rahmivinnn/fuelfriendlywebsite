@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -314,4 +315,11 @@ export function formatPhoneNumber(phoneNumber: string): string {
   }
   
   return phoneNumber;
+=======
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 }

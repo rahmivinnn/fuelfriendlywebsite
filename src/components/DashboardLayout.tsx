@@ -1,16 +1,28 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Grid, ShoppingBag, Package, Building2,
   PieChart, Bell as BellIcon, HelpCircle, Settings,
   LogOut, MapPin, LayoutDashboard, Activity, FileText,
+<<<<<<< HEAD
   MessageCircle, Users
+=======
+  MessageCircle, Users, Menu, X
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
 import { DefaultAvatar } from '@/components/ui/avatar';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { useAuth } from '@/contexts/AuthContext';
+=======
+import { useIsMobile } from '@/hooks/use-mobile';
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 
 type SidebarItem = {
   icon: React.ElementType;
@@ -42,10 +54,18 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
   const { toast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
+<<<<<<< HEAD
   const [notificationCount, setNotificationCount] = useState<number>(4);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [userName, setUserName] = useState('Station Owner');
   const { logout } = useAuth();
+=======
+  const isMobile = useIsMobile();
+  const [notificationCount, setNotificationCount] = useState<number>(4);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(isMobile);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [userName, setUserName] = useState('Station Owner');
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 
   // Get user name from localStorage if available
   useEffect(() => {
@@ -55,6 +75,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
     }
   }, []);
 
+<<<<<<< HEAD
   // Simulate real-time notifications
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -92,10 +113,38 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
   const handleSidebarItemClick = (item: SidebarItem) => {
     // Prevent multiple rapid clicks
     const currentPath = location.pathname;
+=======
+  // Real-time notifications disabled
+
+  // Effect to handle sidebar state based on screen size
+  useEffect(() => {
+    if (isMobile) {
+      setIsSidebarCollapsed(true);
+      setIsSidebarOpen(false);
+    }
+  }, [isMobile]);
+
+  const toggleSidebar = () => {
+    if (isMobile) {
+      setIsSidebarOpen(!isSidebarOpen);
+    } else {
+      setIsSidebarCollapsed(!isSidebarCollapsed);
+      toast({
+        title: isSidebarCollapsed ? "Sidebar Expanded" : "Sidebar Collapsed",
+        description: isSidebarCollapsed ? "Showing full sidebar view" : "Showing minimal sidebar for more space",
+        duration: 2000,
+      });
+    }
+  };
+
+  const handleSidebarItemClick = (item: SidebarItem) => {
+    if (!item.path.includes('/station-dashboard/')) return;
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 
     // Navigate to the path
     navigate(item.path);
 
+<<<<<<< HEAD
     // Show a toast for the selected item
     toast({
       title: `${item.label} Selected`,
@@ -109,10 +158,36 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
     logout();
 
     // Navigate to the homepage after logout
+=======
+    // Close sidebar on mobile after navigation
+    if (isMobile) {
+      setIsSidebarOpen(false);
+    }
+
+    // For any item without a proper page yet, show a toast
+    if (!['/station-dashboard', '/station-dashboard/orders', '/station-dashboard/products', '/station-dashboard/station'].includes(item.path)) {
+      toast({
+        title: `${item.label} Selected`,
+        description: `The ${item.label.toLowerCase()} page is being loaded`,
+        duration: 2000,
+      });
+    }
+  };
+
+  const handleLogout = () => {
+    toast({
+      title: "Logged Out",
+      description: "You have been logged out successfully",
+      duration: 3000,
+    });
+    // Clear localStorage and redirect to homepage
+    localStorage.removeItem('stationOwnerName');
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
     navigate('/');
   };
 
   return (
+<<<<<<< HEAD
     <div className="h-screen flex bg-gray-50">
       {/* Sidebar */}
       <motion.div
@@ -120,6 +195,26 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
         animate={{ x: 0, width: isSidebarCollapsed ? 80 : 256 }}
         transition={{ type: "spring", stiffness: 100 }}
         className="bg-white border-r border-gray-200 flex flex-col z-20"
+=======
+    <div className="h-screen flex bg-gray-50 overflow-hidden">
+      {/* Mobile Overlay */}
+      {isMobile && isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <motion.div
+        initial={{ x: isMobile ? -300 : 0 }}
+        animate={{
+          x: isMobile ? (isSidebarOpen ? 0 : -300) : 0,
+          width: isMobile ? 256 : (isSidebarCollapsed ? 80 : 256)
+        }}
+        transition={{ type: "spring", stiffness: 100 }}
+        className={`bg-white border-r border-gray-200 flex flex-col ${isMobile ? 'fixed h-full z-50' : ''}`}
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
       >
         <div className="p-4 border-b border-gray-200 flex justify-between items-center">
           <AnimatePresence>
@@ -162,10 +257,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
                 transition={{ delay: index * 0.05 }}
               >
                 <div
+<<<<<<< HEAD
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent event bubbling
                     handleSidebarItemClick(item);
                   }}
+=======
+                  onClick={() => handleSidebarItemClick(item)}
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                   className={`flex items-center p-3 rounded-lg transition-colors hover:bg-gray-100 cursor-pointer ${isActive ? 'bg-green-50 text-green-500' : 'text-gray-600'}`}
                 >
                   <item.icon size={20} className={isActive ? 'text-green-500' : 'text-gray-500'} />
@@ -220,6 +319,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
       </motion.div>
 
       {/* Main Content */}
+<<<<<<< HEAD
       <div className="flex-1 flex flex-col overflow-hidden relative z-10">
         {/* Top Nav */}
         <header className="bg-white border-b border-gray-200 py-4 px-6 flex items-center justify-between">
@@ -228,12 +328,34 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               className="text-2xl font-bold"
+=======
+      <div className={`flex-1 flex flex-col overflow-hidden ${isMobile ? 'w-full' : ''}`}>
+        {/* Top Nav */}
+        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-3 px-4 sm:py-4 sm:px-6 flex items-center justify-between transition-colors duration-300">
+          <div className="flex items-center">
+            {isMobile && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={toggleSidebar}
+                className="mr-2 hover:bg-gray-100"
+                aria-label="Toggle Menu"
+              >
+                <Menu size={20} className="text-gray-500" />
+              </Button>
+            )}
+            <motion.h1
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-xl sm:text-2xl font-bold dark:text-white truncate"
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
             >
               {title}
             </motion.h1>
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
+<<<<<<< HEAD
               className="ml-3 px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full flex items-center"
             >
               <div className="h-2 w-2 bg-green-500 rounded-full mr-1 animate-pulse"></div>
@@ -252,11 +374,43 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
                 });
               }}>
                 <BellIcon />
+=======
+              className="ml-2 sm:ml-3 px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded-full flex items-center transition-colors duration-300"
+            >
+              <div className="h-2 w-2 bg-green-500 dark:bg-green-400 rounded-full mr-1 animate-pulse"></div>
+              <span className="hidden xs:inline">Live Data</span>
+            </motion.div>
+          </div>
+
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="relative z-10">
+              <Button
+                variant="ghost"
+                size={isMobile ? "sm" : "default"}
+                className="relative focus:ring-2 focus:ring-green-500 focus:outline-none cursor-pointer"
+                onClick={() => {
+                  setNotificationCount(0);
+                  navigate('/station-dashboard/notifications');
+                  toast({
+                    title: "Notifications Viewed",
+                    description: "All notifications have been marked as read",
+                    duration: 3000,
+                  });
+                }}
+                aria-label="Notifications"
+              >
+                <BellIcon className="text-gray-700 dark:text-gray-300" size={isMobile ? 18 : 20} />
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                 {notificationCount > 0 && (
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
+<<<<<<< HEAD
                     className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center"
+=======
+                    whileHover={{ scale: 1.2 }}
+                    className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center"
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                   >
                     {notificationCount}
                   </motion.span>
@@ -264,16 +418,37 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
               </Button>
             </div>
 
+<<<<<<< HEAD
             <div className="flex items-center space-x-2">
               <DefaultAvatar className="w-8 h-8" />
               <span className="font-medium text-sm hidden md:block">{userName}</span>
+=======
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              <Button
+                variant="ghost"
+                size={isMobile ? "sm" : "default"}
+                className="p-0 focus:ring-2 focus:ring-green-500 focus:outline-none cursor-pointer"
+                onClick={() => navigate('/station-dashboard/settings')}
+                aria-label="Profile Settings"
+              >
+                <DefaultAvatar className="w-7 h-7 sm:w-8 sm:h-8" />
+              </Button>
+              <span className="font-medium text-xs sm:text-sm hidden sm:block">{userName}</span>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
             </div>
           </div>
         </header>
 
         {/* Dashboard Content */}
+<<<<<<< HEAD
         <div className="flex-1 overflow-y-auto">
           {children}
+=======
+        <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 p-3 sm:p-6 transition-colors duration-300">
+          <div className="container mx-auto max-w-7xl">
+            {children}
+          </div>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
         </div>
       </div>
     </div>

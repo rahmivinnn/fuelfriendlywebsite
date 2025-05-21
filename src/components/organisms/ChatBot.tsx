@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+<<<<<<< HEAD
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, Send, X, Minimize2, Maximize2, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,6 +7,20 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 
+=======
+import { Send, X, Minimize2, Maximize2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+
+// Simple SVG for the fuel logo
+const FUEL_LOGO = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="45" fill="none" stroke="#3ECF8E" stroke-width="3"/>
+  <path d="M50 20 L65 45 L50 70 C45 65 40 60 45 50 C50 40 45 35 40 30 Z" fill="#3ECF8E"/>
+</svg>
+`;
+
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 type Message = {
   id: string;
   content: string;
@@ -39,6 +54,51 @@ const ChatBot: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
+<<<<<<< HEAD
+=======
+  // Add a style tag to the document head to ensure the chatbot is visible
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .chatbot-button {
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        width: 60px !important;
+        height: 60px !important;
+        border-radius: 50% !important;
+        background-color: white !important;
+        border: 2px solid #3ECF8E !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        cursor: pointer !important;
+        z-index: 999999 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
+      .chatbot-window {
+        position: fixed !important;
+        bottom: 90px !important;
+        right: 20px !important;
+        width: 350px !important;
+        border-radius: 12px !important;
+        background-color: white !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+        z-index: 999999 !important;
+        overflow: hidden !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
   const toggleChat = () => {
     setIsOpen(!isOpen);
     if (!isOpen) {
@@ -60,7 +120,11 @@ const ChatBot: React.FC = () => {
     }
   }, [messages, isOpen]);
 
+<<<<<<< HEAD
   const handleSendMessage = async () => {
+=======
+  const handleSendMessage = () => {
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
     if (!inputValue.trim()) return;
 
     // Add user message
@@ -75,6 +139,7 @@ const ChatBot: React.FC = () => {
     setInputValue('');
     setIsTyping(true);
 
+<<<<<<< HEAD
     // Simulate AI response (replace with actual API call in production)
     setTimeout(() => {
       let botResponse = '';
@@ -94,6 +159,25 @@ const ChatBot: React.FC = () => {
         botResponse = "For customer support, please visit the 'Help & Support' section or email us at support@fuelfriendly.com. Our team is available 24/7 to assist you.";
       } else {
         botResponse = "I'm not sure I understand your question. Could you please rephrase or select one of the suggested questions below?";
+=======
+    // Simulate AI response
+    setTimeout(() => {
+      let botResponse = '';
+
+      // Simple pattern matching for demo purposes
+      const lowercaseInput = inputValue.toLowerCase();
+
+      if (lowercaseInput.includes('nearest') || lowercaseInput.includes('nearby')) {
+        botResponse = "You can find nearby stations by using our 'Nearby Stations' feature.";
+      } else if (lowercaseInput.includes('add') && lowercaseInput.includes('station')) {
+        botResponse = "To add your station to our platform, go to the 'Station Management' section.";
+      } else if (lowercaseInput.includes('payment')) {
+        botResponse = "We accept various payment methods including credit/debit cards, PayPal, and more.";
+      } else if (lowercaseInput.includes('support') || lowercaseInput.includes('help')) {
+        botResponse = "For customer support, please visit the 'Help & Support' section.";
+      } else {
+        botResponse = "I'm not sure I understand your question. Could you please rephrase?";
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
       }
 
       const botMessageObj: Message = {
@@ -105,7 +189,11 @@ const ChatBot: React.FC = () => {
 
       setMessages((prev) => [...prev, botMessageObj]);
       setIsTyping(false);
+<<<<<<< HEAD
     }, 1500);
+=======
+    }, 1000);
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -123,6 +211,7 @@ const ChatBot: React.FC = () => {
 
   return (
     <>
+<<<<<<< HEAD
       {/* Chat Button */}
       <motion.div
         className="fixed bottom-6 right-6 z-50"
@@ -160,6 +249,82 @@ const ChatBot: React.FC = () => {
                   {isMinimized ? <Maximize2 size={18} /> : <Minimize2 size={18} />}
                 </button>
                 <button onClick={toggleChat} className="text-white hover:text-gray-200">
+=======
+      {/* Chat Button - Direct implementation with inline SVG */}
+      <div
+        onClick={toggleChat}
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          width: '60px',
+          height: '60px',
+          borderRadius: '50%',
+          backgroundColor: 'white',
+          border: '2px solid #3ECF8E',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          zIndex: 99999,
+          padding: '8px'
+        }}
+        dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
+      />
+
+      {/* Chat Window */}
+      {isOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '90px',
+            right: '24px',
+            width: '350px',
+            height: isMinimized ? '60px' : '500px',
+            backgroundColor: 'white',
+            borderRadius: '12px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+            zIndex: 99999
+          }}
+        >
+            {/* Chat Header */}
+            <div style={{
+              backgroundColor: '#3ECF8E',
+              color: 'white',
+              padding: '12px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{
+                  width: '24px',
+                  height: '24px',
+                  marginRight: '8px',
+                  backgroundColor: 'white',
+                  borderRadius: '50%',
+                  padding: '2px'
+                }}
+                dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
+                ></div>
+                <h3 style={{ fontWeight: 500 }}>FuelBot Assistant</h3>
+              </div>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  onClick={toggleMinimize}
+                  style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
+                >
+                  {isMinimized ? <Maximize2 size={18} /> : <Minimize2 size={18} />}
+                </button>
+                <button
+                  onClick={toggleChat}
+                  style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
+                >
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                   <X size={18} />
                 </button>
               </div>
@@ -174,10 +339,26 @@ const ChatBot: React.FC = () => {
                     className={`mb-4 flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     {message.sender === 'bot' && (
+<<<<<<< HEAD
                       <Avatar className="h-8 w-8 mr-2">
                         <AvatarImage src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" />
                         <AvatarFallback>FB</AvatarFallback>
                       </Avatar>
+=======
+                      <div
+                        style={{
+                          width: '32px',
+                          height: '32px',
+                          marginRight: '8px',
+                          backgroundColor: 'white',
+                          borderRadius: '50%',
+                          border: '1px solid #3ECF8E',
+                          padding: '4px',
+                          flexShrink: 0
+                        }}
+                        dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
+                      ></div>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                     )}
                     <div
                       className={`max-w-[80%] p-3 rounded-lg ${
@@ -200,10 +381,26 @@ const ChatBot: React.FC = () => {
                 ))}
                 {isTyping && (
                   <div className="flex items-center mb-4">
+<<<<<<< HEAD
                     <Avatar className="h-8 w-8 mr-2">
                       <AvatarImage src="/lovable-uploads/f1f34c25-67df-4603-8eb1-3f1fe84812a4.png" />
                       <AvatarFallback>FB</AvatarFallback>
                     </Avatar>
+=======
+                    <div
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        marginRight: '8px',
+                        backgroundColor: 'white',
+                        borderRadius: '50%',
+                        border: '1px solid #3ECF8E',
+                        padding: '4px',
+                        flexShrink: 0
+                      }}
+                      dangerouslySetInnerHTML={{ __html: FUEL_LOGO }}
+                    ></div>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                     <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 rounded-lg">
                       <div className="flex space-x-1">
                         <div className="h-2 w-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
@@ -217,6 +414,7 @@ const ChatBot: React.FC = () => {
               </div>
             )}
 
+<<<<<<< HEAD
             {/* Suggested Questions */}
             {!isMinimized && messages.length < 3 && (
               <div className="p-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
@@ -258,6 +456,49 @@ const ChatBot: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
+=======
+            {/* Chat Input */}
+            {!isMinimized && (
+              <>
+                <div className="p-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex items-center">
+                  <Input
+                    type="text"
+                    placeholder="Type your message..."
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className="flex-1 mr-2"
+                  />
+                  <Button
+                    onClick={handleSendMessage}
+                    disabled={!inputValue.trim()}
+                    className="bg-green-500 hover:bg-green-600 text-white"
+                  >
+                    <Send size={18} />
+                  </Button>
+                </div>
+
+                {/* Suggested Questions */}
+                <div className="p-3 pt-0 bg-white dark:bg-gray-800">
+                  <p className="text-xs text-gray-500 mb-2">Suggested questions:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {suggestedQuestions.map((question, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleSuggestedQuestion(question)}
+                        className="text-xs bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-full px-3 py-1 text-gray-700 dark:text-gray-300 transition-colors"
+                      >
+                        {question}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
     </>
   );
 };

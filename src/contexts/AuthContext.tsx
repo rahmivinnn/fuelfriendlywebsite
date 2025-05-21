@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+<<<<<<< HEAD
 import authService, { User } from '@/services/authService';
 import { useToast } from '@/hooks/use-toast';
 
@@ -71,6 +72,54 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     checkAuth();
+=======
+
+// Define user roles with numeric values for easy comparison
+export enum UserRole {
+  Guest = 0,
+  User = 1
+}
+
+// Define the user type
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  lastLogin: string;
+}
+
+// Define the context type
+interface AuthContextType {
+  user: User | null;
+  login: (email: string, password: string) => Promise<boolean>;
+  logout: () => void;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+}
+
+// Create the context with a default value
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  login: async () => false,
+  logout: () => {},
+  isAuthenticated: false,
+  isLoading: true,
+});
+
+// Provider component
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Check for existing user session on mount
+  useEffect(() => {
+    const storedUser = localStorage.getItem('fuelFriendlyUser');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    setIsLoading(false);
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
   }, []);
 
   // Login function
@@ -78,6 +127,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
 
     try {
+<<<<<<< HEAD
       const user = await authService.login(email, password);
       setUser(user);
 
@@ -86,10 +136,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         description: `Welcome back, ${user.name}!`,
         duration: 3000,
       });
+=======
+      // In a real app, this would be an API call
+      // For now, we'll simulate a successful login with a delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Create a new user object
+      const newUser: User = {
+        id: Math.random().toString(36).substring(2, 9),
+        name: email.split('@')[0], // Use part of email as name
+        email,
+        role: UserRole.User,
+        lastLogin: new Date().toISOString(),
+      };
+
+      // Save user to localStorage
+      localStorage.setItem('fuelFriendlyUser', JSON.stringify(newUser));
+      localStorage.setItem('stationOwnerName', newUser.name); // For backward compatibility
+
+      // Update state
+      setUser(newUser);
+      setIsLoading(false);
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 
       return true;
     } catch (error) {
       console.error('Login error:', error);
+<<<<<<< HEAD
 
       toast({
         title: "Login Failed",
@@ -137,11 +210,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       throw error;
     } finally {
       setIsLoading(false);
+=======
+      setIsLoading(false);
+      return false;
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
     }
   };
 
   // Logout function
   const logout = () => {
+<<<<<<< HEAD
     authService.logout();
     setUser(null);
 
@@ -208,12 +286,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     return true;
+=======
+    localStorage.removeItem('fuelFriendlyUser');
+    localStorage.removeItem('stationOwnerName'); // For backward compatibility
+    setUser(null);
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
   };
 
   return (
     <AuthContext.Provider
       value={{
         user,
+<<<<<<< HEAD
         isAuthenticated: !!user,
         isLoading,
         login,
@@ -222,6 +306,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         hasRole,
         elevateToSuperiorAdmin,
         updateUserRole
+=======
+        login,
+        logout,
+        isAuthenticated: !!user,
+        isLoading
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
       }}
     >
       {children}

@@ -1,4 +1,5 @@
 # Dashboard Menu Fix
+<<<<<<< HEAD
 
 ## Changes Made
 
@@ -18,3 +19,5 @@
 - Better user experience
 - Clearer feedback about access requirements
 - All menu items are now clickable as requested
+=======
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209

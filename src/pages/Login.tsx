@@ -5,10 +5,16 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+<<<<<<< HEAD
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
+=======
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { User } from 'lucide-react';
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 
 const Login = () => {
   const { toast } = useToast();
@@ -17,17 +23,24 @@ const Login = () => {
 
   const [formData, setFormData] = useState({
     email: '',
+<<<<<<< HEAD
     password: '',
     rememberMe: false
   });
 
   const [showPassword, setShowPassword] = useState(false);
 
+=======
+    password: ''
+  });
+
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+<<<<<<< HEAD
   const handleCheckboxChange = (checked: boolean) => {
     setFormData(prev => ({ ...prev, rememberMe: checked }));
   };
@@ -45,10 +58,43 @@ const Login = () => {
         description: "Please fill in all fields",
         variant: "destructive",
         duration: 3000,
+=======
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Enhanced form validation
+    const errors: string[] = [];
+
+    if (!formData.email) {
+      errors.push("Email is required");
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.push("Please enter a valid email address");
+    }
+
+    if (!formData.password) {
+      errors.push("Password is required");
+    } else if (formData.password.length < 6) {
+      errors.push("Password must be at least 6 characters");
+    }
+
+    if (errors.length > 0) {
+      toast({
+        title: "Validation Error",
+        description: (
+          <ul className="list-disc pl-4">
+            {errors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        ),
+        variant: "destructive",
+        duration: 5000,
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
       });
       return;
     }
 
+<<<<<<< HEAD
     try {
       // Simplified login - no admin levels
       const success = await login(
@@ -89,6 +135,26 @@ const Login = () => {
       toast({
         title: "Login Error",
         description: "An error occurred during login. Please try again.",
+=======
+    const success = await login(
+      formData.email,
+      formData.password
+    );
+
+    if (success) {
+      toast({
+        title: "Login Successful",
+        description: "Welcome to FuelFriendly",
+        duration: 3000,
+      });
+
+      // Redirect to station dashboard
+      navigate('/station-dashboard');
+    } else {
+      toast({
+        title: "Login Failed",
+        description: "Invalid credentials. Please try again.",
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
         variant: "destructive",
         duration: 3000,
       });
@@ -98,7 +164,11 @@ const Login = () => {
 
 
   return (
+<<<<<<< HEAD
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+=======
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -111,6 +181,7 @@ const Login = () => {
             alt="FuelFriendly Logo"
             className="h-16 mx-auto mb-4"
           />
+<<<<<<< HEAD
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Welcome to FuelFriendly</h1>
           <p className="text-gray-600 dark:text-gray-400">Sign in to access your fuel partner account</p>
         </div>
@@ -119,13 +190,27 @@ const Login = () => {
           <CardHeader>
             <CardTitle className="dark:text-white">Partner Login</CardTitle>
             <CardDescription className="dark:text-gray-400">
+=======
+          <h1 className="text-2xl font-bold text-gray-900">Welcome to FuelFriendly</h1>
+          <p className="text-gray-600">Sign in to access your account</p>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Sign In</CardTitle>
+            <CardDescription>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
               Enter your credentials to continue
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
+<<<<<<< HEAD
                 <Label htmlFor="email" className="dark:text-gray-300">Email</Label>
+=======
+                <Label htmlFor="email">Email</Label>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                 <Input
                   id="email"
                   name="email"
@@ -134,11 +219,15 @@ const Login = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
+<<<<<<< HEAD
                   className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+=======
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                 />
               </div>
 
               <div className="space-y-2">
+<<<<<<< HEAD
                 <Label htmlFor="password" className="dark:text-gray-300">Password</Label>
                 <div className="relative">
                   <Input
@@ -181,6 +270,21 @@ const Login = () => {
                   Remember me
                 </Label>
               </div>
+=======
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
 
               <Button
                 type="submit"
@@ -194,13 +298,18 @@ const Login = () => {
                   </div>
                 ) : (
                   <div className="flex items-center justify-center">
+<<<<<<< HEAD
                     <LogIn className="h-4 w-4 mr-2" />
+=======
+                    <User className="h-4 w-4 mr-2" />
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
                     Sign In
                   </div>
                 )}
               </Button>
             </form>
           </CardContent>
+<<<<<<< HEAD
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-center w-full">
               <a
@@ -229,13 +338,30 @@ const Login = () => {
             >
               Register your station
             </Button>
+=======
+          <CardFooter className="flex justify-center">
+            <p className="text-sm text-gray-500">
+              Don't have an account?{" "}
+              <Button
+                variant="link"
+                className="p-0 h-auto text-green-500"
+                onClick={() => navigate('/station-registration')}
+              >
+                Register your station
+              </Button>
+            </p>
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
           </CardFooter>
         </Card>
 
         <div className="mt-6 text-center">
           <Button
             variant="ghost"
+<<<<<<< HEAD
             className="text-gray-500 dark:text-gray-400"
+=======
+            className="text-gray-500"
+>>>>>>> fc50f12d78601307538b9c65c6925970812ed209
             onClick={() => navigate('/')}
           >
             Back to Home
