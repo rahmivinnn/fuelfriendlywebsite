@@ -56,7 +56,7 @@ const createMockSocket = () => {
             },
             {
               title: 'Delivery Update',
-              message: 'Fuel delivery for order #12345 is on its way',
+              message: 'Pump side service for order #12345 is on its way',
               type: 'info' as NotificationType,
               link: '/admin-dashboard/orders'
             },

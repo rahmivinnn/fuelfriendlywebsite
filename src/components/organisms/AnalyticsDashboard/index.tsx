@@ -201,7 +201,7 @@ const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ className }) =>
         <div>
           <Typography variant="h3">Analytics Dashboard</Typography>
           <Typography variant="muted">
-            Monitor your business performance and fuel delivery metrics
+            Monitor your business performance and pump side service metrics
           </Typography>
         </div>
         

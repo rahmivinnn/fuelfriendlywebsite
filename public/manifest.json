@@ -1,7 +1,7 @@
 {
   "name": "FuelFriendly",
   "short_name": "FuelFriendly",
-  "description": "Smart fuel delivery and management platform",
+  "description": "Smart pump side service and management platform",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -59,28 +59,25 @@
   ],
   "shortcuts": [
     {
-      "name": "Request Fuel",
-      "short_name": "Request",
-      "description": "Request a fuel delivery",
-      "url": "/request-fuel",
-      "icons": [
-        {
-          "src": "/assets/images/icons/shortcut-request-192x192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Find Stations",
-      "short_name": "Stations",
+      "name": "Find Fuel",
+      "short_name": "Find Fuel",
       "description": "Find nearby fuel stations",
       "url": "/nearby-stations",
-      "icons": [
-        {
-          "src": "/assets/images/icons/shortcut-stations-192x192.png",
-          "sizes": "192x192"
-        }
-      ]
+      "icons": [{"src": "/icons/fuel.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "Register Station",
+      "short_name": "Register",
+      "description": "Register your fuel station",
+      "url": "/register-station",
+      "icons": [{"src": "/icons/register.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "Request Pump Side Service",
+      "short_name": "Pump Service",
+      "description": "Request pump side service",
+      "url": "/request-pump-service",
+      "icons": [{"src": "/icons/pump.png", "sizes": "192x192"}]
     }
   ],
   "screenshots": [
@@ -109,6 +106,12 @@
       "form_factor": "wide"
     }
   ],
-  "related_applications": [],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.fuelfriendly",
+      "id": "com.fuelfriendly"
+    }
+  ],
   "prefer_related_applications": false
 }

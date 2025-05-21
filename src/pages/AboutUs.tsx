@@ -117,7 +117,7 @@ const AboutUs = () => {
           <motion.div variants={itemVariants} className="rounded-lg overflow-hidden shadow-xl">
             <img 
               src="/fuel-delivery.jpg" 
-              alt="Fuel delivery service" 
+              alt="Pump side service" 
               className="w-full h-auto object-cover"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;

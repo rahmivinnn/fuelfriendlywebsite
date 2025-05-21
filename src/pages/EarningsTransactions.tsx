@@ -46,6 +46,7 @@ import {
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Types
 type Transaction = {
@@ -278,7 +279,7 @@ const EarningsTransactions: React.FC = () => {
   };
 
   return (
-    <DashboardLayout title="Earning and Transition">
+    <DashboardLayout title="Earnings & Transactions">
       <div className="p-4 md:p-6 space-y-6">
         <div className="space-y-2">
           <h2 className="text-xl md:text-2xl font-bold">Earning and Transition</h2>
@@ -294,7 +295,7 @@ const EarningsTransactions: React.FC = () => {
                   {card.title}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-4">
+              <CardContent className="p-4 md:p-6">
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="text-xl md:text-2xl font-bold">{card.amount}</p>
@@ -401,6 +402,70 @@ const EarningsTransactions: React.FC = () => {
             </CardContent>
           </Card>
         </div>
+
+        <Tabs defaultValue="transactions" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="transactions">Transactions</TabsTrigger>
+            <TabsTrigger value="earning">Earning</TabsTrigger>
+          </TabsList>
+          <TabsContent value="transactions">
+            <div className="bg-white p-4 md:p-6 rounded-lg border border-gray-200 mb-6">
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader className="bg-gray-200 dark:bg-gray-800">
+                    <TableRow>
+                      <TableHead className="w-[100px]">ID</TableHead>
+                      <TableHead>Customer Name</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Invoice ID</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Details</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {transactions.map((transaction) => (
+                      <TableRow key={transaction.id}>
+                        <TableCell className="font-medium">{transaction.id}</TableCell>
+                        <TableCell>{transaction.customerName}</TableCell>
+                        <TableCell>{transaction.date}</TableCell>
+                        <TableCell>{transaction.invoiceId}</TableCell>
+                        <TableCell>{transaction.amount}</TableCell>
+                        <TableCell>{transaction.status}</TableCell>
+                        <TableCell>{transaction.details}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+          </TabsContent>
+          <TabsContent value="earning">
+            {/* Earning Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+              {earningCards.map((card, index) => (
+                <Card key={index} className="bg-white dark:bg-gray-800">
+                  <CardHeader className="pb-2 p-4">
+                    <CardTitle className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+                      {card.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 md:p-6">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <p className="text-xl md:text-2xl font-bold">{card.amount}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {card.transactions} Transitions
+                        </p>
+                      </div>
+                      <div className="w-20 md:w-24 h-10">{renderTrendLine(card.trend)}</div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </DashboardLayout>
   );

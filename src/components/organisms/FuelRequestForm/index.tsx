@@ -670,10 +670,10 @@ const FuelRequestForm: React.FC<FuelRequestFormProps> = ({ className }) => {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Truck className="mr-2 h-6 w-6 text-green-500" />
-            Fuel Delivery Request
+            Pump side service Request
           </CardTitle>
           <CardDescription>
-            Complete the form below to request a fuel delivery
+            Complete the form below to request pump side service
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -783,7 +783,7 @@ const FuelRequestForm: React.FC<FuelRequestFormProps> = ({ className }) => {
               Request Submitted Successfully
             </DialogTitle>
             <DialogDescription>
-              Your fuel delivery request has been received and is being processed.
+              Your pump side service request has been received and is being processed.
             </DialogDescription>
           </DialogHeader>
           

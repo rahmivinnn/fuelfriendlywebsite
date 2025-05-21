@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
 import { DefaultAvatar } from '@/components/ui/avatar';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 type SidebarItem = {
   icon: React.ElementType;
@@ -44,6 +45,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
   const [notificationCount, setNotificationCount] = useState<number>(4);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [userName, setUserName] = useState('Station Owner');
+  const { logout } = useAuth();
 
   // Get user name from localStorage if available
   useEffect(() => {
@@ -91,28 +93,22 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
     // Prevent multiple rapid clicks
     const currentPath = location.pathname;
 
-    // Only navigate if we're not already on this path
-    if (currentPath !== item.path) {
-      // Navigate to the path
-      navigate(item.path);
+    // Navigate to the path
+    navigate(item.path);
 
-      // Show a toast for the selected item
-      toast({
-        title: `${item.label} Selected`,
-        description: `Navigating to ${item.label.toLowerCase()}`,
-        duration: 2000,
-      });
-    }
+    // Show a toast for the selected item
+    toast({
+      title: `${item.label} Selected`,
+      description: `Navigating to ${item.label.toLowerCase()}`,
+      duration: 2000,
+    });
   };
 
   const handleLogout = () => {
-    toast({
-      title: "Logged Out",
-      description: "You have been logged out successfully",
-      duration: 3000,
-    });
-    // Clear localStorage and redirect to homepage
-    localStorage.removeItem('stationOwnerName');
+    // Use the logout function from AuthContext to clear authentication state and tokens
+    logout();
+
+    // Navigate to the homepage after logout
     navigate('/');
   };
 
