@@ -45,14 +45,14 @@ const Footer = () => {
 
   // Social media platforms with mock URLs
   const socialPlatforms = [
-    { name: 'Facebook', icon: <Facebook size={20} />, url: 'https://facebook.com/nearby station' },
-    { name: 'Instagram', icon: <Instagram size={20} />, url: 'https://instagram.com/nearby station' },
-    { name: 'Twitter', icon: <Twitter size={20} />, url: 'https://twitter.com/nearby station' },
-    { name: 'LinkedIn', icon: <Linkedin size={20} />, url: 'https://linkedin.com/company/nearby station' },
-    { name: 'YouTube', icon: <Youtube size={20} />, url: 'https://youtube.com/nearby station' },
-    { name: 'GitHub', icon: <Github size={20} />, url: 'https://github.com/nearby station' },
-    { name: 'Twitch', icon: <Twitch size={20} />, url: 'https://twitch.tv/nearby station' },
-    { name: 'Slack', icon: <Slack size={20} />, url: 'https://slack.com/nearby station' },
+    { name: 'Facebook', icon: <Facebook size={20} />, url: 'https://facebook.com/fuelfriendly' },
+    { name: 'Instagram', icon: <Instagram size={20} />, url: 'https://instagram.com/fuelfriendly' },
+    { name: 'Twitter', icon: <Twitter size={20} />, url: 'https://twitter.com/fuelfriendly' },
+    { name: 'LinkedIn', icon: <Linkedin size={20} />, url: 'https://linkedin.com/company/fuelfriendly' },
+    { name: 'YouTube', icon: <Youtube size={20} />, url: 'https://youtube.com/fuelfriendly' },
+    { name: 'GitHub', icon: <Github size={20} />, url: 'https://github.com/fuelfriendly' },
+    { name: 'Twitch', icon: <Twitch size={20} />, url: 'https://twitch.tv/fuelfriendly' },
+    { name: 'Slack', icon: <Slack size={20} />, url: 'https://slack.com/fuelfriendly' },
   ];
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -169,7 +169,7 @@ const Footer = () => {
                   onClick={() => handleNavigation('/nearby-stations')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
-                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Fuel Services</span>
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Fuel Delivery</span>
                   <span className="opacity-0 group-hover:opacity-100 ml-1 transition-opacity duration-200">→</span>
                 </button>
               </li>
@@ -242,7 +242,7 @@ const Footer = () => {
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 <button
-                  onClick={() => handleContactMethod('email', 'info@nearbystation.com')}
+                  onClick={() => handleContactMethod('email', 'info@fuelfriendly.com')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group bg-white/10 hover:bg-white/20 p-2 rounded-lg w-full"
                 >
                   <div className="bg-white/20 p-2 rounded-full mr-3">
@@ -250,7 +250,7 @@ const Footer = () => {
                   </div>
                   <div className="text-left">
                     <span className="block font-medium">Email Us</span>
-                    <span className="text-xs text-white/80">info@nearbystation.com</span>
+                    <span className="text-xs text-white/80">info@fuelfriendly.com</span>
                   </div>
                   <Send size={14} className="ml-auto text-white/50 group-hover:text-white/80 transition-colors" />
                 </button>
@@ -331,7 +331,7 @@ const Footer = () => {
                 initial={{ opacity: 0.8 }}
                 whileHover={{ opacity: 1 }}
               >
-                © {new Date().getFullYear()} All rights reserved.
+                © {new Date().getFullYear()} FuelFriendly. All rights reserved.
               </motion.p>
               <motion.div
                 className="ml-4 flex items-center gap-2"
@@ -377,7 +377,7 @@ const Footer = () => {
 
           <div className="mt-6 text-center">
             <p className="text-xs text-white/50">
-              We are committed to providing convenient pump side services worldwide. Our platform connects customers with verified fuel stations and pump side service providers.
+              FuelFriendly is committed to providing convenient pump side services worldwide. Our platform connects customers with verified fuel stations and pump side service providers.
             </p>
           </div>
         </div>
