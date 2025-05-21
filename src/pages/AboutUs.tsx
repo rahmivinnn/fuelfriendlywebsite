@@ -58,7 +58,7 @@ const AboutUs = () => {
           name: "Sarah Johnson",
           role: "CEO & Founder",
           image: "https://randomuser.me/api/portraits/women/32.jpg",
-          bio: "Former petroleum industry executive with a vision to revolutionize fuel delivery."
+          bio: "Former petroleum industry executive with a vision to revolutionize pump-side service."
         },
         {
           id: 2,
@@ -529,7 +529,7 @@ const AboutUs = () => {
                 <div className="space-y-6">
                   <h2 className="text-3xl font-bold text-gray-800 dark:text-white">Our Team</h2>
                   <p className="text-lg text-gray-600 dark:text-gray-300">
-                    Meet the passionate individuals behind Fuel Friendly who are working to revolutionize fuel delivery and convenience.
+                    Meet the passionate individuals behind Fuel Friendly who are working to revolutionize pump-side service and convenience.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">

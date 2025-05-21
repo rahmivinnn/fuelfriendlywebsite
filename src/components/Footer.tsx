@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   Facebook, Instagram, Twitter, Mail, Phone, MapPin,
   Linkedin, Youtube, Globe, ArrowUp, Send,
-  Github, Twitch, Slack
+  Github, Twitch, Slack, Music
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -43,16 +43,13 @@ const Footer = () => {
     window.open(url, '_blank');
   };
 
-  // Social media platforms with mock URLs
+  // Social media platforms with actual URLs
   const socialPlatforms = [
-    { name: 'Facebook', icon: <Facebook size={20} />, url: 'https://facebook.com/fuelfriendly' },
-    { name: 'Instagram', icon: <Instagram size={20} />, url: 'https://instagram.com/fuelfriendly' },
-    { name: 'Twitter', icon: <Twitter size={20} />, url: 'https://twitter.com/fuelfriendly' },
-    { name: 'LinkedIn', icon: <Linkedin size={20} />, url: 'https://linkedin.com/company/fuelfriendly' },
-    { name: 'YouTube', icon: <Youtube size={20} />, url: 'https://youtube.com/fuelfriendly' },
-    { name: 'GitHub', icon: <Github size={20} />, url: 'https://github.com/fuelfriendly' },
-    { name: 'Twitch', icon: <Twitch size={20} />, url: 'https://twitch.tv/fuelfriendly' },
-    { name: 'Slack', icon: <Slack size={20} />, url: 'https://slack.com/fuelfriendly' },
+    { name: 'Facebook', icon: <Facebook size={20} />, url: 'https://www.facebook.com/profile.php?id=61573417107088' },
+    { name: 'Instagram', icon: <Instagram size={20} />, url: 'https://www.instagram.com/fuelfriendly?igsh=MXQ1MjllY29jd3h6Zg==' },
+    { name: 'Twitter', icon: <Twitter size={20} />, url: 'https://x.com/fuelfriendly?t=Uhqtl78bjuhriBecJays7g&s=09' },
+    { name: 'LinkedIn', icon: <Linkedin size={20} />, url: 'https://www.linkedin.com/company/fuel-friendly/' },
+    { name: 'TikTok', icon: <Music size={20} />, url: 'https://www.tiktok.com/@fuelfriendly?_t=ZM-8wG7WR12iHO&_r=1' },
   ];
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -97,59 +94,60 @@ const Footer = () => {
       <div className="container px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-
-            <p className="text-white text-sm">
+            <div className="flex items-center mb-4">
+              <img src="/logo.png" alt="FuelFriendly Logo" className="h-8 mr-2 invert" />
+              <h3 className="text-lg font-bold text-white">FuelFriendly</h3>
+            </div>
+            <p className="text-white text-sm mb-4">
               Making fuel accessible anywhere, anytime.
             </p>
             <div className="relative">
-              <div className="flex flex-wrap gap-2 mb-2">
-                {socialPlatforms.slice(0, showAllSocial ? socialPlatforms.length : 4).map((platform, index) => (
-                  <motion.button
+              <h4 className="text-sm font-semibold mb-3 text-white">Follow Us</h4>
+              <div className="grid grid-cols-5 gap-3 mb-4">
+                {socialPlatforms.map((platform, index) => (
+                  <motion.div
                     key={platform.name}
-                    onClick={() => handleSocialClick(platform.name, platform.url)}
-                    className="text-white hover:bg-white hover:text-green-600 dark:hover:text-gray-900 p-2 rounded-full transition-colors duration-300"
-                    aria-label={platform.name}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{
-                      opacity: 1,
-                      scale: hoveredSocial === platform.name ? 1.2 : 1,
-                      y: hoveredSocial === platform.name ? -5 : 0
-                    }}
-                    transition={{
-                      duration: 0.2,
-                      delay: showAllSocial ? 0 : index * 0.1
-                    }}
-                    onMouseEnter={() => setHoveredSocial(platform.name)}
-                    onMouseLeave={() => setHoveredSocial(null)}
-                    whileTap={{ scale: 0.9 }}
+                    className="flex flex-col items-center"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.3 }}
                   >
-                    {platform.icon}
-                    {hoveredSocial === platform.name && (
+                    <motion.button
+                      onClick={() => handleSocialClick(platform.name, platform.url)}
+                      className="bg-white/10 hover:bg-white p-3 rounded-full transition-all duration-300 relative overflow-hidden group"
+                      aria-label={platform.name}
+                      whileHover={{
+                        scale: 1.15,
+                        boxShadow: '0 0 15px rgba(255, 255, 255, 0.5)'
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                    >
                       <motion.div
-                        className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-white text-green-600 dark:bg-gray-800 dark:text-white px-2 py-1 rounded text-xs whitespace-nowrap"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      />
+                      <motion.div
+                        className="text-white group-hover:text-green-600 dark:group-hover:text-gray-900 relative z-10"
                       >
-                        {platform.name}
+                        {platform.icon}
                       </motion.div>
-                    )}
-                  </motion.button>
+                      <motion.div
+                        className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-20 h-20 bg-white/5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        style={{ filter: 'blur(15px)' }}
+                      />
+                    </motion.button>
+                    <span className="text-xs text-white/80 mt-2">{platform.name}</span>
+                  </motion.div>
                 ))}
               </div>
 
-              <button
-                onClick={() => setShowAllSocial(!showAllSocial)}
-                className="text-xs text-white/80 hover:text-white flex items-center gap-1 transition-colors duration-300"
+              <motion.div
+                className="mt-4 p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors duration-300"
+                whileHover={{ scale: 1.02 }}
               >
-                {showAllSocial ? 'Show less' : 'Show all social media'}
-                <motion.div
-                  animate={{ rotate: showAllSocial ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <ArrowUp size={12} />
-                </motion.div>
-              </button>
+                <p className="text-xs text-white/70 text-center">
+                  Connect with us on social media for the latest updates, promotions, and fuel-saving tips!
+                </p>
+              </motion.div>
             </div>
           </div>
           <div>
@@ -169,7 +167,7 @@ const Footer = () => {
                   onClick={() => handleNavigation('/nearby-stations')}
                   className="text-white hover:text-white/80 transition-colors flex items-center group"
                 >
-                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Fuel Delivery</span>
+                  <span className="transform group-hover:translate-x-1 transition-transform duration-200">Pump-Side Service</span>
                   <span className="opacity-0 group-hover:opacity-100 ml-1 transition-opacity duration-200">→</span>
                 </button>
               </li>
@@ -377,7 +375,7 @@ const Footer = () => {
 
           <div className="mt-6 text-center">
             <p className="text-xs text-white/50">
-              FuelFriendly is committed to providing convenient fuel delivery services worldwide. Our platform connects customers with verified fuel stations and delivery partners.
+              FuelFriendly is committed to providing convenient pump-side services worldwide. Our platform connects customers with verified fuel stations and service partners.
             </p>
           </div>
         </div>

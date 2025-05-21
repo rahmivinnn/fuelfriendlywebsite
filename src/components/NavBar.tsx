@@ -465,7 +465,7 @@ const NavBar = () => {
                     />
                     <div>
                       <h3 className="text-xl font-bold text-gray-900">FuelFriendly</h3>
-                      <p className="text-sm text-gray-500">Fuel delivery at your fingertips</p>
+                      <p className="text-sm text-gray-500">Convenient pump-side service at participating stations</p>
                     </div>
                   </div>
                   <Button

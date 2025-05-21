@@ -31,6 +31,8 @@ import {
 } from "@/components/ui/tabs";
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import DashboardLayout from '@/components/DashboardLayout';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart as RechartLine, Line, PieChart as RechartPie, Pie, Cell, AreaChart, Area } from 'recharts';
 
@@ -91,12 +93,40 @@ const Reports = () => {
   const [reports, setReports] = useState(reportsData);
   const [filterType, setFilterType] = useState('all');
   const [dateRange, setDateRange] = useState('last-30');
+  const [customDateRange, setCustomDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({ from: undefined, to: undefined });
+  const [isCustomDatePickerOpen, setIsCustomDatePickerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('reports');
 
-  // Filter reports based on type
-  const filteredReports = reports.filter(report => 
-    filterType === 'all' || report.type.toLowerCase() === filterType.toLowerCase()
-  );
+  // Filter reports based on type and date range
+  const filteredReports = reports.filter(report => {
+    const reportDate = new Date(report.date);
+    const typeMatch = filterType === 'all' || report.type.toLowerCase() === filterType.toLowerCase();
+    
+    if (!typeMatch) return false;
+
+    if (dateRange === 'custom' && customDateRange.from && customDateRange.to) {
+      return reportDate >= customDateRange.from && reportDate <= customDateRange.to;
+    }
+
+    const today = new Date();
+    switch (dateRange) {
+      case 'last-7':
+        const sevenDaysAgo = new Date(today.setDate(today.getDate() - 7));
+        return reportDate >= sevenDaysAgo;
+      case 'last-30':
+        const thirtyDaysAgo = new Date(today.setDate(today.getDate() - 30));
+        return reportDate >= thirtyDaysAgo;
+      case 'last-90':
+        const ninetyDaysAgo = new Date(today.setDate(today.getDate() - 90));
+        return reportDate >= ninetyDaysAgo;
+      case 'this-year':
+        return reportDate.getFullYear() === today.getFullYear();
+      case 'all-time':
+        return true;
+      default:
+        return true;
+    }
+  });
 
   useEffect(() => {
     setTimeout(() => {
@@ -225,10 +255,35 @@ const Reports = () => {
                     </SelectContent>
                   </Select>
                   
-                  <Button variant="outline" className="flex items-center">
-                    <Calendar className="mr-2" size={16} />
-                    Custom Date Range
-                  </Button>
+                  <Popover open={isCustomDatePickerOpen} onOpenChange={setIsCustomDatePickerOpen}>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" className="flex items-center">
+                        <Calendar className="mr-2" size={16} />
+                        {customDateRange.from && customDateRange.to ? 
+                          `${customDateRange.from.toLocaleDateString()} - ${customDateRange.to.toLocaleDateString()}` :
+                          'Custom Date Range'}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <CalendarComponent
+                        initialFocus
+                        mode="range"
+                        defaultMonth={customDateRange.from}
+                        selected={{
+                          from: customDateRange.from,
+                          to: customDateRange.to
+                        }}
+                        onSelect={(range) => {
+                          setCustomDateRange(range || { from: undefined, to: undefined });
+                          if (range?.from && range?.to) {
+                            setDateRange('custom');
+                            setIsCustomDatePickerOpen(false);
+                          }
+                        }}
+                        numberOfMonths={2}
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
                 
                 <div className="relative">

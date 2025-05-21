@@ -90,30 +90,47 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
   };
 
   const handleSidebarItemClick = (item: SidebarItem) => {
-    if (!item.path.includes('/station-dashboard/')) return;
-
     // Navigate to the path
     navigate(item.path);
 
-    // For any item without a proper page yet, show a toast
-    if (!['/station-dashboard', '/station-dashboard/orders', '/station-dashboard/products', '/station-dashboard/station'].includes(item.path)) {
-      toast({
-        title: `${item.label} Selected`,
-        description: `The ${item.label.toLowerCase()} page is being loaded`,
-        duration: 2000,
-      });
-    }
+    // Show a toast for the selected item
+    toast({
+      title: `${item.label} Selected`,
+      description: `Navigating to ${item.label.toLowerCase()}`,
+      duration: 2000,
+    });
   };
 
-  const handleLogout = () => {
-    toast({
-      title: "Logged Out",
-      description: "You have been logged out successfully",
-      duration: 3000,
-    });
-    // Clear localStorage and redirect to homepage
-    localStorage.removeItem('stationOwnerName');
-    navigate('/');
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return; // Prevent double logout
+    
+    setIsLoggingOut(true);
+    try {
+      // Clear all relevant storage data
+      localStorage.clear();
+      sessionStorage.clear();
+      
+      toast({
+        title: "Logged Out",
+        description: "You have been logged out successfully",
+        duration: 3000,
+      });
+
+      // Use a small timeout to ensure toast is visible
+      await new Promise(resolve => setTimeout(resolve, 100));
+      navigate('/', { replace: true });
+    } catch (error) {
+      toast({
+        title: "Logout Error",
+        description: "An error occurred during logout",
+        variant: "destructive",
+        duration: 3000,
+      });
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   return (
@@ -166,7 +183,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, title }) =>
                 transition={{ delay: index * 0.05 }}
               >
                 <div
-                  onClick={() => handleSidebarItemClick(item)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleSidebarItemClick(item);
+                  }}
                   className={`flex items-center p-3 rounded-lg transition-colors hover:bg-gray-100 cursor-pointer ${isActive ? 'bg-green-50 text-green-500' : 'text-gray-600'}`}
                 >
                   <item.icon size={20} className={isActive ? 'text-green-500' : 'text-gray-500'} />

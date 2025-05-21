@@ -120,10 +120,10 @@ const Features = () => {
       },
       "Real-Time Tracking": {
         benefits: [
-          "Live GPS tracking of your fuel delivery",
-          "Accurate ETA predictions",
-          "Instant notifications on order status changes",
-          "Track your Fuel Friend's location in real-time"
+          "Real-time updates on your pump-side service",
+          "Station availability information",
+          "Instant notifications on service status",
+          "Track your service progress in real-time"
         ],
         stats: {
           trackingAccuracy: "98.5%",
@@ -133,10 +133,10 @@ const Features = () => {
       },
       "24/7 Road Assistance": {
         benefits: [
-          "Emergency fuel delivery anywhere, anytime",
-          "Roadside assistance integration",
+          "Station-based emergency fuel assistance",
+          "Service station integration",
           "Priority service for subscribers",
-          "Nationwide coverage with local partners"
+          "Wide network of participating stations"
         ],
         stats: {
           responseTime: "15 min avg",
